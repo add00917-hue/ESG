@@ -309,6 +309,66 @@ tbody tr:last-child td{border-bottom:none}
 .cmp-chg.up{background:#dcfce7;color:#16a34a}
 .cmp-chg.down{background:#fee2e2;color:#dc2626}
 .cmp-chg.flat{background:#f1f5f9;color:#64748b}
+.cmpx-toggle{display:inline-flex;gap:6px;margin-right:4px}
+.cmpx-vs{font-size:13px;color:var(--text-muted);align-self:center;padding:0 2px}
+.cmpx-overall{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:stretch}
+@media(max-width:700px){.cmpx-overall{grid-template-columns:1fr}}
+.cmpx-pcard{background:var(--bg);border-radius:14px;padding:14px 16px}
+.cmpx-plabel{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;margin-bottom:6px}
+.cmpx-pbig{font-size:26px;font-weight:700;line-height:1}
+.cmpx-pbig span{font-size:14px;color:var(--text-muted);font-weight:500}
+.cmpx-pmeta{font-size:12.5px;color:var(--text-muted);margin-top:6px}
+.cmpx-delta{background:var(--surface);border:1.5px dashed var(--border);border-radius:14px;padding:12px 18px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-width:150px}
+.cmpx-delta-lb{font-size:12px;color:var(--text-muted)}
+.cmpx-delta-v{font-size:26px;font-weight:800;line-height:1.2}
+.cmpx-delta-sub{font-size:13px;font-weight:600}
+.cmpx-table{width:100%;border-collapse:collapse;font-size:14px}
+.cmpx-table th,.cmpx-table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.cmpx-table th{font-size:12px;color:var(--text-muted);font-weight:600}
+.cmpx-table td.t-weight{text-align:right;font-variant-numeric:tabular-nums}
+.cmpx-table tr.cmpx-total{font-weight:700;border-top:2px solid var(--border)}
+.cmpx-table tr.cmpx-total td{border-bottom:none}
+.statbox-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px;margin-bottom:24px}
+.statbox{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 18px 18px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.statbox::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;background:var(--accent)}
+.statbox.ok::before{background:#22c55e}
+.statbox.warn::before{background:#f59e0b}
+.statbox-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.statbox-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg)}
+.statbox-label{font-size:13px;color:var(--text-muted);font-weight:600;line-height:1.25}
+.statbox-value{font-size:25px;font-weight:800;line-height:1.1}
+.statbox-sub{font-size:12.5px;color:var(--text-muted);margin-top:5px;line-height:1.4}
+.statbox-pill{display:inline-block;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px;margin-top:9px}
+.statbox-pill.ok{background:#dcfce7;color:#16a34a}
+.statbox-pill.warn{background:#fef3c7;color:#b45309}
+.statbox-bar{height:7px;border-radius:5px;background:var(--bg);margin-top:9px;overflow:hidden}
+.statbox-bar>i{display:block;height:100%;border-radius:5px;transition:width .4s}
+.typebd{display:flex;flex-direction:column;gap:13px;padding:4px 2px}
+.typebd-row{display:flex;align-items:center;gap:12px}
+.typebd-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.typebd-main{flex:1;min-width:0}
+.typebd-line{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:5px}
+.typebd-name{font-weight:600;font-size:14px}
+.typebd-val{font-size:13px;color:var(--text-muted);white-space:nowrap}
+.typebd-bar{height:8px;border-radius:5px;background:var(--bg);overflow:hidden}
+.typebd-bar>i{display:block;height:100%;border-radius:5px;transition:width .4s}
+.typebd-total{display:flex;justify-content:space-between;border-top:1.5px solid var(--border);padding-top:12px;margin-top:3px;font-size:15px}
+.dash-plabel{display:inline-block;font-size:13px;font-weight:700;color:var(--primary);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 15px;margin-bottom:16px}
+.rsum-top{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border-radius:12px;padding:12px 16px;margin-bottom:16px}
+.rsum-rate{font-size:27px;font-weight:800;color:#22c55e;line-height:1}
+.rsum-rate-lb{font-size:11.5px;color:var(--text-muted);margin-top:4px}
+.rsum-tot{text-align:right;font-size:12.5px;color:var(--text-muted);line-height:1.6}
+.rsum-tot b{color:var(--text);font-size:15px}
+.rsum-cat{margin-bottom:15px}
+.rsum-cat-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.rsum-ic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.rsum-cat-name{font-weight:700;font-size:14px}
+.rsum-cat-val{margin-left:auto;font-size:12.5px;color:var(--text-muted);white-space:nowrap}
+.rsum-bar{height:7px;border-radius:5px;background:var(--bg);overflow:hidden;margin-bottom:7px}
+.rsum-bar>i{display:block;height:100%;border-radius:5px;transition:width .4s}
+.rsum-items{display:flex;flex-direction:column;gap:4px;padding-left:39px}
+.rsum-item{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);gap:10px}
+.rsum-item span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
 .cmp-rows{margin-top:14px;font-size:13px;color:var(--text-muted)}
 .cmp-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border)}
 .cmp-row:last-child{border-bottom:none}
@@ -542,22 +602,27 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <div class="page-sub">สรุปข้อมูลปริมาณขยะทุกประเภท แยกตามอาคารและชั้น</div>
     </div>
     <div class="filters">
-      <select class="filter-sel" id="dash-period">
-        <option value="all">ทั้งหมด</option>
-        <option value="30">30 วันล่าสุด</option>
-        <option value="7">7 วันล่าสุด</option>
-      </select>
+      <div id="dash-period-ctrl" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"></div>
       <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><span>⬇️</span>Export CSV</button>
     </div>
   </div>
+
+  <div id="dash-period-label" class="dash-plabel"></div>
 
   <div id="alert-banner"></div>
 
   <div class="kpi-grid" id="kpi-grid"></div>
 
   <div class="card" id="compare-card">
-    <div class="card-head"><div class="card-title"><span class="ic">⚖️</span>เปรียบเทียบ ขยะทั่วไป vs ขยะรีไซเคิล (เทียบเดือนก่อนหน้า)</div></div>
-    <div id="compare-body" class="compare-grid"></div>
+    <div class="card-head">
+      <div class="card-title"><span class="ic">⚖️</span>เปรียบเทียบช่วงเวลา</div>
+      <div class="filters" id="cmp-ctrl"></div>
+    </div>
+    <div id="cmp-overall"></div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="table-wrap" id="compare-body"></div>
+      <div><canvas id="chart-compare" height="200"></canvas></div>
+    </div>
   </div>
 
   <div class="esg-hero" id="dash-esg" style="cursor:pointer" onclick="document.querySelector('.nav-tab[data-page=esg]').click()">
@@ -582,33 +647,37 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 
   <div class="grid-2">
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">📈</span>แนวโน้มปริมาณขยะรายวัน</div></div>
-      <canvas id="chart-trend" height="120"></canvas>
+      <div class="card-head">
+        <div class="card-title"><span class="ic">📈</span>แนวโน้มปริมาณขยะ (รายสัปดาห์)</div>
+        <div class="filters" id="trend-ctrl"></div>
+      </div>
+      <canvas id="chart-trend" height="150"></canvas>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">🥧</span>สัดส่วนตามประเภท</div></div>
-      <canvas id="chart-pie" height="120"></canvas>
+      <div class="card-head"><div class="card-title"><span class="ic">📊</span>สัดส่วนตามประเภท</div></div>
+      <div id="type-breakdown" class="typebd"></div>
     </div>
   </div>
 
   <div class="grid-2">
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">🏢</span>ปริมาณขยะตามอาคาร</div></div>
-      <canvas id="chart-building" height="120"></canvas>
+      <div class="card-head"><div class="card-title"><span class="ic">🏢</span>ปริมาณขยะตามอาคาร (แยกทุกประเภท)</div></div>
+      <canvas id="chart-building" height="150"></canvas>
+      <div class="table-wrap" id="building-table" style="margin-top:14px"></div>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">♻️</span>อัตราการรีไซเคิล (Recycling Rate)</div></div>
-      <div style="text-align:center;padding:10px 0">
-        <canvas id="chart-recycle" height="160" style="max-width:200px;margin:0 auto"></canvas>
-        <p class="page-sub" style="margin-top:14px">สัดส่วนขยะที่นำกลับมาใช้ใหม่ เทียบกับขยะทั้งหมด — ตัวชี้วัด ESG สำคัญ</p>
-      </div>
+      <div class="card-head"><div class="card-title"><span class="ic">🌿</span>สรุปขยะรีไซเคิล (แยกหมวด)</div></div>
+      <div id="recycle-summary"></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">🔥</span>Heatmap ปริมาณขยะตามอาคาร × ประเภท (kg)</div></div>
-    <div class="table-wrap"><table id="heatmap-table"></table></div>
-    <div class="page-sub" style="margin-top:10px">เฉดสีเข้ม = ปริมาณมาก · ช่วยระบุจุดที่ควรโฟกัสการจัดการ</div>
+    <div class="card-head">
+      <div class="card-title"><span class="ic">📉</span>แนวโน้มปริมาณขยะรายเดือน</div>
+      <div class="filters" id="heat-ctrl"></div>
+    </div>
+    <canvas id="chart-heat-line" height="110"></canvas>
+    <div class="page-sub" style="margin-top:10px" id="heat-note"></div>
   </div>
 
   <div class="card">
@@ -1342,6 +1411,10 @@ function materialOptionsHTML(){
 let data=load();
 let formType='general', selFloor=null, scanType=null, scanFloor=null;
 let charts={};
+let trendChart=null,buildingChart=null,heatChart=null;
+let trendMonth=null,trendWeek='all',trendCmp='none';
+let heatDim='type',heatBld='all';
+let dashMode='all',dashYear=null,dashMonth=null;
 
 function load(){
   try{
@@ -1485,14 +1558,14 @@ function closeSheet(){document.getElementById('bottom-sheet').classList.remove('
 
 /* ===== DASHBOARD ===== */
 function filtered(){
-  const p=document.getElementById('dash-period').value;
-  if(p==='all')return data;
-  const cut=new Date();cut.setDate(cut.getDate()-(+p));
-  return data.filter(r=>new Date(r.date)>=cut);
+  if(dashMode==='year') return data.filter(r=>r.date.slice(0,4)===String(dashYear));
+  if(dashMode==='month'){ const ym=dashYear+'-'+('0'+dashMonth).slice(-2); return data.filter(r=>r.date.slice(0,7)===ym); }
+  return data;
 }
-document.getElementById('dash-period').onchange=renderDashboard;
 
 function renderDashboard(){
+  renderDashPeriodCtrl();
+  const _lbl=document.getElementById('dash-period-label'); if(_lbl)_lbl.textContent='📅 '+dashPeriodLabel();
   const d=filtered();
   const sum=t=>d.filter(r=>r.type===t).reduce((a,r)=>a+r.weight,0);
   const totals={};Object.keys(TYPES).forEach(t=>totals[t]=sum(t));
@@ -1507,7 +1580,7 @@ function renderDashboard(){
       <div class="kpi-value">${totals[t].toFixed(2)} <span class="kpi-unit">kg</span></div></div>`;
   }).join('');
 
-  renderCompareCard(mr);
+  renderCompare();
 
   // ESG snapshot (uses filtered period d)
   let dC=0,dAvoided=0,dW=0;
@@ -1526,31 +1599,48 @@ function renderDashboard(){
     ||`<tr><td colspan="6"><div class="empty"><span class="ic">📭</span>ยังไม่มีข้อมูล</div></td></tr>`;
 
   drawCharts(d,totals);
+  renderTypeBreakdown(totals);
+  renderTrend();
+  renderBuilding(d);
+  renderRecycleSummary(d);
+  renderHeatLine();
   renderAlerts(d,totals);
-  renderHeatmap(d);
 }
 
 function renderAlerts(d,totals){
   const el=document.getElementById('alert-banner');if(!el)return;
-  const alerts=[];
-  // recycling target
   const all=Object.values(totals).reduce((a,b)=>a+b,0);
   const rate=all?(totals.recycle/all*100):0;
   const target=SETTINGS.recycleTarget||30;
-  if(all>0){
-    if(rate>=target)alerts.push({t:'ok',ic:'✅',m:`อัตรารีไซเคิล ${rate.toFixed(1)}% — ถึงเป้าหมาย ${target}% แล้ว`});
-    else alerts.push({t:'warn',ic:'⚠️',m:`อัตรารีไซเคิล ${rate.toFixed(1)}% — ยังต่ำกว่าเป้าหมาย ${target}% (ขาดอีก ${(target-rate).toFixed(1)}%)`});
-  }
-  // missing data: buildings with no record in last 3 days
+  const ok=rate>=target;
   const today=new Date();const recentDays=[];
   for(let i=0;i<3;i++){const dd=new Date(today);dd.setDate(dd.getDate()-i);recentDays.push(dd.toISOString().slice(0,10));}
   const missing=Object.keys(BUILDINGS).filter(b=>!data.some(r=>r.building===b&&recentDays.includes(r.date)));
-  if(missing.length)alerts.push({t:'warn',ic:'📭',m:`อาคารที่ยังไม่มีบันทึกใน 3 วันล่าสุด: ${missing.map(bName).join(', ')}`});
-  if(!alerts.length){el.innerHTML='';return;}
-  el.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">'+alerts.map(a=>{
-    const col=a.t==='ok'?{bg:'#dcfce7',bd:'#86efac',c:'#166534'}:{bg:'#fef3c7',bd:'#fcd34d',c:'#92400e'};
-    return `<div style="display:flex;align-items:center;gap:10px;background:${col.bg};border:1px solid ${col.bd};color:${col.c};padding:12px 16px;border-radius:12px;font-size:14px;font-weight:500"><span style="font-size:18px">${a.ic}</span>${a.m}</div>`;
-  }).join('')+'</div>';
+  const allBld=Object.keys(BUILDINGS).length;
+  const boxes=[];
+  boxes.push(`<div class="statbox ${ok?'ok':'warn'}">
+    <div class="statbox-top"><div class="statbox-ic">♻️</div><div class="statbox-label">อัตราการรีไซเคิล</div></div>
+    <div class="statbox-value">${rate.toFixed(1)}<span style="font-size:15px;color:var(--text-muted);font-weight:600">%</span></div>
+    <div class="statbox-bar"><i style="width:${Math.min(100,rate).toFixed(1)}%;background:${ok?'#22c55e':'#f59e0b'}"></i></div>
+    <span class="statbox-pill ${ok?'ok':'warn'}">${ok?'✅ ถึงเป้าหมาย '+target+'% แล้ว':'⚠️ ต่ำกว่าเป้า '+target+'% (ขาด '+(target-rate).toFixed(1)+'%)'}</span>
+  </div>`);
+  boxes.push(`<div class="statbox ${missing.length?'warn':'ok'}">
+    <div class="statbox-top"><div class="statbox-ic">🏢</div><div class="statbox-label">ความครบของข้อมูล (3 วันล่าสุด)</div></div>
+    <div class="statbox-value">${allBld-missing.length}<span style="font-size:15px;color:var(--text-muted);font-weight:600">/${allBld} อาคาร</span></div>
+    <div class="statbox-sub">${missing.length?('รอบันทึก: '+missing.map(bName).join(', ')):'บันทึกครบทุกอาคารแล้ว'}</div>
+    <span class="statbox-pill ${missing.length?'warn':'ok'}">${missing.length?'📭 ค้าง '+missing.length+' อาคาร':'✅ เป็นปัจจุบัน'}</span>
+  </div>`);
+  boxes.push(`<div class="statbox">
+    <div class="statbox-top"><div class="statbox-ic">⚖️</div><div class="statbox-label">น้ำหนักรวม (ช่วงที่แสดง)</div></div>
+    <div class="statbox-value">${all.toFixed(1)}<span style="font-size:15px;color:var(--text-muted);font-weight:600"> kg</span></div>
+    <div class="statbox-sub">รีไซเคิล ${totals.recycle.toFixed(1)} kg · อื่นๆ ${(all-totals.recycle).toFixed(1)} kg</div>
+  </div>`);
+  boxes.push(`<div class="statbox">
+    <div class="statbox-top"><div class="statbox-ic">📝</div><div class="statbox-label">จำนวนรายการบันทึก</div></div>
+    <div class="statbox-value">${d.length}<span style="font-size:15px;color:var(--text-muted);font-weight:600"> รายการ</span></div>
+    <div class="statbox-sub">ในช่วงข้อมูลที่แสดงผล</div>
+  </div>`);
+  el.innerHTML='<div class="statbox-grid">'+boxes.join('')+'</div>';
 }
 
 function renderHeatmap(d){
@@ -1593,45 +1683,282 @@ function renderCompareCard(mr){
   el.innerHTML=make('general')+make('recycle');
 }
 
+/* ===== เปรียบเทียบช่วงเวลา: เดือนต่อเดือน / ปีต่อปี ===== */
+let cmpMode='mom';
+const cmpSel={mom:{a:null,b:null},yoy:{a:null,b:null}};
+let cmpChart=null;
+function availYMs(){ return [...new Set(data.map(r=>r.date.slice(0,7)))].sort().reverse(); }
+function availYears(){ return [...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse(); }
+function ymLabel(ym){ const p=ym.split('-'); return MONTHS[(+p[1])-1]+' '+((+p[0])+543); }
+function yLabel(y){ return 'ปี '+((+y)+543); }
+function cmpInit(){
+  if(!cmpSel.mom.a){ const m=availYMs(),mr=monthRange(); cmpSel.mom.a=m[0]||mr.curYM; cmpSel.mom.b=m[1]||mr.prevYM; }
+  if(!cmpSel.yoy.a){ const y=availYears(),now=new Date().getFullYear(); cmpSel.yoy.a=y[0]||String(now); cmpSel.yoy.b=y[1]||String(now-1); }
+}
+function cmpControlHTML(){
+  const mbtn=(m,lb)=>`<button class="btn btn-sm ${cmpMode===m?'btn-primary':'btn-ghost'}" onclick="cmpSetMode('${m}')">${lb}</button>`;
+  let h=`<span class="cmpx-toggle">${mbtn('mom','📅 เดือนต่อเดือน')}${mbtn('yoy','📆 ปีต่อปี')}</span>`;
+  if(cmpMode==='mom'){
+    const items=availYMs(); const sel=(v,cur)=>items.map(x=>`<option value="${x}" ${x===cur?'selected':''}>${ymLabel(x)}</option>`).join('');
+    if(!items.length){ h+='<span class="cmpx-vs">ยังไม่มีข้อมูล</span>'; return h; }
+    h+=`<select class="filter-sel" onchange="cmpPick('a',this.value)">${sel(0,cmpSel.mom.a)}</select><span class="cmpx-vs">เทียบกับ</span><select class="filter-sel" onchange="cmpPick('b',this.value)">${sel(0,cmpSel.mom.b)}</select>`;
+  }else{
+    const items=availYears(); const sel=cur=>items.map(x=>`<option value="${x}" ${x===cur?'selected':''}>${yLabel(x)}</option>`).join('');
+    if(!items.length){ h+='<span class="cmpx-vs">ยังไม่มีข้อมูล</span>'; return h; }
+    h+=`<select class="filter-sel" onchange="cmpPick('a',this.value)">${sel(cmpSel.yoy.a)}</select><span class="cmpx-vs">เทียบกับ</span><select class="filter-sel" onchange="cmpPick('b',this.value)">${sel(cmpSel.yoy.b)}</select>`;
+  }
+  return h;
+}
+function cmpSetMode(m){ cmpMode=m; renderCompare(); }
+function cmpPick(slot,val){ cmpSel[cmpMode][slot]=val; renderCompare(); }
+function cmpRecs(key){ return cmpMode==='mom' ? data.filter(r=>r.date.slice(0,7)===key) : data.filter(r=>r.date.slice(0,4)===key); }
+function cmpChgSpan(a,b,big){
+  const pc=pctChange(a,b); const cls=pc.na?'flat':(a-b>=0?'up':'down'); const arrow=pc.na?'—':(a-b>=0?'▲':'▼');
+  const sz=big?'':'font-size:12px;padding:3px 8px';
+  return `<span class="cmp-chg ${cls}" style="${sz}">${arrow} ${pc.na?'-':pc.v.toFixed(1)+'%'}</span>`;
+}
+function renderCompare(){
+  const cc=document.getElementById('cmp-ctrl'); if(!cc) return;
+  cmpInit();
+  // กันค่าที่เลือกหลุดจากชุดข้อมูล
+  const pool=cmpMode==='mom'?availYMs():availYears();
+  if(pool.length){ if(pool.indexOf(cmpSel[cmpMode].a)<0)cmpSel[cmpMode].a=pool[0]; if(pool.indexOf(cmpSel[cmpMode].b)<0)cmpSel[cmpMode].b=pool[1]||pool[0]; }
+  cc.innerHTML=cmpControlHTML();
+
+  const aKey=cmpSel[cmpMode].a, bKey=cmpSel[cmpMode].b;
+  const labA=cmpMode==='mom'?ymLabel(aKey):yLabel(aKey);
+  const labB=cmpMode==='mom'?ymLabel(bKey):yLabel(bKey);
+  const recsA=cmpRecs(aKey), recsB=cmpRecs(bKey);
+  const types=Object.keys(TYPES);
+  const sumA={},sumB={};
+  types.forEach(t=>{ sumA[t]=recsA.filter(r=>r.type===t).reduce((a,r)=>a+r.weight,0); sumB[t]=recsB.filter(r=>r.type===t).reduce((a,r)=>a+r.weight,0); });
+  const totA=Object.values(sumA).reduce((a,b)=>a+b,0), totB=Object.values(sumB).reduce((a,b)=>a+b,0);
+  const rateA=totA?sumA.recycle/totA*100:0, rateB=totB?sumB.recycle/totB*100:0;
+  const co2A=recsA.reduce((a,r)=>a+co2(r),0), co2B=recsB.reduce((a,r)=>a+co2(r),0);
+
+  // ---- สรุปรวมสองช่วง ----
+  const pc=pctChange(totA,totB); const dcol=pc.na?'#64748b':(totA-totB>=0?'#16a34a':'#dc2626'); const darr=pc.na?'—':(totA-totB>=0?'▲':'▼');
+  document.getElementById('cmp-overall').innerHTML=`<div class="cmpx-overall">
+    <div class="cmpx-pcard" style="border-left:4px solid var(--primary)">
+      <div class="cmpx-plabel"><span class="dot" style="background:var(--primary)"></span>${labA}</div>
+      <div class="cmpx-pbig">${totA.toFixed(2)} <span>kg</span></div>
+      <div class="cmpx-pmeta">♻️ รีไซเคิล ${rateA.toFixed(1)}% · 🌍 ${fmtCO2(co2A)}</div>
+    </div>
+    <div class="cmpx-pcard" style="border-left:4px solid var(--accent)">
+      <div class="cmpx-plabel"><span class="dot" style="background:var(--accent)"></span>${labB}</div>
+      <div class="cmpx-pbig">${totB.toFixed(2)} <span>kg</span></div>
+      <div class="cmpx-pmeta">♻️ รีไซเคิล ${rateB.toFixed(1)}% · 🌍 ${fmtCO2(co2B)}</div>
+    </div>
+    <div class="cmpx-delta">
+      <div class="cmpx-delta-lb">น้ำหนักรวม เทียบกัน</div>
+      <div class="cmpx-delta-v" style="color:${dcol}">${darr} ${pc.na?'-':pc.v.toFixed(1)+'%'}</div>
+      <div class="cmpx-delta-sub" style="color:${dcol}">${(totA-totB>=0?'+':'')}${(totA-totB).toFixed(2)} kg</div>
+    </div></div>`;
+
+  // ---- ตารางแยกประเภท ----
+  let tb=`<table class="cmpx-table"><thead><tr><th>ประเภท</th><th style="text-align:right">${labA}</th><th style="text-align:right">${labB}</th><th>เปลี่ยนแปลง</th></tr></thead><tbody>`;
+  types.forEach(t=>{ tb+=`<tr><td><span class="badge ${TYPES[t].cls}">${TYPES[t].icon} ${TYPES[t].name}</span></td><td class="t-weight">${sumA[t].toFixed(2)}</td><td class="t-weight">${sumB[t].toFixed(2)}</td><td>${cmpChgSpan(sumA[t],sumB[t])}</td></tr>`; });
+  tb+=`<tr class="cmpx-total"><td>รวมทั้งหมด</td><td class="t-weight">${totA.toFixed(2)}</td><td class="t-weight">${totB.toFixed(2)}</td><td>${cmpChgSpan(totA,totB)}</td></tr>`;
+  document.getElementById('compare-body').innerHTML=tb+'</tbody></table>';
+
+  // ---- กราฟแท่งเทียบสองช่วง ----
+  const el=document.getElementById('chart-compare');
+  if(el){ if(cmpChart)cmpChart.destroy();
+    cmpChart=new Chart(el,{type:'bar',
+      data:{labels:types.map(t=>TYPES[t].name),datasets:[
+        {label:labA,data:types.map(t=>+sumA[t].toFixed(2)),backgroundColor:'#0f766e',borderRadius:6},
+        {label:labB,data:types.map(t=>+sumB[t].toFixed(2)),backgroundColor:'#94a3b8',borderRadius:6}
+      ]},
+      options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true}}}});
+  }
+}
+
 function drawCharts(d,totals){
   Object.values(charts).forEach(c=>c&&c.destroy());
   Chart.defaults.font.family="'Sarabun',sans-serif";
+}
 
-  // trend by day
-  const days=[...new Set(d.map(r=>r.date))].sort();
-  const byDay=t=>days.map(day=>+d.filter(r=>r.date===day&&r.type===t).reduce((a,r)=>a+r.weight,0).toFixed(2));
-  charts.trend=new Chart(document.getElementById('chart-trend'),{type:'line',
-    data:{labels:days.map(fmtShort),datasets:[
-      {label:'ทั่วไป',data:byDay('general'),borderColor:'#3b82f6',backgroundColor:'#3b82f622',tension:.35,fill:true},
+/* ===== สัดส่วนตามประเภท (ตัวเลข) ===== */
+function renderTypeBreakdown(totals){
+  const el=document.getElementById('type-breakdown');if(!el)return;
+  const types=Object.keys(TYPES);
+  const all=types.reduce((a,t)=>a+totals[t],0);
+  const sorted=types.slice().sort((a,b)=>totals[b]-totals[a]);
+  let h='';
+  sorted.forEach(t=>{
+    const v=totals[t],pct=all?v/all*100:0,T=TYPES[t];
+    h+=`<div class="typebd-row">
+      <div class="typebd-ic" style="background:${T.bg};color:${T.color}">${T.icon}</div>
+      <div class="typebd-main">
+        <div class="typebd-line"><span class="typebd-name">${T.name}</span><span class="typebd-val">${v.toFixed(1)} kg <b style="color:${T.color}">${pct.toFixed(1)}%</b></span></div>
+        <div class="typebd-bar"><i style="width:${pct.toFixed(1)}%;background:${T.color}"></i></div>
+      </div></div>`;
+  });
+  h+=`<div class="typebd-total"><span>รวมทั้งหมด</span><b>${all.toFixed(1)} kg</b></div>`;
+  el.innerHTML=h;
+}
+
+/* ===== แนวโน้มรายสัปดาห์ (เลือกเดือน/สัปดาห์/เทียบเดือน) ===== */
+function trendMonths(){ return [...new Set(data.map(r=>r.date.slice(0,7)))].sort().reverse(); }
+function weeksInMonth(ym){ const p=ym.split('-'); const dim=new Date(+p[0],+p[1],0).getDate(); const n=Math.ceil(dim/7); const arr=[]; for(let i=0;i<n;i++){const a=i*7+1,b=Math.min(dim,(i+1)*7); arr.push({k:i+1,a,b,label:'สัปดาห์ '+(i+1),range:a+'-'+b});} return arr; }
+function recsMonth(ym){ return data.filter(r=>r.date.slice(0,7)===ym); }
+function sumWk(rs,w,type){ return +rs.filter(r=>{const dd=+r.date.slice(-2); return dd>=w.a&&dd<=w.b&&(!type||r.type===type);}).reduce((a,r)=>a+r.weight,0).toFixed(2); }
+function trendSet(k,v){ if(k==='month'){trendMonth=v;trendCmp='none';trendWeek='all';} else if(k==='week'){trendWeek=v; if(v!=='all')trendCmp='none';} else {trendCmp=v;} renderTrend(); }
+function renderTrendCtrl(){
+  const el=document.getElementById('trend-ctrl');if(!el)return;
+  const months=trendMonths();
+  if(!trendMonth||months.indexOf(trendMonth)<0)trendMonth=months[0]||monthRange().curYM;
+  const wks=weeksInMonth(trendMonth);
+  const mOpt=months.map(m=>`<option value="${m}" ${m===trendMonth?'selected':''}>${ymLabel(m)}</option>`).join('');
+  const wOpt='<option value="all">ทั้งเดือน (รายสัปดาห์)</option>'+wks.map(w=>`<option value="${w.k}" ${String(w.k)===String(trendWeek)?'selected':''}>${w.label} (วันที่ ${w.range})</option>`).join('');
+  const cOpt='<option value="none">ไม่เทียบเดือน</option>'+months.filter(m=>m!==trendMonth).map(m=>`<option value="${m}" ${m===trendCmp?'selected':''}>เทียบ: ${ymLabel(m)}</option>`).join('');
+  el.innerHTML=`<select class="filter-sel" onchange="trendSet('month',this.value)">${mOpt}</select>
+    <select class="filter-sel" onchange="trendSet('week',this.value)">${wOpt}</select>
+    <select class="filter-sel" onchange="trendSet('cmp',this.value)" ${trendWeek!=='all'?'disabled title="ดูทั้งเดือนเพื่อเทียบ"':''}>${cOpt}</select>`;
+}
+function renderTrend(){
+  renderTrendCtrl();
+  const el=document.getElementById('chart-trend');if(!el)return;
+  if(trendChart){try{trendChart.destroy()}catch(e){}}
+  const recs=recsMonth(trendMonth);
+  let labels,datasets;
+  if(trendWeek!=='all'){
+    const wk=weeksInMonth(trendMonth).find(w=>String(w.k)===String(trendWeek))||{a:1,b:7};
+    const p=trendMonth.split('-'); const days=[];
+    for(let dd=wk.a;dd<=wk.b;dd++)days.push(p[0]+'-'+p[1]+'-'+('0'+dd).slice(-2));
+    labels=days.map(d=>'วันที่ '+(+d.slice(-2)));
+    const byDay=t=>days.map(day=>+recs.filter(r=>r.date===day&&r.type===t).reduce((a,r)=>a+r.weight,0).toFixed(2));
+    datasets=[
+      {label:'ขยะทั่วไป',data:byDay('general'),borderColor:'#3b82f6',backgroundColor:'#3b82f622',tension:.35,fill:true},
       {label:'รีไซเคิล',data:byDay('recycle'),borderColor:'#22c55e',backgroundColor:'#22c55e22',tension:.35,fill:true}
-    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true}}}});
+    ];
+  } else if(trendCmp!=='none'){
+    const recsC=recsMonth(trendCmp);const wks=weeksInMonth(trendMonth),wksC=weeksInMonth(trendCmp);
+    const maxN=Math.max(wks.length,wksC.length);
+    labels=Array.from({length:maxN},(_,i)=>'สัปดาห์ '+(i+1));
+    const pad=(rs,wl,i)=>{const w=wl[i];return w?sumWk(rs,w):null;};
+    datasets=[
+      {label:'รวม ('+ymLabel(trendMonth)+')',data:Array.from({length:maxN},(_,i)=>pad(recs,wks,i)),borderColor:'#0f766e',backgroundColor:'#0f766e22',tension:.35,fill:true},
+      {label:'รวม ('+ymLabel(trendCmp)+')',data:Array.from({length:maxN},(_,i)=>pad(recsC,wksC,i)),borderColor:'#f59e0b',backgroundColor:'#f59e0b22',tension:.35,fill:true}
+    ];
+  } else {
+    const wks=weeksInMonth(trendMonth);
+    labels=wks.map(w=>w.label);
+    datasets=[
+      {label:'รวมทั้งหมด',data:wks.map(w=>sumWk(recs,w)),borderColor:'#0f766e',backgroundColor:'#0f766e22',tension:.35,fill:true},
+      {label:'ทั่วไป',data:wks.map(w=>sumWk(recs,w,'general')),borderColor:'#3b82f6',borderDash:[5,3],tension:.35,fill:false},
+      {label:'รีไซเคิล',data:wks.map(w=>sumWk(recs,w,'recycle')),borderColor:'#22c55e',borderDash:[5,3],tension:.35,fill:false}
+    ];
+  }
+  trendChart=new Chart(el,{type:'line',data:{labels,datasets},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true}}}});
+}
 
-  // pie
-  charts.pie=new Chart(document.getElementById('chart-pie'),{type:'doughnut',
-    data:{labels:Object.keys(TYPES).map(t=>TYPES[t].name),
-      datasets:[{data:Object.keys(TYPES).map(t=>+totals[t].toFixed(2)),
-        backgroundColor:Object.keys(TYPES).map(t=>TYPES[t].color),borderWidth:2,borderColor:'#fff'}]},
-    options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+/* ===== ขยะตามอาคาร: stacked ทุกประเภท + ตารางสรุป ===== */
+function renderBuilding(d){
+  const types=Object.keys(TYPES),builds=Object.keys(BUILDINGS);
+  const sum=(b,t)=>+d.filter(r=>r.building===b&&r.type===t).reduce((a,r)=>a+r.weight,0).toFixed(2);
+  const el=document.getElementById('chart-building');
+  if(el){ if(buildingChart){try{buildingChart.destroy()}catch(e){}}
+    buildingChart=new Chart(el,{type:'bar',
+      data:{labels:builds.map(bName),datasets:types.map(t=>({label:TYPES[t].name,data:builds.map(b=>sum(b,t)),backgroundColor:TYPES[t].color,borderRadius:4}))},
+      options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}});
+  }
+  const tbl=document.getElementById('building-table');
+  if(tbl){
+    let h='<table class="cmpx-table"><thead><tr><th>อาคาร</th>'+types.map(t=>`<th style="text-align:right" title="${TYPES[t].name}">${TYPES[t].icon}</th>`).join('')+'<th style="text-align:right">รวม</th></tr></thead><tbody>';
+    const gt={};types.forEach(t=>gt[t]=0);let grand=0;
+    builds.forEach(b=>{const row=types.map(t=>sum(b,t));const tot=row.reduce((a,x)=>a+x,0);grand+=tot;row.forEach((x,i)=>gt[types[i]]+=x);
+      h+=`<tr><td>${bBadge(b)}</td>`+row.map(x=>`<td class="t-weight">${x?x.toFixed(1):'–'}</td>`).join('')+`<td class="t-weight"><b>${tot.toFixed(1)}</b></td></tr>`;});
+    h+=`<tr class="cmpx-total"><td>รวมทุกอาคาร</td>`+types.map(t=>`<td class="t-weight">${gt[t].toFixed(1)}</td>`).join('')+`<td class="t-weight">${grand.toFixed(1)}</td></tr>`;
+    tbl.innerHTML=h+'</tbody></table>';
+  }
+}
 
-  // building
-  const byBuilding=b=>+d.filter(r=>r.building===b).reduce((a,r)=>a+r.weight,0).toFixed(2);
-  charts.building=new Chart(document.getElementById('chart-building'),{type:'bar',
-    data:{labels:Object.keys(BUILDINGS).map(bName),datasets:[{label:'น้ำหนักรวม (kg)',
-      data:Object.keys(BUILDINGS).map(byBuilding),backgroundColor:Object.keys(BUILDINGS).map(bColor),borderRadius:8}]},
-    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+/* ===== แนวโน้มรายเดือน (แทน Heatmap) — สลับตามประเภท/อาคาร ===== */
+function heatMonths(){ return [...new Set(data.map(r=>r.date.slice(0,7)))].sort().slice(-8); }
+function ymShort(ym){ const p=ym.split('-'); return MONTHS_SHORT[(+p[1])-1]+' '+(((+p[0])+543)%100); }
+function heatSet(k,v){ if(k==='dim')heatDim=v; else heatBld=v; renderHeatLine(); }
+function renderHeatCtrl(){
+  const el=document.getElementById('heat-ctrl');if(!el)return;
+  const db=(k,lb)=>`<button class="btn btn-sm ${heatDim===k?'btn-primary':'btn-ghost'}" onclick="heatSet('dim','${k}')">${lb}</button>`;
+  let h=`<span class="cmpx-toggle">${db('type','ตามประเภท')}${db('building','ตามอาคาร')}</span>`;
+  if(heatDim==='type'){
+    const opt='<option value="all">ทุกอาคาร</option>'+Object.keys(BUILDINGS).map(b=>`<option value="${b}" ${b===heatBld?'selected':''}>${bName(b)}</option>`).join('');
+    h+=`<select class="filter-sel" onchange="heatSet('bld',this.value)">${opt}</select>`;
+  }
+  el.innerHTML=h;
+}
+function renderHeatLine(){
+  renderHeatCtrl();
+  const el=document.getElementById('chart-heat-line');if(!el)return;
+  if(heatChart){try{heatChart.destroy()}catch(e){}}
+  const months=heatMonths();const labels=months.map(ymShort);const note=document.getElementById('heat-note');
+  let datasets;
+  if(heatDim==='type'){
+    datasets=Object.keys(TYPES).map(t=>({label:TYPES[t].name,borderColor:TYPES[t].color,backgroundColor:TYPES[t].color+'22',tension:.35,fill:false,pointRadius:3,
+      data:months.map(m=>+data.filter(r=>r.date.slice(0,7)===m&&r.type===t&&(heatBld==='all'||r.building===heatBld)).reduce((a,r)=>a+r.weight,0).toFixed(2))}));
+    if(note)note.textContent='แนวโน้มน้ำหนักแต่ละประเภทขยะรายเดือน'+(heatBld==='all'?' (ทุกอาคาร)':' — อาคาร '+bName(heatBld));
+  }else{
+    datasets=Object.keys(BUILDINGS).map(b=>({label:bName(b),borderColor:bColor(b),backgroundColor:bColor(b)+'22',tension:.35,fill:false,pointRadius:3,
+      data:months.map(m=>+data.filter(r=>r.date.slice(0,7)===m&&r.building===b).reduce((a,r)=>a+r.weight,0).toFixed(2))}));
+    if(note)note.textContent='แนวโน้มน้ำหนักรวมรายเดือนของแต่ละอาคาร';
+  }
+  heatChart=new Chart(el,{type:'line',data:{labels,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true}}}});
+}
 
-  // recycling rate
-  const recTotal=totals.recycle, all=Object.values(totals).reduce((a,b)=>a+b,0);
-  const rate=all?((recTotal/all)*100).toFixed(1):0;
-  charts.recycle=new Chart(document.getElementById('chart-recycle'),{type:'doughnut',
-    data:{labels:['รีไซเคิล','อื่นๆ'],datasets:[{data:[+rate,+(100-rate).toFixed(1)],
-      backgroundColor:['#22c55e','#e2e8f0'],borderWidth:0}]},
-    options:{responsive:true,cutout:'72%',plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+'%'}}}}});
-  // center text
-  const ctx=document.getElementById('chart-recycle');
-  setTimeout(()=>{const cc=ctx.getContext('2d');cc.save();cc.font='700 22px Sarabun';cc.fillStyle='#22c55e';
-    cc.textAlign='center';cc.fillText(rate+'%',ctx.width/2,ctx.height/2+ (ctx.height/2*0.0));cc.restore();},120);
+/* ===== ปุ่มเลือกช่วงเวลา Dashboard ===== */
+function dashYears(){ const ys=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse(); return ys.length?ys:[String(new Date().getFullYear())]; }
+function dashSetMode(k){ dashMode=k; renderDashboard(); }
+function dashSet(k,v){ if(k==='year')dashYear=v; else dashMonth=+v; renderDashboard(); }
+function dashPeriodLabel(){
+  if(dashMode==='all') return 'ข้อมูลทั้งหมด';
+  if(dashMode==='year') return 'ข้อมูลปี '+((+dashYear)+543);
+  return 'ข้อมูลเดือน '+MONTHS[(+dashMonth)-1]+' '+((+dashYear)+543);
+}
+function renderDashPeriodCtrl(){
+  const el=document.getElementById('dash-period-ctrl'); if(!el)return;
+  const years=dashYears();
+  if(!dashYear||years.indexOf(String(dashYear))<0) dashYear=years[0];
+  if(!dashMonth) dashMonth=new Date().getMonth()+1;
+  const mbtn=(k,lb)=>`<button class="btn btn-sm ${dashMode===k?'btn-primary':'btn-ghost'}" onclick="dashSetMode('${k}')">${lb}</button>`;
+  let h=`<span class="cmpx-toggle">${mbtn('all','ทั้งหมด')}${mbtn('year','รายปี')}${mbtn('month','รายเดือน')}</span>`;
+  if(dashMode!=='all')
+    h+=`<select class="filter-sel" onchange="dashSet('year',this.value)">${years.map(y=>`<option value="${y}" ${String(y)===String(dashYear)?'selected':''}>ปี ${(+y)+543}</option>`).join('')}</select>`;
+  if(dashMode==='month')
+    h+=`<select class="filter-sel" onchange="dashSet('month',this.value)">${MONTHS.map((m,i)=>`<option value="${i+1}" ${(i+1)===(+dashMonth)?'selected':''}>${m}</option>`).join('')}</select>`;
+  el.innerHTML=h;
+}
+
+/* ===== สรุปขยะรีไซเคิล แยกทุกหมวด + จำนวน ===== */
+function renderRecycleSummary(d){
+  const el=document.getElementById('recycle-summary'); if(!el)return;
+  const recs=d.filter(r=>r.type==='recycle');
+  const cats=Object.keys(RECYCLE_CATEGORIES);
+  const agg={}; cats.forEach(c=>agg[c]={w:0,n:0,items:{}});
+  let totW=0,totN=0;
+  recs.forEach(r=>{ let c=getCategory(r.material||''); if(!agg[c])agg[c]={w:0,n:0,items:{}};
+    agg[c].w+=r.weight; agg[c].n+=1; totW+=r.weight; totN+=1;
+    const m=r.material||'(ไม่ระบุวัสดุ)'; agg[c].items[m]=agg[c].items[m]||{w:0,n:0}; agg[c].items[m].w+=r.weight; agg[c].items[m].n+=1; });
+  if(!totN){ el.innerHTML='<div style="padding:24px;text-align:center;color:var(--text-muted)">📭 ยังไม่มีข้อมูลขยะรีไซเคิลในช่วงนี้</div>'; return; }
+  const allW=d.reduce((a,r)=>a+r.weight,0); const rate=allW?totW/allW*100:0; const target=SETTINGS.recycleTarget||30;
+  let h=`<div class="rsum-top">
+      <div><div class="rsum-rate">${rate.toFixed(1)}%</div><div class="rsum-rate-lb">อัตรารีไซเคิล (เป้า ${target}%)</div></div>
+      <div class="rsum-tot"><div>น้ำหนักรวม <b>${totW.toFixed(1)} kg</b></div><div>${totN} รายการ</div></div>
+    </div>`;
+  cats.forEach(c=>{
+    const C=RECYCLE_CATEGORIES[c], a=agg[c]; const pct=totW?a.w/totW*100:0;
+    h+=`<div class="rsum-cat">
+      <div class="rsum-cat-head">
+        <span class="rsum-ic" style="background:${C.color}22;color:${C.color}">${C.icon}</span>
+        <span class="rsum-cat-name">${c}</span>
+        <span class="rsum-cat-val">${a.w.toFixed(1)} kg · ${a.n} รายการ</span>
+      </div>
+      <div class="rsum-bar"><i style="width:${pct.toFixed(1)}%;background:${C.color}"></i></div>`;
+    const items=Object.keys(a.items).filter(m=>a.items[m].w>0).sort((x,y)=>a.items[y].w-a.items[x].w);
+    if(items.length) h+='<div class="rsum-items">'+items.map(m=>`<div class="rsum-item"><span>${m}</span><span>${a.items[m].w.toFixed(1)} kg · ${a.items[m].n}</span></div>`).join('')+'</div>';
+    h+='</div>';
+  });
+  el.innerHTML=h;
 }
 
 /* ===== TABLES ===== */
@@ -2140,11 +2467,12 @@ function drawMonthlyChart(){
   Chart.defaults.font.family="'Sarabun',sans-serif";
 
   let datasets,stacked=false,cap='';
-  if(mSelType==='all'){
-    stacked=true;
-    datasets=allKeys.map(t=>({label:TYPES[t].name,data:matrix.map(m=>+m[t].toFixed(2)),backgroundColor:TYPES[t].color,borderRadius:5}));
+  const isAll=mSelType==='all';
+  if(isAll){
+    datasets=[{label:'รวมทั้งหมด',data:matrix.map(m=>+m._total.toFixed(2)),borderColor:'#0f766e',backgroundColor:'#0f766e22',tension:.35,fill:true,borderWidth:3,pointRadius:3}]
+      .concat(allKeys.map(t=>({label:TYPES[t].name,data:matrix.map(m=>+m[t].toFixed(2)),borderColor:TYPES[t].color,backgroundColor:TYPES[t].color+'22',tension:.35,fill:false,borderWidth:2,pointRadius:3})));
     const tot=matrix.reduce((a,m)=>a+m._total,0);
-    cap=`แสดงทุกประเภทรวมกัน · รวมทั้งปี ${tot.toFixed(2)} kg`;
+    cap=`แนวโน้มทุกประเภทรายเดือน · รวมทั้งปี ${tot.toFixed(2)} kg`;
   }else{
     const t=mSelType;
     const arr=matrix.map(m=>+m[t].toFixed(2));
@@ -2154,13 +2482,13 @@ function drawMonthlyChart(){
   }
   document.getElementById('m-chart-caption').textContent=cap;
 
-  monthlyChart=new Chart(document.getElementById('chart-monthly'),{type:'bar',
+  monthlyChart=new Chart(document.getElementById('chart-monthly'),{type:isAll?'line':'bar',
     data:{labels:MONTHS_SHORT,datasets},
     options:{responsive:true,
       plugins:{
-        legend:{position:'bottom',display:mSelType==='all'},
+        legend:{position:'bottom',display:isAll},
         datalabels:{
-          display:mSelType!=='all',
+          display:!isAll,
           anchor:'end',align:'end',color:'#334155',font:{size:10,weight:'600'},
           formatter:v=>v>0?v.toFixed(1):''
         }
