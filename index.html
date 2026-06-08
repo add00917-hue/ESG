@@ -69,6 +69,37 @@ body{
 
 /* ===== LAYOUT ===== */
 .container{max-width:1280px;margin:0 auto;padding:24px 20px 60px}
+
+/* ===== RESPONSIVE ===== */
+/* Ultrawide 3440x1440 และจอกว้างพิเศษ */
+@media (min-width:1900px){
+  .topbar-inner,.container{max-width:1700px}
+}
+@media (min-width:2600px){
+  .topbar-inner,.container{max-width:2200px}
+  html{font-size:18px}
+}
+/* iPad / tablet */
+@media (min-width:768px) and (max-width:1024px){
+  .topbar-inner,.container{max-width:100%;padding-left:24px;padding-right:24px}
+}
+/* มือถือ */
+@media (max-width:600px){
+  .brand{flex-wrap:wrap;gap:10px}
+  .brand-text h1{font-size:15px}
+  .brand-text p{font-size:11px}
+  .home-label{display:none}
+  .conn-pill #conn-text{max-width:90px;overflow:hidden;text-overflow:ellipsis}
+  .container{padding:16px 14px 50px}
+  .page-title{font-size:20px}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .tbl-search{min-width:0;width:100%}
+  .tbl-tools{width:100%}
+  .modal{max-width:100%}
+}
+@media (max-width:380px){
+  .kpi-grid{grid-template-columns:1fr}
+}
 .page{display:none;animation:fade .4s ease}
 .page.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -258,6 +289,11 @@ tbody tr:last-child td{border-bottom:none}
 .staff-sub{display:none}
 .staff-sub.active{display:block;animation:fade .3s ease}
 
+/* ===== HEADER WITH BUILDING FILTER ROW ===== */
+.page-head.head-stacked{flex-direction:column;align-items:stretch;gap:14px}
+.page-head-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.page-head .bld-filter{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 14px;box-shadow:var(--shadow)}
+
 /* ===== COMPARE CARD ===== */
 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:700px){.compare-grid{grid-template-columns:1fr}}
@@ -327,7 +363,19 @@ tbody tr:last-child td{border-bottom:none}
 [data-theme="dark"] .pager-info,[data-theme="dark"] .kpi-sub{color:var(--text-muted)}
 [data-theme="dark"] .floor-pill,[data-theme="dark"] .bar-track{background:#0f172a}
 [data-theme="dark"] tfoot tr[style*="f8fafc"],[data-theme="dark"] tr[style*="f8fafc"]{background:#0f172a !important}
-.topbar-tools{display:flex;align-items:center;gap:8px;margin-left:auto}
+.topbar-tools{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap}
+/* OMS GNR3 home button */
+.home-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;transition:.2s;white-space:nowrap}
+.home-btn:hover{background:rgba(255,255,255,.32);transform:translateX(-2px)}
+.home-btn .ic{font-size:16px}
+/* connection status pill */
+.conn-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 13px;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.conn-pill:hover{background:rgba(255,255,255,.25)}
+.conn-dot{width:9px;height:9px;border-radius:50%;background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.3);flex-shrink:0}
+.conn-dot.online{background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.35);animation:pulse 2s infinite}
+.conn-dot.syncing{background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.35);animation:pulse 1s infinite}
+.conn-dot.error{background:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,.35)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .tb-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:.2s}
 .tb-btn:hover{background:rgba(255,255,255,.28)}
 .user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer}
@@ -335,7 +383,9 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ===== LOGIN ===== */
 .login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0f766e,#0891b2,#0ea5e9);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-card{background:#fff;border-radius:24px;padding:36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+.login-card{background:#fff;border-radius:24px;padding:36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;position:relative}
+.login-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:15px;color:var(--text-muted)}
+.login-close:hover{background:var(--bg)}
 .login-logo{width:64px;height:64px;border-radius:18px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 16px}
 .login-card h2{font-size:20px;margin-bottom:4px;color:var(--text)}
 .login-card p{font-size:13px;color:var(--text-muted);margin-bottom:24px}
@@ -346,8 +396,66 @@ tbody tr:last-child td{border-bottom:none}
 .role-opt .ds{font-size:12px;color:var(--text-muted)}
 .gated{display:none !important}
 
+/* ===== KIOSK (หน้าบันทึกแยกจาก QR อาคาร) ===== */
+.kiosk{position:fixed;inset:0;z-index:600;background:linear-gradient(160deg,#0f766e,#0891b2,#0ea5e9);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
+.kiosk-card{background:var(--surface);border-radius:24px;padding:26px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto}
+.kiosk-logo{width:62px;height:62px;border-radius:18px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px}
+.kiosk-card h2{text-align:center;font-size:21px;margin-bottom:4px;color:var(--text)}
+.kiosk-card>.kiosk-step>p{text-align:center;color:var(--text-muted);font-size:14px}
+.kiosk-bldname{font-weight:700;font-size:16px;color:var(--primary);text-align:center;margin-top:4px}
+.kiosk-err{color:#dc2626;font-size:13px;text-align:center;margin-top:10px;min-height:18px}
+.kiosk-bld-confirm{margin:16px 0;padding:20px;border-radius:16px;text-align:center;font-size:22px;font-weight:700;border:2px solid}
+.kiosk-rec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.kiosk-rec-bld{font-size:18px;font-weight:700}
+.kiosk-rec-user{font-size:13px;color:var(--text-muted)}
+.kiosk-success{text-align:center;color:#16a34a;font-weight:700;font-size:15px;margin-top:12px;min-height:20px}
+.kiosk-foot{color:rgba(255,255,255,.85);font-size:12px;margin-top:16px;text-align:center}
+.kiosk-bld-opt{display:block;width:100%;text-align:left;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);cursor:pointer;margin-bottom:8px;font-family:inherit;font-size:15px;font-weight:600;color:var(--text)}
+.kiosk-bld-opt:hover{border-color:var(--primary);background:var(--primary-light)}
+.kqr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.kqr-card{border:1px solid var(--border);border-radius:16px;padding:18px;text-align:center;border-top:4px solid}
+.kqr-card h4{font-size:16px;margin-bottom:10px}
+.kqr-canvas{display:flex;justify-content:center;margin-bottom:10px}
+.kqr-canvas canvas,.kqr-canvas img{border-radius:8px}
+.kqr-url{font-size:10px;color:var(--text-muted);word-break:break-all;margin-bottom:10px}
+.kqr-btns{display:flex;gap:6px;justify-content:center}
+
+/* ===== MOBILE BOTTOM NAV ===== */
+.bottom-nav{display:none}
+.bottom-sheet{display:none}
+@media (max-width:768px){
+  .nav-tabs{display:none}
+  .bottom-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:300;
+    background:var(--surface);border-top:1px solid var(--border);
+    box-shadow:0 -4px 24px rgba(15,23,42,.12);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:2px}
+  .container{padding-bottom:104px}
+  .toast{bottom:calc(98px + env(safe-area-inset-bottom));z-index:190;max-width:90vw}
+}
+.bn-item{flex:1;min-width:0;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 2px 5px;cursor:pointer;color:var(--text-muted);font-family:inherit;border-radius:14px;transition:.2s;position:relative}
+.bn-ic{font-size:21px;line-height:1;transition:transform .25s cubic-bezier(.34,1.6,.64,1)}
+.bn-lb{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bn-item.active{color:var(--primary)}
+.bn-item.active .bn-ic{transform:translateY(-3px) scale(1.18)}
+.bn-item.active::after{content:'';position:absolute;top:-6px;width:22px;height:3px;border-radius:0 0 4px 4px;background:var(--primary);box-shadow:0 1px 6px var(--primary)}
+.bn-item:active .bn-ic{transform:scale(.85)}
+
+.bottom-sheet.open{display:block;position:fixed;inset:0;z-index:350;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);animation:fade .2s}
+.bs-panel{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:24px 24px 0 0;
+  padding:8px 16px calc(24px + env(safe-area-inset-bottom));transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.34,1.45,.64,1);max-height:80vh;overflow-y:auto}
+.bottom-sheet.open .bs-panel{transform:translateY(0)}
+.bs-handle{width:42px;height:4px;background:var(--border);border-radius:3px;margin:8px auto 10px}
+.bs-title{font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:0 6px 10px}
+.bs-item{display:flex;align-items:center;gap:14px;width:100%;padding:14px 14px;border:none;background:none;
+  font-family:inherit;font-size:15px;font-weight:600;color:var(--text);cursor:pointer;border-radius:14px;transition:.15s}
+.bs-item:hover,.bs-item.active{background:var(--bg)}
+.bs-item.active{color:var(--primary)}
+.bs-ic{font-size:22px}
+
 @media print{
-  .topbar,.nav-tabs,.btn,.tbl-tools,.pager,.bld-filter,.icon-btn,.t-actions,#dash-period,.topbar-tools{display:none !important}
+  .topbar,.nav-tabs,.bottom-nav,.bottom-sheet,.btn,.tbl-tools,.pager,.bld-filter,.icon-btn,.t-actions,#dash-period,.topbar-tools{display:none !important}
   body{background:#fff}
   .page{display:none !important}
   .page.active{display:block !important}
@@ -380,12 +488,18 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 <body>
 
 <!-- ============ LOGIN ============ -->
-<div class="login-overlay" id="login" style="display:none">
+<div class="login-overlay" id="login" style="display:none" onclick="if(event.target===this)closeLogin()">
   <div class="login-card">
-    <div class="login-logo">♻️</div>
-    <h2 id="login-title">ระบบการจัดการขยะ</h2>
-    <p>เลือกบทบาทเพื่อเข้าสู่ระบบ (เดโม)</p>
-    <div id="role-list"></div>
+    <button class="login-close" onclick="closeLogin()">✕</button>
+    <div class="login-logo">🔐</div>
+    <h2 id="login-title">เข้าสู่ระบบ</h2>
+    <p>กรอกชื่อผู้ใช้และรหัสผ่าน</p>
+    <div style="text-align:left">
+      <div class="field"><label class="form-label">ชื่อผู้ใช้</label><input class="input" id="login-user" placeholder="ชื่อผู้ใช้" autocomplete="username"></div>
+      <div class="field"><label class="form-label">รหัสผ่าน</label><input class="input" id="login-pass" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" onkeydown="if(event.key==='Enter')loginSubmit()"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="loginSubmit()"><span>🔓</span>เข้าสู่ระบบ</button>
+    <p style="margin-top:14px;font-size:12px">ระบบเดโม · ยังไม่ได้กำหนดสิทธิ์ (เข้าใช้งานได้ทุกฟังก์ชัน)</p>
   </div>
 </div>
 
@@ -393,21 +507,23 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
+      <a class="home-btn" href="https://add00917-hue.github.io/GNR3-Building-MS/" title="กลับหน้าหลัก OMS GNR3"><span class="ic">←</span><span class="home-label">OMS GNR3</span></a>
       <div class="brand-logo">♻️</div>
       <div class="brand-text">
         <h1 id="brand-title">การจัดการขยะทั่วไป และ ขยะรีไซเคิล</h1>
         <p id="brand-sub">Management of General Waste and Recyclable Waste</p>
       </div>
       <div class="topbar-tools">
+        <button class="conn-pill" id="conn-pill" onclick="toggleConnInfo()" title="สถานะการเชื่อมต่อข้อมูล"><span class="conn-dot" id="conn-dot"></span><span id="conn-text">บันทึกในเครื่อง</span></button>
         <button class="tb-btn" id="theme-btn" title="สลับโหมดมืด/สว่าง" onclick="toggleTheme()">🌙</button>
         <button class="tb-btn" title="พิมพ์ / บันทึก PDF" onclick="window.print()">🖨️</button>
-        <button class="user-chip" id="user-chip" onclick="logout()"></button>
+        <button class="user-chip" id="user-chip" onclick="userChipClick()"></button>
       </div>
     </div>
     <div class="nav-tabs">
       <button class="nav-tab active" data-page="dashboard"><span class="ic">📊</span>Dashboard</button>
       <button class="nav-tab" data-page="monthly"><span class="ic">📅</span>สรุปรายเดือน</button>
-      <button class="nav-tab" data-page="staff"><span class="ic">🧹</span>ขยะแม่บ้านอาคาร</button>
+      <button class="nav-tab" data-page="staff"><span class="ic">🧹</span>หมวดขยะสำนักงาน</button>
       <button class="nav-tab" data-page="ewastep"><span class="ic">💻</span>Ewast+ (AIS)</button>
       <button class="nav-tab" data-page="recycle"><span class="ic">🌿</span>ขยะรีไซเคิล</button>
       <button class="nav-tab" data-page="esg"><span class="ic">🌍</span>ESG / คาร์บอน</button>
@@ -824,6 +940,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <tbody id="esg-table"></tbody>
       <tfoot id="esg-table-foot"></tfoot>
     </table></div>
+    <p class="page-sub" id="esg-ref" style="margin-top:12px;font-size:12px"></p>
   </div>
 </div>
 
@@ -898,12 +1015,50 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">🌍</span>ค่า Emission Factor (kgCO₂e/kg) ที่ใช้คำนวณ</div></div>
-    <p class="page-sub" style="margin-bottom:14px">ค่าสัมประสิทธิ์การปล่อยก๊าซเรือนกระจกที่ใช้แปลงน้ำหนักขยะเป็นคาร์บอน นำไปคำนวณในรายงาน ESG ทุกหน้า</p>
+    <div class="card-head"><div class="card-title"><span class="ic">🧹</span>QR Code บันทึกขยะสำนักงาน — แยกตามอาคาร (สำหรับแม่บ้าน)</div></div>
+    <p class="page-sub" style="margin-bottom:14px">QR แต่ละอาคาร สแกนแล้วเปิดหน้าบันทึกเฉพาะ: เข้าสู่ระบบ → ยืนยันอาคาร → เลือกชั้น/ประเภท → กรอกน้ำหนัก บันทึก (ตรวจสอบผู้ใช้กับ Google Sheets ชีต Users) เหมาะพิมพ์ติดที่จุดทิ้งขยะแต่ละอาคาร</p>
+    <div class="kqr-grid" id="admin-kiosk-qr"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-title"><span class="ic">🔗</span>การเชื่อมต่อ Google Sheets</div></div>
+    <p class="page-sub" style="margin-bottom:14px">เชื่อมต่อฐานข้อมูลกลางผ่าน Google Apps Script เพื่อให้ทุกเครื่องเห็นข้อมูลร่วมกันและกันข้อมูลหาย (ถ้าไม่เชื่อมต่อ ระบบจะบันทึกในเครื่องแบบ Local)</p>
+    <div class="field">
+      <label class="form-label">Web App URL (จาก Apps Script → Deploy → Web app)</label>
+      <input class="input" id="gs-url" placeholder="https://script.google.com/macros/s/..../exec">
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="connectGS(document.getElementById('gs-url').value)"><span>🔗</span>เชื่อมต่อ / ดึงข้อมูล</button>
+      <button class="btn btn-ghost" onclick="disconnectGS()"><span>✖️</span>ตัดการเชื่อมต่อ</button>
+      <span class="page-sub" id="gs-status" style="font-size:13px;align-self:center"></span>
+    </div>
+    <p class="page-sub" style="margin-top:12px;font-size:12px">ℹ️ ต้องนำสคริปต์ <b>Code.gs</b> ไปวางใน Apps Script ของ Google Sheet ก่อน (ดูไฟล์คู่มือที่แนบมา) ระบบจะสร้างชีตที่จำเป็นให้อัตโนมัติ: Records, Buildings, EmissionFactors, Settings, Users, Logs</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><span class="ic">🌍</span>ค่า Emission Factor (kgCO₂e/kg) — แก้ไขได้</div>
+      <button class="btn btn-ghost btn-sm" onclick="resetEF()"><span>↺</span>คืนค่าเริ่มต้น</button>
+    </div>
+    <p class="page-sub" style="margin-bottom:14px">ค่าสัมประสิทธิ์การปล่อยก๊าซเรือนกระจกที่ใช้แปลงน้ำหนักขยะเป็นคาร์บอน (ใช้คำนวณในรายงาน ESG ทุกหน้า) แก้ไขค่าและระบุที่มาได้</p>
     <div class="table-wrap"><table class="ef-table">
-      <thead><tr><th>ประเภท / หมวดหมู่</th><th>Emission Factor (kgCO₂e/kg)</th><th>ระดับ</th></tr></thead>
+      <thead><tr><th>ประเภท / หมวดหมู่</th><th style="width:160px">EF (kgCO₂e/kg)</th><th>ที่มา / อ้างอิงรายการนี้</th></tr></thead>
       <tbody id="admin-ef-body"></tbody>
     </table></div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="field">
+        <label class="form-label">ค่าฐานสำหรับคำนวณคาร์บอนที่หลีกเลี่ยงได้ (Baseline – ฝังกลบ)</label>
+        <input class="input" id="ef-baseline" type="number" step="0.0001" min="0">
+      </div>
+      <div class="field">
+        <label class="form-label">แหล่งอ้างอิงหลัก (Reference / Source)</label>
+        <input class="input" id="ef-reference" placeholder="เช่น TGO Emission Factor 2565, GHG Protocol">
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="saveEFForm()"><span>💾</span>บันทึกค่า EF</button>
+      <span class="page-sub" id="ef-updated" style="font-size:12px"></span>
+    </div>
   </div>
 </div>
 
@@ -980,6 +1135,63 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
 </div>
 
+<!-- ============ KIOSK (หน้าบันทึกแยกสำหรับแม่บ้าน จาก QR อาคาร) ============ -->
+<div class="kiosk" id="kiosk" style="display:none">
+  <div class="kiosk-card">
+    <!-- STEP 1: LOGIN -->
+    <div class="kiosk-step" id="kiosk-login">
+      <div class="kiosk-logo">🧹</div>
+      <h2>บันทึกขยะสำนักงาน</h2>
+      <p class="kiosk-bldname" id="kiosk-login-bld"></p>
+      <div style="text-align:left;margin-top:18px">
+        <div class="field"><label class="form-label">ชื่อผู้ใช้</label><input class="input" id="kiosk-user" placeholder="ชื่อผู้ใช้แม่บ้าน" autocomplete="username"></div>
+        <div class="field"><label class="form-label">รหัสผ่าน</label><input class="input" id="kiosk-pass" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" onkeydown="if(event.key==='Enter')kioskLogin()"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="kioskLogin()"><span>🔓</span>เข้าสู่ระบบ</button>
+      <p class="kiosk-err" id="kiosk-login-err"></p>
+    </div>
+
+    <!-- STEP 2: CONFIRM BUILDING -->
+    <div class="kiosk-step" id="kiosk-confirm" style="display:none">
+      <div class="kiosk-logo">🏢</div>
+      <h2>ยืนยันอาคาร</h2>
+      <p>กรุณายืนยันว่าคุณกำลังบันทึกขยะของอาคารนี้ (กันสแกนผิดตึก)</p>
+      <div class="kiosk-bld-confirm" id="kiosk-confirm-bld"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px" onclick="kioskConfirmBuilding()"><span>✅</span>ใช่ ถูกต้อง บันทึกอาคารนี้</button>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px" onclick="kioskPickOther()">เลือกอาคารอื่น</button>
+      <div id="kiosk-other" style="display:none;margin-top:10px"></div>
+    </div>
+
+    <!-- STEP 3: RECORD -->
+    <div class="kiosk-step" id="kiosk-record" style="display:none">
+      <div class="kiosk-rec-head">
+        <div>
+          <div class="kiosk-rec-bld" id="kiosk-rec-bld"></div>
+          <div class="kiosk-rec-user" id="kiosk-rec-user"></div>
+        </div>
+        <button class="icon-btn" title="ออกจากระบบ" onclick="kioskLogout()">⏻</button>
+      </div>
+      <div class="field"><label class="form-label">วันที่</label><input type="date" class="input" id="kiosk-date"></div>
+      <div class="field">
+        <label class="form-label">เลือกชั้น <span class="req">*</span></label>
+        <div class="floor-grid" id="kiosk-floors"></div>
+      </div>
+      <div class="field">
+        <label class="form-label">ประเภทขยะ <span class="req">*</span></label>
+        <div class="type-select" id="kiosk-types"></div>
+      </div>
+      <div class="field">
+        <label class="form-label">น้ำหนัก (kg) <span class="req">*</span></label>
+        <input type="number" class="input" id="kiosk-weight" placeholder="0.00" step="0.01" min="0" inputmode="decimal">
+        <div class="hint">รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="kioskSave()"><span>💾</span>บันทึกข้อมูล</button>
+      <div class="kiosk-success" id="kiosk-success"></div>
+    </div>
+  </div>
+  <div class="kiosk-foot">ระบบบันทึกขยะสำนักงาน · OMS GNR3</div>
+</div>
+
 <!-- ============ SCANNED FORM MODAL (mobile-style) ============ -->
 <div class="overlay" id="modal-scan">
   <div class="modal">
@@ -1031,6 +1243,16 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
 </div>
 
+<!-- ============ MOBILE BOTTOM NAV ============ -->
+<nav class="bottom-nav" id="bottom-nav"></nav>
+<div class="bottom-sheet" id="bottom-sheet" onclick="if(event.target===this)closeSheet()">
+  <div class="bs-panel">
+    <div class="bs-handle"></div>
+    <div class="bs-title">เมนูทั้งหมด</div>
+    <div id="bottom-sheet-list"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"><span>✅</span><span id="toast-msg">บันทึกสำเร็จ</span><button id="toast-undo" onclick="undoDelete()" style="display:none;background:rgba(255,255,255,.25);border:none;color:#fff;font-family:inherit;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer;margin-left:6px">↩ เลิกทำ</button></div>
 
 <script>
@@ -1044,7 +1266,7 @@ function loadBuildings(){
   try{const b=JSON.parse(localStorage.getItem('wms_buildings'));if(b&&Object.keys(b).length)return b;}catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_BUILDINGS));
 }
-function saveBuildings(){localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));}
+function saveBuildings(){localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));gsPush('buildings','set',BUILDINGS);}
 function bColor(b){return (BUILDINGS[b]&&BUILDINGS[b].color)||'#64748b';}
 function bName(b){return (BUILDINGS[b]&&BUILDINGS[b].name)||b;}
 function bBadge(b){const c=bColor(b);return `<span class="badge" style="background:${c}22;color:${c}">${bName(b)}</span>`;}
@@ -1055,7 +1277,7 @@ function loadSettings(){
   try{const s=JSON.parse(localStorage.getItem('wms_settings'));if(s)return Object.assign({},DEFAULT_SETTINGS,s);}catch(e){}
   return Object.assign({},DEFAULT_SETTINGS);
 }
-function saveSettings(){localStorage.setItem('wms_settings',JSON.stringify(SETTINGS));}
+function saveSettings(){localStorage.setItem('wms_settings',JSON.stringify(SETTINGS));gsPush('settings','set',SETTINGS);}
 
 const ROLES={
   admin:{name:'ผู้ดูแลระบบ',icon:'🛡️',can:['record','edit','delete','admin','view']},
@@ -1064,7 +1286,7 @@ const ROLES={
   viewer:{name:'ผู้บริหาร (ดูอย่างเดียว)',icon:'👀',can:['view']}
 };
 let USER=JSON.parse(localStorage.getItem('wms_user')||'null');
-function can(action){return USER&&ROLES[USER.role]&&ROLES[USER.role].can.includes(action);}
+function can(action){return true;/* ยังไม่กำหนดสิทธิ์ — เปิดทุกฟังก์ชัน */}
 
 const TYPES={
   general:{name:'ขยะทั่วไป',icon:'🗑️',color:'#3b82f6',bg:'#dbeafe',cls:'b-general',recorder:'แม่บ้านอาคาร'},
@@ -1085,9 +1307,22 @@ const RECYCLE_CATEGORIES={
 function getCategory(mat){for(const c in RECYCLE_CATEGORIES){if(RECYCLE_CATEGORIES[c].items.includes(mat))return c;}return '-';}
 
 /* ===== ESG / EMISSION FACTORS (kgCO2e per kg) ===== */
-const EMISSION_FACTORS={general:0.7933,food:0.7933,hazard:0.7933,ewaste:0.7933,ewastep:0.7933,recycle:0.0064};
-const CAT_FACTORS={'กระดาษ':0.0064,'อลูมิเนียม':0.0064,'พลาสติก':0.0064,'เหล็ก':0.0064};
-const BASELINE_FACTOR=0.7933; // ค่าฐาน (ฝังกลบ) สำหรับคำนวณคาร์บอนที่หลีกเลี่ยงได้จากการรีไซเคิล
+const DEFAULT_EF={general:0.7933,food:0.7933,hazard:0.7933,ewaste:0.7933,ewastep:0.7933,recycle:0.0064};
+const DEFAULT_CAT={'กระดาษ':0.0064,'อลูมิเนียม':0.0064,'พลาสติก':0.0064,'เหล็ก':0.0064};
+let EMISSION_FACTORS,CAT_FACTORS,EF_META;
+function loadEF(){
+  try{const s=JSON.parse(localStorage.getItem('wms_ef'));
+    if(s){EMISSION_FACTORS=Object.assign({},DEFAULT_EF,s.factors||{});
+      CAT_FACTORS=Object.assign({},DEFAULT_CAT,s.cat||{});
+      EF_META=Object.assign({baseline:0.7933,reference:'',sources:{},updated:''},s.meta||{});return;}
+  }catch(e){}
+  EMISSION_FACTORS=Object.assign({},DEFAULT_EF);
+  CAT_FACTORS=Object.assign({},DEFAULT_CAT);
+  EF_META={baseline:0.7933,reference:'TGO (องค์การบริหารจัดการก๊าซเรือนกระจก) / GHG Protocol',sources:{},updated:''};
+}
+function saveEF(){localStorage.setItem('wms_ef',JSON.stringify({factors:EMISSION_FACTORS,cat:CAT_FACTORS,meta:EF_META}));gsPush('ef','set',{factors:EMISSION_FACTORS,cat:CAT_FACTORS,meta:EF_META});}
+loadEF();
+function baselineFactor(){return EF_META.baseline||0.7933;}
 function recordFactor(r){
   if(r.type==='recycle'){const c=getCategory(r.material||'');return (CAT_FACTORS[c]!==undefined?CAT_FACTORS[c]:0.0064);}
   return (EMISSION_FACTORS[r.type]!==undefined?EMISSION_FACTORS[r.type]:0.7933);
@@ -1116,6 +1351,60 @@ function load(){
   return seed();
 }
 function save(){localStorage.setItem('wms_data',JSON.stringify(data));}
+
+/* ===== GOOGLE SHEETS SYNC LAYER ===== */
+/* ทำงานได้ทั้งโหมด Local (ไม่ใส่ URL) และโหมด Google Sheets (ใส่ URL ของ Apps Script Web App)
+   ออกแบบให้ไม่กระทบ UI: ถ้าไม่เชื่อมต่อ ระบบทำงานแบบ Local เหมือนเดิมทุกประการ */
+let GS_URL=localStorage.getItem('wms_gs_url')||'';
+function gsConfigured(){return !!GS_URL;}
+async function gsGetAll(){
+  const res=await fetch(GS_URL+(GS_URL.includes('?')?'&':'?')+'action=getAll&t='+Date.now());
+  return await res.json();
+}
+async function gsPush(table,op,payload){
+  if(!gsConfigured())return;
+  try{
+    setConnStatus('syncing');
+    await fetch(GS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'save',table,op,payload})});
+    setConnStatus('online');
+  }catch(e){setConnStatus('error');}
+}
+function applyRemote(all){
+  if(!all)return;
+  if(Array.isArray(all.records)&&all.records.length){data=all.records;localStorage.setItem('wms_data',JSON.stringify(data));}
+  if(all.buildings&&Object.keys(all.buildings).length){BUILDINGS=all.buildings;localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));}
+  if(all.ef){if(all.ef.factors)EMISSION_FACTORS=Object.assign({},DEFAULT_EF,all.ef.factors);
+    if(all.ef.cat)CAT_FACTORS=Object.assign({},DEFAULT_CAT,all.ef.cat);
+    if(all.ef.meta)EF_META=Object.assign({baseline:0.7933,reference:'',sources:{}},all.ef.meta);
+    localStorage.setItem('wms_ef',JSON.stringify({factors:EMISSION_FACTORS,cat:CAT_FACTORS,meta:EF_META}));}
+  if(all.settings&&Object.keys(all.settings).length){SETTINGS=Object.assign({},DEFAULT_SETTINGS,all.settings);localStorage.setItem('wms_settings',JSON.stringify(SETTINGS));}
+}
+function rerenderAll(){
+  applyBranding();setupHeaderFilters();buildStaffTabs();initYearOptions();
+  const active=document.querySelector('.nav-tab.active');
+  if(active)active.click();else renderDashboard();
+}
+async function connectGS(url,silent){
+  url=(url||'').trim();
+  if(!url){alert('กรุณาวาง URL ของ Google Apps Script Web App');return;}
+  GS_URL=url;localStorage.setItem('wms_gs_url',url);
+  setConnStatus('syncing');
+  try{
+    const all=await gsGetAll();
+    if(all&&all.ok){applyRemote(all);setConnStatus('online','เชื่อมต่อ Google Sheets แล้ว');rerenderAll();if(!silent)toast('เชื่อมต่อ Google Sheets สำเร็จ');}
+    else{setConnStatus('error');if(!silent)alert('เชื่อมต่อไม่สำเร็จ: '+((all&&all.error)||'รูปแบบข้อมูลไม่ถูกต้อง'));}
+  }catch(e){setConnStatus('error');if(!silent)alert('เชื่อมต่อไม่สำเร็จ: '+e.message+'\n\nตรวจสอบว่า URL ถูกต้อง และตั้งค่า Web App เป็น "Anyone" แล้ว');}
+}
+function disconnectGS(){GS_URL='';localStorage.removeItem('wms_gs_url');setConnStatus('local');toast('ตัดการเชื่อมต่อ Google Sheets แล้ว (กลับเป็นโหมด Local)');}
+async function gsLogin(user,pass){
+  if(!gsConfigured())return {ok:false,error:'ยังไม่ได้เชื่อมต่อ Google Sheets'};
+  try{
+    const res=await fetch(GS_URL+(GS_URL.includes('?')?'&':'?')+'action=login&user='+encodeURIComponent(user)+'&pass='+encodeURIComponent(pass)+'&t='+Date.now());
+    return await res.json();
+  }catch(e){return {ok:false,error:e.message};}
+}
+
 function seed(){
   const r=[];const today=new Date();
   const rnd=(a,b)=>+(Math.random()*(b-a)+a).toFixed(2);
@@ -1151,7 +1440,48 @@ document.querySelectorAll('.nav-tab').forEach(t=>t.onclick=()=>{
   else if(t.dataset.page==='admin') renderAdmin();
   else if(t.dataset.page==='staff') showStaff(staffCur);
   else {resetBldButtons(t.dataset.page);renderTable(t.dataset.page,'all');}
+  syncBottomNav();
+  window.scrollTo({top:0,behavior:'smooth'});
 });
+
+/* ===== MOBILE BOTTOM NAV ===== */
+const BOTTOM_PRIMARY=['dashboard','staff','recycle','esg'];
+const BOTTOM_SHORT={dashboard:'หน้าหลัก',monthly:'รายเดือน',staff:'สำนักงาน',ewastep:'Ewast+',recycle:'รีไซเคิล',esg:'ESG',admin:'ตั้งค่า'};
+function tabMeta(){
+  const m={};document.querySelectorAll('.nav-tab').forEach(t=>{
+    const ic=t.querySelector('.ic');
+    const icon=ic?ic.textContent.trim():'•';
+    // ตัดไอคอนออกจากข้อความ เหลือเฉพาะ label
+    let label=t.textContent.trim();
+    if(ic)label=label.replace(ic.textContent,'').trim();
+    m[t.dataset.page]={label,icon};});
+  return m;
+}
+function buildBottomNav(){
+  const bar=document.getElementById('bottom-nav');if(!bar)return;
+  const m=tabMeta();
+  bar.innerHTML=BOTTOM_PRIMARY.filter(p=>m[p]).map(p=>
+    `<button class="bn-item" data-page="${p}" onclick="bottomGo('${p}')"><span class="bn-ic">${m[p].icon}</span><span class="bn-lb">${BOTTOM_SHORT[p]||m[p].label}</span></button>`).join('')
+    +`<button class="bn-item" id="bn-more" onclick="toggleSheet()"><span class="bn-ic">☰</span><span class="bn-lb">เมนู</span></button>`;
+  const list=document.getElementById('bottom-sheet-list');
+  if(list)list.innerHTML=Object.keys(m).map(p=>
+    `<button class="bs-item" data-page="${p}" onclick="bottomGo('${p}')"><span class="bs-ic">${m[p].icon}</span>${m[p].label}</button>`).join('');
+  syncBottomNav();
+}
+function syncBottomNav(){
+  const active=document.querySelector('.nav-tab.active');const cur=active?active.dataset.page:'dashboard';
+  let inPrimary=false;
+  document.querySelectorAll('#bottom-nav .bn-item[data-page]').forEach(b=>{
+    const on=b.dataset.page===cur;b.classList.toggle('active',on);if(on)inPrimary=true;});
+  const more=document.getElementById('bn-more');if(more)more.classList.toggle('active',!inPrimary);
+  document.querySelectorAll('#bottom-sheet-list .bs-item').forEach(b=>b.classList.toggle('active',b.dataset.page===cur));
+}
+function bottomGo(page){
+  closeSheet();
+  const tab=document.querySelector('.nav-tab[data-page="'+page+'"]');if(tab)tab.click();
+}
+function toggleSheet(){const s=document.getElementById('bottom-sheet');s.classList.toggle('open');if(s.classList.contains('open')){const t=document.getElementById('toast');if(t)t.classList.remove('show');}}
+function closeSheet(){document.getElementById('bottom-sheet').classList.remove('open');}
 
 /* ===== DASHBOARD ===== */
 function filtered(){
@@ -1181,7 +1511,7 @@ function renderDashboard(){
 
   // ESG snapshot (uses filtered period d)
   let dC=0,dAvoided=0,dW=0;
-  d.forEach(r=>{dC+=co2(r);dW+=r.weight;if(r.type==='recycle')dAvoided+=r.weight*(BASELINE_FACTOR-recordFactor(r));});
+  d.forEach(r=>{dC+=co2(r);dW+=r.weight;if(r.type==='recycle')dAvoided+=r.weight*(baselineFactor()-recordFactor(r));});
   const di=document.getElementById('dash-esg-total');if(di)di.textContent=fmtCO2(dC);
   const da=document.getElementById('dash-esg-avoided');if(da)da.textContent=fmtCO2(dAvoided);
   const dint=document.getElementById('dash-esg-intensity');if(dint)dint.textContent=(dW?dC/dW:0).toFixed(4);
@@ -1338,7 +1668,29 @@ function resetBldButtons(type){curFilter[type]='all';renderBldFilter(type);}
 function pickBuilding(type,b){
   curFilter[type]=b;
   renderBldFilter(type);
-  renderTable(type,b);
+  if(type==='monthly')renderMonthly();
+  else if(type==='esg')renderESG();
+  else renderTable(type,b);
+}
+function setupHeaderFilters(){
+  const map=[['page-general','general'],['page-food','food'],['page-hazard','hazard'],['page-ewaste','ewaste'],
+    ['page-ewastep','ewastep'],['page-recycle','recycle'],['page-monthly','monthly'],['page-esg','esg']];
+  map.forEach(([pid,t])=>{
+    const page=document.getElementById(pid);if(!page)return;
+    const head=page.querySelector('.page-head');if(!head)return;
+    let bf=document.getElementById('bf-'+t);
+    if(!bf){bf=document.createElement('div');bf.className='bld-filter';bf.id='bf-'+t;}
+    if(head.contains(bf)){renderBldFilter(t);return;}
+    if(!head.classList.contains('head-stacked')){
+      head.classList.add('head-stacked');
+      const row=document.createElement('div');row.className='page-head-row';
+      while(head.firstChild)row.appendChild(head.firstChild);
+      head.appendChild(row);
+    }
+    head.appendChild(bf);
+    if(!curFilter[t])curFilter[t]='all';
+    renderBldFilter(t);
+  });
 }
 const pageState={};
 const PAGE_SIZE=10;
@@ -1468,7 +1820,7 @@ function renderWastePage(type){
   const ef=EMISSION_FACTORS[type];
   let carbonKpi;
   if(type==='recycle'){
-    const avoided=rows.filter(r=>r.date.slice(0,4)===year).reduce((a,r)=>a+r.weight*(BASELINE_FACTOR-recordFactor(r)),0);
+    const avoided=rows.filter(r=>r.date.slice(0,4)===year).reduce((a,r)=>a+r.weight*(baselineFactor()-recordFactor(r)),0);
     carbonKpi=`<div class="kpi recycle" style="--c-recycle:#047857"><div class="kpi-top"><div class="kpi-icon" style="background:#dcfce7;color:#047857">🌍</div></div>
       <div class="kpi-label">คาร์บอนที่หลีกเลี่ยงได้ (ปีนี้)</div><div class="kpi-value" style="font-size:20px">${fmtCO2(avoided)}</div>
       <div class="kpi-sub" style="font-size:11px;color:var(--text-muted)">EF ${ef.toFixed(4)} kgCO₂e/kg</div></div>`;
@@ -1546,7 +1898,7 @@ function delRecord(id,type){
   if(!confirm('ต้องการลบรายการนี้?'))return;
   const idx=data.findIndex(r=>r.id===id);if(idx<0)return;
   lastDeleted={rec:data[idx],type};
-  data.splice(idx,1);save();
+  data.splice(idx,1);save();gsPush('records','delete',{id});
   renderTable(type,curFilter[type]||'all');
   toast('ลบรายการแล้ว','undo');
 }
@@ -1624,12 +1976,12 @@ function saveRecord(){
     if(r){r.date=date;r.building=b;r.floor=selFloor;r.weight=+w.toFixed(2);
       if(formType==='recycle'){r.vendor=document.getElementById('f-vendor').value||'Vendor ภายนอก';r.material=material;}
       if(formType==='ewastep')r.note=document.getElementById('f-note').value||'AIS Ewast+';}
-    save();closeModal('modal-form');renderTable(formType,curFilter[formType]||'all');toast('แก้ไข '+TYPES[formType].name+' สำเร็จ');editingId=null;return;
+    save();gsPush('records','update',data.find(x=>x.id===editingId));closeModal('modal-form');renderTable(formType,curFilter[formType]||'all');toast('แก้ไข '+TYPES[formType].name+' สำเร็จ');editingId=null;return;
   }
   const rec={id:uid(),type:formType,date,building:b,floor:selFloor,weight:+w.toFixed(2),recorder:TYPES[formType].recorder};
   if(formType==='recycle'){rec.vendor=document.getElementById('f-vendor').value||'Vendor ภายนอก';rec.material=material;}
   if(formType==='ewastep')rec.note=document.getElementById('f-note').value||'AIS Ewast+';
-  data.push(rec);save();
+  data.push(rec);save();gsPush('records','add',rec);
   closeModal('modal-form');renderTable(formType,curFilter[formType]||'all');toast('บันทึก '+TYPES[formType].name+' สำเร็จ');
 }
 
@@ -1695,7 +2047,7 @@ function saveScan(){
   if(scanType==='recycle'){material=document.getElementById('s-material').value;if(!material){alert('กรุณาเลือกประเภทวัสดุรีไซเคิล');return;}}
   const rec={id:uid(),type:scanType,date,building:b,floor:scanFloor,weight:+w.toFixed(2),recorder:TYPES[scanType].recorder};
   if(scanType==='recycle'){rec.vendor=document.getElementById('s-vendor').value||'Vendor ภายนอก';rec.material=material;}
-  data.push(rec);save();closeModal('modal-scan');toast('ส่งข้อมูลผ่าน QR สำเร็จ!');
+  data.push(rec);save();gsPush('records','add',rec);closeModal('modal-scan');toast('ส่งข้อมูลผ่าน QR สำเร็จ!');
   const active=document.querySelector('.nav-tab.active').dataset.page;
   if(active==='dashboard')renderDashboard();
   else if(active==='staff'&&STAFF_PAGE_TYPES.includes(scanType))showStaff(scanType);
@@ -1736,8 +2088,10 @@ function selMonthlyType(k,el,col){
 function renderMonthly(){
   if(!document.getElementById('m-year').options.length)initYearOptions();
   buildMonthlyButtons();
+  renderBldFilter('monthly');
   const year=document.getElementById('m-year').value;
-  const yearData=data.filter(r=>r.date.slice(0,4)===year);
+  const bf=curFilter['monthly']||'all';
+  const yearData=data.filter(r=>r.date.slice(0,4)===year&&(bf==='all'||r.building===bf));
   const allKeys=Object.keys(TYPES);
 
   // full matrix all types for table & KPI
@@ -1843,7 +2197,10 @@ function renderESG(){
     ysel.innerHTML='<option value="all">ทุกปี</option>'+years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
   }
   const year=ysel.value;
-  const rows=year==='all'?data:data.filter(r=>r.date.slice(0,4)===year);
+  renderBldFilter('esg');
+  const bf=curFilter['esg']||'all';
+  let rows=year==='all'?data:data.filter(r=>r.date.slice(0,4)===year);
+  if(bf!=='all')rows=rows.filter(r=>r.building===bf);
 
   // totals by type
   const wByType={},cByType={};
@@ -1851,7 +2208,7 @@ function renderESG(){
   let totalW=0,totalC=0,recycleW=0;
   rows.forEach(r=>{const c=co2(r);wByType[r.type]+=r.weight;cByType[r.type]+=c;totalW+=r.weight;totalC+=c;if(r.type==='recycle')recycleW+=r.weight;});
   // avoided = recycle weight * (baseline - recycle factor)
-  let avoided=0;rows.filter(r=>r.type==='recycle').forEach(r=>{avoided+=r.weight*(BASELINE_FACTOR-recordFactor(r));});
+  let avoided=0;rows.filter(r=>r.type==='recycle').forEach(r=>{avoided+=r.weight*(baselineFactor()-recordFactor(r));});
   const intensity=totalW?(totalC/totalW):0;
 
   document.getElementById('esg-total').textContent=fmtCO2(totalC);
@@ -1882,7 +2239,7 @@ function renderESG(){
   if(year==='all'){
     const years=[...new Set(data.map(r=>r.date.slice(0,4)))].sort();
     labels=years.map(y=>'ปี '+(+y+543));
-    monthData=years.map(y=>+data.filter(r=>r.date.slice(0,4)===y).reduce((a,r)=>a+co2(r),0).toFixed(2));
+    monthData=years.map(y=>+rows.filter(r=>r.date.slice(0,4)===y).reduce((a,r)=>a+co2(r),0).toFixed(2));
   }else{
     labels=MONTHS_SHORT;
     monthData=MONTHS.map((_,mi)=>+rows.filter(r=>(+r.date.slice(5,7))-1===mi).reduce((a,r)=>a+co2(r),0).toFixed(2));
@@ -1920,6 +2277,8 @@ function renderESG(){
   }).join('');
   document.getElementById('esg-table-foot').innerHTML=`<tr style="background:#f8fafc;font-weight:700">
     <td>รวมทั้งหมด</td><td>${totalW.toFixed(2)}</td><td>—</td><td>${totalC.toFixed(2)}</td><td>100%</td></tr>`;
+  const ref=document.getElementById('esg-ref');
+  if(ref)ref.textContent='ที่มาค่า Emission Factor: '+(EF_META.reference||'ค่าเริ่มต้นระบบ')+(EF_META.updated?(' · อัปเดต '+EF_META.updated):'');
 }
 document.getElementById('esg-year').onchange=renderESG;
 
@@ -1935,6 +2294,91 @@ function exportESGCSV(){
   const csv='\uFEFF'+out.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);a.download='esg-carbon-'+year+'.csv';a.click();toast('Export ESG สำเร็จ');
+}
+
+/* ===== KIOSK (หน้าบันทึกแยกจาก QR อาคาร) ===== */
+let kioskBld=null,kioskUser=null,kioskFloor=null,kioskType=null;
+const KIOSK_TYPES=['general','food','hazard','ewaste'];
+function openKiosk(bld){
+  kioskBld=bld;kioskUser=null;kioskFloor=null;kioskType=null;
+  document.getElementById('kiosk').style.display='flex';
+  document.body.style.overflow='hidden';
+  // step login
+  showKioskStep('kiosk-login');
+  document.getElementById('kiosk-login-bld').textContent=BUILDINGS[bld]?('อาคาร: '+bName(bld)):'';
+  document.getElementById('kiosk-user').value='';
+  document.getElementById('kiosk-pass').value='';
+  document.getElementById('kiosk-login-err').textContent='';
+}
+function showKioskStep(id){
+  ['kiosk-login','kiosk-confirm','kiosk-record'].forEach(s=>{const e=document.getElementById(s);if(e)e.style.display=s===id?'block':'none';});
+}
+async function kioskLogin(){
+  const u=document.getElementById('kiosk-user').value.trim();
+  const p=document.getElementById('kiosk-pass').value;
+  const err=document.getElementById('kiosk-login-err');
+  if(!u||!p){err.textContent='กรุณากรอกชื่อผู้ใช้และรหัสผ่าน';return;}
+  err.textContent='กำลังตรวจสอบ...';
+  if(!gsConfigured()){err.textContent='ยังไม่ได้เชื่อมต่อ Google Sheets (ตั้งค่าในหน้า Admin ก่อน)';return;}
+  const res=await gsLogin(u,p);
+  if(res&&res.ok){
+    kioskUser=res.user;
+    // ถ้า user ผูกอาคารไว้ และไม่ตรงกับ QR ให้เตือน แต่ยังให้ยืนยันอาคารได้
+    goKioskConfirm();
+  }else{
+    err.textContent='ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+  }
+}
+function goKioskConfirm(){
+  showKioskStep('kiosk-confirm');
+  const c=document.getElementById('kiosk-confirm-bld');
+  const col=bColor(kioskBld);
+  c.style.borderColor=col;c.style.color=col;c.style.background=col+'15';
+  c.textContent='🏢 '+bName(kioskBld);
+  document.getElementById('kiosk-other').style.display='none';
+}
+function kioskPickOther(){
+  const box=document.getElementById('kiosk-other');
+  box.style.display='block';
+  box.innerHTML=Object.keys(BUILDINGS).map(b=>`<button class="kiosk-bld-opt" onclick="kioskSetBld('${b}')">🏢 ${bName(b)}</button>`).join('');
+}
+function kioskSetBld(b){kioskBld=b;goKioskConfirm();}
+function kioskConfirmBuilding(){
+  showKioskStep('kiosk-record');
+  document.getElementById('kiosk-rec-bld').textContent='🏢 '+bName(kioskBld);
+  document.getElementById('kiosk-rec-bld').style.color=bColor(kioskBld);
+  document.getElementById('kiosk-rec-user').textContent='👤 '+(kioskUser?kioskUser.name:'');
+  document.getElementById('kiosk-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('kiosk-weight').value='';
+  document.getElementById('kiosk-success').textContent='';
+  kioskFloor=null;kioskType=null;
+  // floors
+  document.getElementById('kiosk-floors').innerHTML=(BUILDINGS[kioskBld].floors||[]).map(f=>`<div class="floor-chip" onclick="kioskPickFloor(this,'${f}')">ชั้น ${f}</div>`).join('');
+  // types
+  document.getElementById('kiosk-types').innerHTML=KIOSK_TYPES.map(t=>`<div class="type-opt" onclick="kioskPickType(this,'${t}')"><span class="ic">${TYPES[t].icon}</span><span class="lbl">${TYPES[t].name}</span></div>`).join('');
+}
+function kioskPickFloor(el,f){document.querySelectorAll('#kiosk-floors .floor-chip').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');kioskFloor=f;}
+function kioskPickType(el,t){document.querySelectorAll('#kiosk-types .type-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');kioskType=t;}
+function kioskSave(){
+  const date=document.getElementById('kiosk-date').value;
+  const w=parseFloat(document.getElementById('kiosk-weight').value);
+  const ok=document.getElementById('kiosk-success');
+  if(!kioskFloor){ok.style.color='#dc2626';ok.textContent='กรุณาเลือกชั้น';return;}
+  if(!kioskType){ok.style.color='#dc2626';ok.textContent='กรุณาเลือกประเภทขยะ';return;}
+  if(!date||!w||w<=0){ok.style.color='#dc2626';ok.textContent='กรุณากรอกน้ำหนักให้ถูกต้อง';return;}
+  const rec={id:uid(),type:kioskType,date,building:kioskBld,floor:kioskFloor,weight:+w.toFixed(2),recorder:'แม่บ้านอาคาร',createdBy:(kioskUser&&kioskUser.name)||'',createdAt:new Date().toISOString()};
+  data.push(rec);save();gsPush('records','add',rec);
+  ok.style.color='#16a34a';ok.textContent='✅ บันทึก '+TYPES[kioskType].name+' '+w.toFixed(2)+' kg · ชั้น '+kioskFloor+' สำเร็จ';
+  document.getElementById('kiosk-weight').value='';
+  document.querySelectorAll('#kiosk-floors .floor-chip,#kiosk-types .type-opt').forEach(x=>x.classList.remove('sel'));
+  kioskFloor=null;kioskType=null;
+  setTimeout(()=>{ok.textContent='';},3500);
+}
+function kioskLogout(){
+  if(!confirm('ออกจากระบบ?'))return;
+  kioskUser=null;showKioskStep('kiosk-login');
+  document.getElementById('kiosk-user').value='';document.getElementById('kiosk-pass').value='';
+  document.getElementById('kiosk-login-err').textContent='';
 }
 
 /* ===== ADMIN ===== */
@@ -1957,15 +2401,96 @@ function renderAdmin(){
   const ef=document.getElementById('admin-ef-body');
   if(ef){
     const rows=[];
-    Object.keys(TYPES).filter(t=>t!=='recycle').forEach(t=>rows.push([TYPES[t].icon+' '+TYPES[t].name,EMISSION_FACTORS[t]]));
-    Object.keys(RECYCLE_CATEGORIES).forEach(c=>rows.push([RECYCLE_CATEGORIES[c].icon+' รีไซเคิล: '+c,CAT_FACTORS[c]]));
-    ef.innerHTML=rows.map(([n,f])=>{
-      const tag=f<=0.1?'<span class="ef-tag low">ต่ำ (รีไซเคิล/นำกลับ)</span>':'<span class="ef-tag high">สูง (กำจัด/ฝังกลบ)</span>';
-      return `<tr><td>${n}</td><td class="t-weight">${f.toFixed(4)}</td><td>${tag}</td></tr>`;
+    Object.keys(TYPES).filter(t=>t!=='recycle').forEach(t=>rows.push(['type:'+t,TYPES[t].icon+' '+TYPES[t].name,EMISSION_FACTORS[t]]));
+    Object.keys(RECYCLE_CATEGORIES).forEach(c=>rows.push(['cat:'+c,RECYCLE_CATEGORIES[c].icon+' รีไซเคิล: '+c,CAT_FACTORS[c]]));
+    ef.innerHTML=rows.map(([key,n,f])=>{
+      const src=(EF_META.sources&&EF_META.sources[key])||'';
+      return `<tr>
+        <td>${n}</td>
+        <td><input class="input ef-input" data-k="${key}" type="number" step="0.0001" min="0" value="${f}" style="padding:8px 10px"></td>
+        <td><input class="input ef-src" data-k="${key}" placeholder="ที่มาของค่านี้ (ถ้ามี)" value="${src.replace(/"/g,'&quot;')}" style="padding:8px 10px"></td>
+      </tr>`;
     }).join('');
   }
+  document.getElementById('ef-baseline').value=EF_META.baseline;
+  document.getElementById('ef-reference').value=EF_META.reference||'';
+  document.getElementById('ef-updated').textContent=EF_META.updated?('อัปเดตล่าสุด: '+EF_META.updated):'ยังไม่เคยแก้ไข (ใช้ค่าเริ่มต้น)';
+  const gsu=document.getElementById('gs-url');if(gsu)gsu.value=GS_URL;
+  const gss=document.getElementById('gs-status');if(gss)gss.textContent=gsConfigured()?('สถานะ: '+(CONN.state==='online'?'🟢 เชื่อมต่อแล้ว':CONN.state==='error'?'🔴 ผิดพลาด':'🟡 รอเชื่อมต่อ')):'สถานะ: 🟡 โหมด Local (ยังไม่เชื่อมต่อ)';
+  renderKioskQR();
+}
+function kioskUrl(b){return location.origin+location.pathname+'?kiosk='+b;}
+function renderKioskQR(){
+  const wrap=document.getElementById('admin-kiosk-qr');if(!wrap)return;
+  wrap.innerHTML=Object.keys(BUILDINGS).map(b=>{
+    const c=bColor(b);
+    return `<div class="kqr-card" style="border-top-color:${c}">
+      <h4 style="color:${c}">🏢 ${bName(b)}</h4>
+      <div class="kqr-canvas" id="kqr-${b}"></div>
+      <div class="kqr-url">${kioskUrl(b)}</div>
+      <div class="kqr-btns">
+        <button class="btn btn-ghost btn-sm" onclick="openKiosk('${b}')"><span>🔍</span>ทดลอง</button>
+        <button class="btn btn-primary btn-sm" onclick="printKioskQR('${b}')"><span>🖨️</span>พิมพ์</button>
+      </div>
+    </div>`;
+  }).join('');
+  Object.keys(BUILDINGS).forEach(b=>{
+    const el=document.getElementById('kqr-'+b);if(!el)return;
+    QRCode.toCanvas(document.createElement('canvas'),kioskUrl(b),{width:150,margin:1,color:{dark:bColor(b),light:'#ffffff'}},(e,cv)=>{if(!e){el.innerHTML='';el.appendChild(cv);}});
+  });
+}
+function printKioskQR(b){
+  const url=kioskUrl(b);const c=bColor(b);
+  const w=window.open('','_blank');
+  w.document.write(`<html><head><title>QR ${bName(b)}</title><script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"><\/script>
+    <style>body{font-family:sans-serif;text-align:center;padding:40px}h1{color:${c}}#q{margin:20px auto}p{color:#666}</style></head>
+    <body><h1>🏢 ${bName(b)}</h1><h2>บันทึกขยะสำนักงาน</h2><div id="q"></div><p>สแกนเพื่อบันทึกข้อมูลขยะ — เข้าสู่ระบบด้วยชื่อผู้ใช้แม่บ้าน</p>
+    <script>QRCode.toCanvas(document.getElementById('q'),'${url}',{width:300,margin:2,color:{dark:'${c}'}},function(){setTimeout(function(){window.print()},400)});<\/script></body></html>`);
+  w.document.close();
+}
+function saveEFForm(){
+  document.querySelectorAll('.ef-input').forEach(inp=>{
+    const k=inp.dataset.k,v=parseFloat(inp.value);
+    if(isNaN(v)||v<0)return;
+    if(k.startsWith('type:'))EMISSION_FACTORS[k.slice(5)]=v;
+    else if(k.startsWith('cat:'))CAT_FACTORS[k.slice(4)]=v;
+  });
+  EF_META.sources=EF_META.sources||{};
+  document.querySelectorAll('.ef-src').forEach(inp=>{EF_META.sources[inp.dataset.k]=inp.value.trim();});
+  const bl=parseFloat(document.getElementById('ef-baseline').value);
+  if(!isNaN(bl)&&bl>=0)EF_META.baseline=bl;
+  EF_META.reference=document.getElementById('ef-reference').value.trim();
+  EF_META.updated=new Date().toLocaleString('th-TH');
+  saveEF();renderAdmin();renderDashboard();toast('บันทึกค่า EF แล้ว');
+}
+function resetEF(){
+  if(!confirm('คืนค่า Emission Factor ทั้งหมดเป็นค่าเริ่มต้น?'))return;
+  localStorage.removeItem('wms_ef');loadEF();renderAdmin();renderDashboard();toast('คืนค่าเริ่มต้นแล้ว');
 }
 function resetData(){if(confirm('ล้างข้อมูลทั้งหมดและสร้างข้อมูลตัวอย่างใหม่?')){localStorage.removeItem('wms_data');data=seed();initYearOptions();renderDashboard();toast('ล้างข้อมูลแล้ว');}}
+
+/* ===== DATA CONNECTION STATUS ===== */
+/* สถานะ: 'local' (บันทึกในเครื่อง), 'online' (เชื่อม Google Sheets), 'syncing', 'error'
+   เมื่อต่อ Google Sheets ผ่าน Apps Script ภายหลัง ให้เรียก setConnStatus('online'|'syncing'|'error') ได้เลย */
+let CONN={state:'local',detail:'ข้อมูลถูกบันทึกในเครื่องนี้ (Local Storage) · ยังไม่ได้เชื่อมต่อ Google Sheets'};
+const CONN_LABEL={local:'บันทึกในเครื่อง',online:'เชื่อมต่อแล้ว',syncing:'กำลังซิงค์…',error:'เชื่อมต่อผิดพลาด'};
+function setConnStatus(state,detail){
+  CONN.state=state;
+  if(detail)CONN.detail=detail;
+  const dot=document.getElementById('conn-dot'),txt=document.getElementById('conn-text');
+  if(!dot||!txt)return;
+  dot.className='conn-dot'+(state==='online'?' online':state==='syncing'?' syncing':state==='error'?' error':'');
+  txt.textContent=CONN_LABEL[state]||state;
+}
+function toggleConnInfo(){
+  const map={
+    local:'🟡 บันทึกในเครื่อง (Local Storage)\n\nข้อมูลถูกเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ยังไม่ได้เชื่อมต่อฐานข้อมูลกลาง\n\nขั้นถัดไป: เชื่อมต่อ Google Sheets ผ่าน Google Apps Script เพื่อให้ทุกเครื่องเห็นข้อมูลร่วมกันและกันข้อมูลหาย',
+    online:'🟢 เชื่อมต่อแล้ว\n\nข้อมูลซิงค์กับ Google Sheets เรียบร้อย',
+    syncing:'🔵 กำลังซิงค์ข้อมูลกับ Google Sheets…',
+    error:'🔴 เชื่อมต่อผิดพลาด\n\nไม่สามารถเชื่อมต่อ Google Sheets ได้ ข้อมูลถูกบันทึกในเครื่องชั่วคราว'
+  };
+  alert(map[CONN.state]||CONN.detail);
+}
 
 /* ===== THEME ===== */
 function applyTheme(){
@@ -1979,40 +2504,38 @@ function toggleTheme(){localStorage.setItem('wms_theme',localStorage.getItem('wm
 function applyBranding(){
   document.getElementById('brand-title').textContent=SETTINGS.org;
   document.getElementById('brand-sub').textContent=SETTINGS.sub;
-  document.getElementById('login-title').textContent=SETTINGS.org;
   document.title=SETTINGS.org;
 }
 
-/* ===== AUTH / ROLES ===== */
-function renderLogin(){
-  document.getElementById('role-list').innerHTML=Object.keys(ROLES).map(k=>{
-    const R=ROLES[k];
-    return `<button class="role-opt" onclick="loginAs('${k}')"><span class="ic">${R.icon}</span>
-      <span><span class="nm">${R.name}</span><br><span class="ds">สิทธิ์: ${R.can.map(c=>({record:'บันทึก',edit:'แก้ไข',delete:'ลบ',admin:'ตั้งค่า',view:'ดูข้อมูล'}[c])).join(' · ')}</span></span></button>`;
-  }).join('');
-}
-function loginAs(role){
-  USER={role};localStorage.setItem('wms_user',JSON.stringify(USER));
-  document.getElementById('login').style.display='none';
-  applyGating();
-  document.querySelector('.nav-tab.active').click();
-  toast('เข้าสู่ระบบในบทบาท '+ROLES[role].name);
-}
-function logout(){
-  if(!confirm('ออกจากระบบ?'))return;
-  USER=null;localStorage.removeItem('wms_user');
+/* ===== AUTH (simple) — สิทธิ์เต็มทุกฟังก์ชันชั่วคราว, ค่อยกำหนดสิทธิ์ภายหลัง ===== */
+function openLogin(){
+  document.getElementById('login-user').value=(USER&&USER.name)||'';
+  document.getElementById('login-pass').value='';
   document.getElementById('login').style.display='flex';
-  renderLogin();
+  setTimeout(()=>document.getElementById('login-user').focus(),50);
 }
+function closeLogin(){document.getElementById('login').style.display='none';}
+function loginSubmit(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  if(!u){alert('กรุณากรอกชื่อผู้ใช้');return;}
+  if(!p){alert('กรุณากรอกรหัสผ่าน');return;}
+  USER={name:u};localStorage.setItem('wms_user',JSON.stringify(USER));
+  closeLogin();applyGating();toast('เข้าสู่ระบบในชื่อ '+u);
+}
+function userChipClick(){
+  if(USER&&USER.name){
+    if(confirm('ออกจากระบบ?')){USER=null;localStorage.removeItem('wms_user');applyGating();toast('ออกจากระบบแล้ว');}
+  }else openLogin();
+}
+function logout(){USER=null;localStorage.removeItem('wms_user');applyGating();}
 function applyGating(){
   const chip=document.getElementById('user-chip');
-  if(USER&&ROLES[USER.role]){chip.innerHTML=`${ROLES[USER.role].icon} ${ROLES[USER.role].name} <span style="opacity:.7">⏻</span>`;}
-  // Admin tab visible only to admin
-  document.querySelectorAll('.nav-tab[data-page="admin"]').forEach(t=>t.style.display=can('admin')?'':'none');
-  // record/QR buttons gating
-  document.querySelectorAll('[onclick^="openForm"],[onclick^="openQR"]').forEach(b=>{
-    b.style.display=can('record')?'':'none';
-  });
+  if(USER&&USER.name){chip.innerHTML=`👤 ${USER.name} <span style="opacity:.7">⏻</span>`;}
+  else{chip.innerHTML=`🔐 เข้าสู่ระบบ`;}
+  // เปิดทุกฟังก์ชันไว้ก่อน (ยังไม่กำหนดสิทธิ์)
+  document.querySelectorAll('.nav-tab[data-page="admin"]').forEach(t=>t.style.display='');
+  document.querySelectorAll('[onclick^="openForm"],[onclick^="openQR"]').forEach(b=>{b.style.display='';});
 }
 
 /* ===== ADMIN: BRANDING / BUILDINGS / GOALS ===== */
@@ -2076,19 +2599,810 @@ function toast(msg,action){
 (function(){
   applyTheme();
   applyBranding();
-  renderLogin();
-  if(!USER||!ROLES[USER.role]){document.getElementById('login').style.display='flex';}
-  else{document.getElementById('login').style.display='none';}
+  setConnStatus('local');
+  document.getElementById('login').style.display='none';
   applyGating();
   buildStaffTabs();
+  setupHeaderFilters();
+  buildBottomNav();
   initYearOptions();
   renderDashboard();
-  const p=new URLSearchParams(location.search).get('scan');
-  if(p){ // QR scan link: auto-login as staff/vendor if not logged in
-    if(!USER){USER={role:p==='vendor'?'vendor':'staff'};localStorage.setItem('wms_user',JSON.stringify(USER));document.getElementById('login').style.display='none';applyGating();}
-    setTimeout(()=>openScan(p),400);
+  if(gsConfigured())connectGS(GS_URL,true);
+  const params=new URLSearchParams(location.search);
+  const kioskBldParam=params.get('kiosk');
+  if(kioskBldParam){setTimeout(()=>openKiosk(BUILDINGS[kioskBldParam]?kioskBldParam:Object.keys(BUILDINGS)[0]),300);}
+  const p=params.get('scan');
+  if(p){setTimeout(()=>openScan(p),400);}
+})();
+</script>
+
+<!-- ===== GNR3 ECO-BOT (ฝังอัตโนมัติ) ===== -->
+<!-- ════════════════════════════════════════════════════════════════
+     GNR3 ECO-BOT · ผู้ช่วยระบบจัดการขยะ (ธีมพิกเซล)
+     วาง snippet นี้ "ก่อน </body>" ในไฟล์ระบบ (waste-management.html)
+     ไม่ใช้ API · ออฟไลน์ · ฟรี · มีเสียงพูด/ฟัง
+     ใหม่: อ่านข้อมูลจริงในระบบ (น้ำหนัก/รีไซเคิล/คาร์บอน/อาคาร/เดือน) มาสรุปได้
+           กดปุ่มไปหน้าต่างๆ แล้วบอทสรุปข้อมูลหน้านั้นให้อัตโนมัติ
+════════════════════════════════════════════════════════════════ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+#esgbot, #esgbot * { box-sizing:border-box; }
+#esgbot { image-rendering:pixelated; }
+
+/* ปุ่มลอย */
+#esgbot .bot-fab{
+  position:fixed; right:20px; bottom:20px; z-index:99999;
+  width:64px; height:64px; cursor:pointer;
+  background:#0f2417; border:3px solid #2e9d4f; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 28px rgba(46,157,79,0.5);
+  transition:transform .15s ease, box-shadow .15s ease;
+  animation:botFloat 3s ease-in-out infinite;
+}
+#esgbot .bot-fab:hover{ transform:scale(1.08); box-shadow:0 12px 36px rgba(46,157,79,0.7); }
+#esgbot .bot-fab:active{ transform:scale(.95); }
+@keyframes botFloat{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-6px) } }
+
+#esgbot .bot-notif{
+  position:absolute; top:-6px; right:-6px;
+  width:18px; height:18px; background:#7bd859;
+  border:2px solid #0f2417; border-radius:50%;
+  font-family:'Press Start 2P'; font-size:7px; color:#0f2417;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* หน้าต่างแชท */
+#esgbot .bot-win{
+  position:fixed; right:20px; bottom:96px; z-index:99999;
+  width:340px; max-width:calc(100vw - 32px);
+  height:480px; max-height:calc(100vh - 130px);
+  background:#10241a; border:3px solid #2e9d4f;
+  border-radius:16px; overflow:hidden;
+  display:none; flex-direction:column;
+  box-shadow:0 16px 50px rgba(0,0,0,0.6);
+  font-family:'VT323',monospace;
+}
+#esgbot .bot-win.open{ display:flex; animation:botPop .2s ease; }
+@keyframes botPop{ from{ transform:translateY(20px) scale(.96); opacity:0 } to{ transform:translateY(0) scale(1); opacity:1 } }
+
+#esgbot .bot-head{
+  background:#0f2417; border-bottom:3px solid #2e9d4f;
+  padding:10px 12px; display:flex; align-items:center; gap:10px;
+}
+#esgbot .bot-head-name{ font-family:'Press Start 2P'; font-size:9px; color:#9ee6a8; }
+#esgbot .bot-head-sub{ font-size:13px; color:#7bd859; line-height:1; margin-top:3px; }
+#esgbot .bot-sdot{ display:inline-block; width:7px; height:7px; background:#7bd859; margin-right:4px; animation:botBlink 1.2s infinite; }
+@keyframes botBlink{ 0%,100%{opacity:1} 50%{opacity:.3} }
+#esgbot .bot-close{ margin-left:auto; cursor:pointer; font-family:'Press Start 2P'; font-size:11px; color:#ff6b6b; padding:4px; }
+
+#esgbot .bot-msgs{
+  flex:1; padding:12px; overflow-y:auto;
+  display:flex; flex-direction:column; gap:10px;
+}
+#esgbot .bot-msgs::-webkit-scrollbar{ width:6px; }
+#esgbot .bot-msgs::-webkit-scrollbar-thumb{ background:#2e9d4f; border-radius:3px; }
+
+#esgbot .bm{ display:flex; gap:8px; align-items:flex-end; }
+#esgbot .bm.user{ flex-direction:row-reverse; }
+#esgbot .bm-av{ width:26px; height:26px; flex-shrink:0; }
+#esgbot .bm-bub{
+  max-width:80%; padding:7px 10px; font-size:16px; line-height:1.4;
+  border:2px solid; border-radius:0 10px 10px 10px;
+}
+#esgbot .bm.bot .bm-bub{ background:#0f2417; border-color:#1c5e33; color:#d6f5da; }
+#esgbot .bm.user .bm-bub{ background:#1c5e33; border-color:#2e9d4f; color:#fff; border-radius:10px 0 10px 10px; }
+#esgbot .bm-bub b{ color:#9ee6a8; }
+
+/* ปุ่ม action ในบับเบิล (พาไปหน้า / เปิดฟอร์ม / สรุปข้อมูล) */
+#esgbot .bot-act{
+  display:inline-flex; align-items:center; gap:5px; margin:7px 6px 0 0;
+  background:#2e9d4f; border:2px solid #7bd859; color:#fff;
+  font-family:'VT323',monospace; font-size:15px;
+  padding:4px 11px; border-radius:8px; cursor:pointer; line-height:1.2;
+}
+#esgbot .bot-act:hover{ background:#7bd859; color:#0f2417; }
+#esgbot .bot-act.ghost{ background:transparent; color:#9ee6a8; }
+#esgbot .bot-act.ghost:hover{ background:#1c5e33; color:#fff; }
+
+/* typing */
+#esgbot .bot-typing{ display:flex; gap:4px; padding:7px 10px; background:#0f2417; border:2px solid #1c5e33; border-radius:0 10px 10px 10px; width:fit-content; }
+#esgbot .bot-tdot{ width:6px; height:6px; background:#2e9d4f; animation:botType 1.2s infinite; }
+#esgbot .bot-tdot:nth-child(2){ animation-delay:.2s } #esgbot .bot-tdot:nth-child(3){ animation-delay:.4s }
+@keyframes botType{ 0%,100%{opacity:.3; transform:translateY(0)} 50%{opacity:1; transform:translateY(-4px)} }
+
+/* ปุ่มลัด */
+#esgbot .bot-chips{ display:flex; gap:6px; padding:0 12px 8px; flex-wrap:wrap; }
+#esgbot .bot-chip{
+  background:transparent; border:1px solid #2a4a35; color:#7bbf86;
+  font-family:'Press Start 2P'; font-size:7px; padding:5px 8px;
+  border-radius:8px; cursor:pointer;
+}
+#esgbot .bot-chip:hover{ border-color:#7bd859; color:#9ee6a8; }
+
+/* input */
+#esgbot .bot-input-row{ border-top:3px solid #1c5e33; background:#0f2417; padding:9px 10px; display:flex; gap:8px; }
+#esgbot .bot-input{
+  flex:1; background:#10241a; border:2px solid #1c5e33; color:#fff;
+  font-family:'VT323',monospace; font-size:17px; padding:7px 9px; border-radius:8px; outline:none;
+}
+#esgbot .bot-input:focus{ border-color:#2e9d4f; }
+#esgbot .bot-send{
+  background:#2e9d4f; border:2px solid #7bd859; color:#fff;
+  font-family:'Press Start 2P'; font-size:8px; padding:0 12px; border-radius:8px; cursor:pointer;
+}
+#esgbot .bot-send:hover{ background:#7bd859; color:#0f2417; }
+
+/* ปุ่มไมค์ */
+#esgbot .bot-mic{
+  background:#0f2417; border:2px solid #1c5e33; color:#9ee6a8;
+  font-size:17px; padding:0 11px; border-radius:8px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+#esgbot .bot-mic:hover{ border-color:#2e9d4f; }
+#esgbot .bot-mic.listening{ border-color:#7bd859; background:#1c5e33; color:#fff; animation:botMic 1s infinite; }
+@keyframes botMic{ 0%,100%{ box-shadow:0 0 0 0 rgba(123,216,89,.6) } 50%{ box-shadow:0 0 0 6px rgba(123,216,89,0) } }
+
+/* ปุ่มลำโพง */
+#esgbot .bot-spk{ cursor:pointer; font-size:15px; color:#7bbf86; padding:4px; border:1px solid transparent; border-radius:6px; line-height:1; }
+#esgbot .bot-spk:hover{ color:#9ee6a8; }
+#esgbot .bot-spk.on{ color:#7bd859; }
+
+/* แถบกำลังฟัง */
+#esgbot .bot-listening-bar{
+  display:none; padding:6px 12px; background:#1c5e33;
+  font-family:'VT323',monospace; font-size:15px; color:#fff;
+  text-align:center; border-top:2px solid #7bd859;
+}
+#esgbot .bot-listening-bar.show{ display:block; animation:botBlink 1.2s infinite; }
+
+/* responsive — มือถือ */
+@media (max-width:520px){
+  #esgbot .bot-fab{ width:56px; height:56px; right:16px; bottom:16px; }
+  #esgbot .bot-win{ right:12px; left:12px; bottom:84px; width:auto; max-width:none; height:70vh; max-height:calc(100svh - 110px); }
+}
+</style>
+
+<div id="esgbot">
+  <!-- ปุ่มเปิด -->
+  <div class="bot-fab" id="botFab">
+    <span class="bot-notif">1</span>
+    <svg viewBox="0 0 34 34" width="38" height="38" style="image-rendering:pixelated">
+      <rect x="10" y="5" width="14" height="13" fill="#9ee6a8"/>
+      <rect x="13" y="8" width="4" height="5" fill="#0f2417"/>
+      <rect x="20" y="8" width="4" height="5" fill="#0f2417"/>
+      <rect x="14" y="9" width="2" height="2" fill="#7bd859"/>
+      <rect x="21" y="9" width="2" height="2" fill="#7bd859"/>
+      <rect x="16" y="2" width="2" height="4" fill="#7bd859"/>
+      <rect x="14" y="0" width="6" height="3" fill="#2e9d4f"/>
+      <rect x="5" y="14" width="3" height="7" fill="#2e9d4f"/>
+      <rect x="26" y="14" width="3" height="7" fill="#2e9d4f"/>
+      <rect x="12" y="26" width="5" height="6" fill="#1c5e33"/>
+      <rect x="18" y="26" width="5" height="6" fill="#1c5e33"/>
+    </svg>
+  </div>
+
+  <!-- หน้าต่างแชท -->
+  <div class="bot-win" id="botWin">
+    <div class="bot-head">
+      <svg class="bm-av" viewBox="0 0 26 26" style="image-rendering:pixelated">
+        <rect x="6" y="8" width="14" height="12" fill="#2e9d4f"/>
+        <rect x="8" y="3" width="10" height="11" fill="#9ee6a8"/>
+        <rect x="10" y="6" width="3" height="4" fill="#0f2417"/>
+        <rect x="15" y="6" width="3" height="4" fill="#0f2417"/>
+        <rect x="11" y="7" width="1" height="1" fill="#7bd859"/>
+        <rect x="16" y="7" width="1" height="1" fill="#7bd859"/>
+      </svg>
+      <div>
+        <div class="bot-head-name">ECO-BOT</div>
+        <div class="bot-head-sub"><span class="bot-sdot"></span>ONLINE · ผู้ช่วยระบบจัดการขยะ</div>
+      </div>
+      <div class="bot-spk on" id="botSpk" title="เปิด/ปิดเสียงพูดตอบ">🔊</div>
+      <div class="bot-close" id="botClose">✕</div>
+    </div>
+
+    <div class="bot-msgs" id="botMsgs"></div>
+
+    <div class="bot-listening-bar" id="botListenBar">🎤 กำลังฟัง... พูดได้เลย</div>
+
+    <div class="bot-chips" id="botChips">
+      <button class="bot-chip" data-q="สรุปภาพรวมข้อมูล">📊 สรุปภาพรวม</button>
+      <button class="bot-chip" data-q="แยกขยะมีกี่ประเภท">♻️ ประเภทขยะ</button>
+      <button class="bot-chip" data-q="คาร์บอนรวมเท่าไหร่">🌍 คาร์บอน</button>
+      <button class="bot-chip" data-q="ช่วยอะไรได้บ้าง">❓ ช่วยเหลือ</button>
+    </div>
+
+    <div class="bot-input-row">
+      <input class="bot-input" id="botInput" type="text" placeholder="พิมพ์ชื่อขยะ / ถามข้อมูล / กดไมค์พูด..." autocomplete="off">
+      <button class="bot-mic" id="botMic" title="พูดสั่งงาน">🎤</button>
+      <button class="bot-send" id="botSend">▶</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(window.__ecobotLoaded) return;   // กันโหลดซ้ำ
+  window.__ecobotLoaded = true;
+
+  /* ════════ ฐานความรู้: 6 ประเภทขยะ (ตรงกับ TYPES ของระบบ) ════════ */
+  const WTYPES = [
+    {key:'general', n:'ขยะทั่วไป', icon:'🗑️', page:'staff',
+     kw:['ทั่วไป','general','ถุงพลาสติกเปื้อน','ซองขนม','โฟม','หลอด','ทิชชู่','ฟอยล์','ห่อ','พลาสติกเปื้อน'],
+     items:'ถุง/ห่อเปื้อนอาหาร, ซองขนม, โฟม, หลอดดูด, ทิชชู่ใช้แล้ว',
+     tip:'ขยะที่รีไซเคิลไม่ได้และไม่เป็นอันตราย ทิ้งถังขยะทั่วไป'},
+    {key:'food', n:'ขยะเศษอาหาร', icon:'🍃', page:'staff',
+     kw:['เศษอาหาร','อาหาร','food','เปลือก','ผัก','ผลไม้','กากกาแฟ','เปลือกไข่','เปียก','อินทรีย์','organic','ย่อยสลาย'],
+     items:'เศษอาหาร, เปลือกผลไม้, เศษผัก, กากกาแฟ, เปลือกไข่',
+     tip:'แยกจากขยะทั่วไป นำไปทำปุ๋ยหมัก/น้ำหมักชีวภาพได้ ช่วยลดคาร์บอน'},
+    {key:'hazard', n:'ขยะอันตราย', icon:'⚠️', page:'staff',
+     kw:['อันตราย','hazard','ถ่าน','แบตเตอรี่','แบต','หลอดไฟ','ฟลูออเรสเซนต์','สเปรย์','ยาหมดอายุ','สารเคมี','ปรอท','battery'],
+     items:'ถ่านไฟฉาย, แบตเตอรี่, หลอดไฟ, กระป๋องสเปรย์, ยาหมดอายุ, สารเคมี',
+     tip:'ห้ามทิ้งรวมขยะทั่วไป! รวบรวมส่งจุดรับขยะอันตรายโดยเฉพาะ'},
+    {key:'ewaste', n:'ขยะอิเล็กทรอนิกส์', icon:'📱', page:'staff',
+     kw:['อิเล็กทรอนิกส์','electronic','e-waste','ewaste','โทรศัพท์','มือถือ','สายชาร์จ','หูฟัง','เมาส์','คีย์บอร์ด','สายไฟ'],
+     items:'โทรศัพท์เก่า, สายชาร์จ, หูฟัง, เมาส์/คีย์บอร์ด, อุปกรณ์ชำรุด',
+     tip:'นำเข้าระบบรีไซเคิล e-waste อย่างถูกวิธี อย่าทิ้งรวมขยะทั่วไป'},
+    {key:'ewastep', n:'Ewast+ (AIS)', icon:'💻', page:'ewastep',
+     kw:['ewast+','ewastep','ais','คอมพิวเตอร์','คอม','it','โน้ตบุ๊ก','โน๊ตบุ๊ค'],
+     items:'อุปกรณ์ IT / คอมพิวเตอร์ ภายใต้โครงการ AIS E-Waste+',
+     tip:'บันทึกในหมวด Ewast+ (AIS) เพื่อส่งเข้าโครงการรีไซเคิลของ AIS'},
+    {key:'recycle', n:'ขยะรีไซเคิล', icon:'🌿', page:'recycle',
+     kw:['รีไซเคิล','recycle','ขวด','พลาสติก','กระดาษ','แก้ว','กระป๋อง','โลหะ','อลูมิเนียม','อะลูมิเนียม','เหล็ก','กล่อง','hdpe','pet','ฝาขวด','ลัง'],
+     items:'ขวดพลาสติก, ขวดแก้ว, กระดาษ/ลัง, อะลูมิเนียมกระป๋อง, กระป๋องเหล็ก',
+     tip:'ล้างให้สะอาด แยกตามวัสดุ แล้วบันทึกในหมวดขยะรีไซเคิล'}
+  ];
+
+  /* ════════ หมวดรีไซเคิล 4 กลุ่ม (ตรงกับ RECYCLE_CATEGORIES) ════════ */
+  const RCAT = [
+    {n:'กระดาษ', icon:'📄', items:'กระดาษลัง, กระดาษขาว-ดำ, กระดาษสี', kw:['กระดาษ','ลัง','paper']},
+    {n:'อลูมิเนียม', icon:'🥫', items:'อะลูมิเนียมกระป๋อง', kw:['อลูมิเนียม','อะลูมิเนียม','aluminium','aluminum']},
+    {n:'พลาสติก', icon:'🧴', items:'ขวดน้ำดื่ม, ขวดนม, ฝาขวด, กล่องข้าว, HDPE, แก้ว PP', kw:['พลาสติก','ขวด','hdpe','pp','ฝา','กล่องข้าว','plastic']},
+    {n:'เหล็ก', icon:'⚙️', items:'กระป๋องเหล็ก', kw:['เหล็ก','steel','โลหะ']}
+  ];
+  const CAT_ICON={'กระดาษ':'📄','อลูมิเนียม':'🥫','พลาสติก':'🧴','เหล็ก':'⚙️'};
+
+  /* ════════ ฟีเจอร์ระบบ (อธิบาย) ════════ */
+  const SYS = [
+    {kw:['บันทึกยังไง','วิธีบันทึก','กรอกข้อมูล','ลงข้อมูล','เพิ่มข้อมูล','ลงน้ำหนัก'],
+     a:'การ<b>บันทึกข้อมูลขยะ</b> ทำได้ครับ: ไปหน้าหมวดที่ต้องการ กดปุ่ม "บันทึก" เลือกอาคาร/ชั้น แล้วกรอกน้ำหนัก (กก.) หรือกดปุ่มด้านล่าง ผมเปิดฟอร์มให้ทันที 👇',
+     acts:[['form:general','📝 บันทึกขยะทั่วไป'],['form:recycle','♻️ บันทึกรีไซเคิล']]},
+    {kw:['คำนวณ','ยังไง','สูตร','emission','factor','ค่าคาร์บอน','คิดคาร์บอน'],
+     a:'หน้า <b>ESG / คาร์บอน</b> คำนวณก๊าซเรือนกระจกจากขยะครับ 🌍<br>สูตร: <b>คาร์บอน = น้ำหนัก × Emission Factor</b><br>• ค่าเริ่มต้น 0.7933 kgCO₂e/กก. (อ้างอิง TGO/GHG Protocol)<br>• รีไซเคิลใช้ค่าต่ำ ~0.0064 จึงช่วยลดคาร์บอน<br>• ปรับค่า EF ได้ที่หน้า Admin',
+     acts:[['page:esg','🌍 ไปหน้า ESG']]},
+    {kw:['qr','คิวอาร์','สแกน','scan','kiosk','คีออส'],
+     a:'ระบบมี <b>QR Code / โหมด Kiosk</b> ให้แม่บ้านหรือจุดรับขยะสแกนบันทึกสะดวก เปิดได้จากเมนูในแต่ละหน้าครับ'},
+    {kw:['export','csv','ส่งออก','excel','ดาวน์โหลดไฟล์'],
+     a:'ส่งออกข้อมูลเป็นไฟล์ <b>CSV</b> (เปิดใน Excel ได้) กดปุ่มด้านล่างเลยครับ 👇',
+     acts:[['fn:exportCSV','⬇️ Export CSV']]},
+    {kw:['google sheet','sheets','เชื่อมต่อ','sync','ซิงค์','apps script','ฐานข้อมูล','ออนไลน์'],
+     a:'ค่าเริ่มต้นข้อมูลเก็บใน<b>เครื่องนี้</b> (Local Storage) เชื่อม <b>Google Sheets</b> ผ่าน Apps Script เพื่อให้ทุกเครื่องเห็นข้อมูลร่วมกันได้ ตั้งค่าที่หน้า Admin',
+     acts:[['page:admin','⚙️ ไปหน้า Admin']]},
+    {kw:['โหมดมืด','ธีม','มืด','dark','theme','กลางคืน'],
+     a:'สลับ<b>โหมดมืด/สว่าง</b>ได้ครับ กดปุ่มด้านล่าง 🌙☀️',
+     acts:[['fn:toggleTheme','🌗 สลับธีม']]},
+    {kw:['เข้าสู่ระบบ','ล็อกอิน','login','สิทธิ์','role','บัญชี'],
+     a:'ระบบแบ่งบทบาท: 🛡️ ผู้ดูแลระบบ, 🧹 แม่บ้านอาคาร, 🚚 Vendor ภายนอก, 👀 ผู้บริหาร (ดูอย่างเดียว) เข้าสู่ระบบที่ปุ่มมุมขวาบนครับ'}
+  ];
+
+  /* ════════ ความรู้ทั่วไป ════════ */
+  const FAQ = [
+    {kw:['esg คือ','esg ย่อ','esg หมายถึง','ความหมาย esg'],
+     a:'<b>ESG</b> = Environment (สิ่งแวดล้อม), Social (สังคม), Governance (ธรรมาภิบาล) เป็นแนวทางดำเนินงานที่คำนึงถึงความยั่งยืนครับ 🌱'},
+    {kw:['3r','ลดขยะ','ลดโลกร้อน','reduce','reuse','ช่วยโลก'],
+     a:'หลัก <b>3R</b> ช่วยลดขยะครับ:<br>♻️ <b>Reduce</b> ใช้น้อยลง<br>♻️ <b>Reuse</b> ใช้ซ้ำ<br>♻️ <b>Recycle</b> แปรรูปใหม่<br>เริ่มจากพกถุงผ้า/แก้วน้ำส่วนตัวได้เลย'},
+    {kw:['ปุ๋ยหมัก','หมัก','compost','น้ำหมัก'],
+     a:'ทำ<b>ปุ๋ยหมัก</b>จากเศษอาหารง่ายๆ: เก็บเศษผัก/เปลือกผลไม้ใส่ถัง สลับชั้นกับใบไม้แห้ง คนทุก 3-5 วัน ราว 1-2 เดือนได้ปุ๋ยใช้ได้ 🌿'}
+  ];
+
+  /* ════════ องค์ประกอบ DOM ════════ */
+  const win=document.getElementById('botWin'),
+        fab=document.getElementById('botFab'),
+        msgs=document.getElementById('botMsgs'),
+        input=document.getElementById('botInput'),
+        notif=document.querySelector('#esgbot .bot-notif');
+
+  const AV_BOT='<svg class="bm-av" viewBox="0 0 26 26" style="image-rendering:pixelated"><rect x="6" y="8" width="14" height="12" fill="#2e9d4f"/><rect x="8" y="3" width="10" height="11" fill="#9ee6a8"/><rect x="10" y="6" width="3" height="4" fill="#0f2417"/><rect x="15" y="6" width="3" height="4" fill="#0f2417"/><rect x="11" y="7" width="1" height="1" fill="#7bd859"/><rect x="16" y="7" width="1" height="1" fill="#7bd859"/></svg>';
+  const AV_USR='<svg class="bm-av" viewBox="0 0 26 26" style="image-rendering:pixelated"><rect x="7" y="9" width="12" height="10" fill="#7bbf86"/><rect x="8" y="3" width="10" height="9" fill="#d4a27a"/><rect x="10" y="6" width="3" height="3" fill="#0f2417"/><rect x="14" y="6" width="3" height="3" fill="#0f2417"/></svg>';
+
+  function esc(s){ return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+  function actHTML(acts){ return (!acts||!acts.length)?'':'<div>'+acts.map(a=>'<button class="bot-act" data-act="'+a[0]+'">'+esc(a[1])+'</button>').join('')+'</div>'; }
+
+  function addMsg(html,isUser){
+    const d=document.createElement('div');
+    d.className='bm '+(isUser?'user':'bot');
+    d.innerHTML=(isUser?AV_USR:AV_BOT)+'<div class="bm-bub">'+html+'</div>';
+    msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
+  }
+  function typing(){
+    const d=document.createElement('div');
+    d.className='bm bot'; d.id='botTyping';
+    d.innerHTML=AV_BOT+'<div class="bot-typing"><div class="bot-tdot"></div><div class="bot-tdot"></div><div class="bot-tdot"></div></div>';
+    msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
+  }
+
+  /* ════════ อ่านข้อมูลจริงจากระบบ (ปลอดภัย มี fallback) ════════ */
+  function gv(name){
+    try{
+      if(name==='data') return (typeof data!=='undefined'&&Array.isArray(data))?data:null;
+      if(name==='TYPES') return (typeof TYPES!=='undefined')?TYPES:null;
+      if(name==='BUILDINGS') return (typeof BUILDINGS!=='undefined')?BUILDINGS:null;
+      if(name==='SETTINGS') return (typeof SETTINGS!=='undefined')?SETTINGS:null;
+      if(name==='EMISSION_FACTORS') return (typeof EMISSION_FACTORS!=='undefined')?EMISSION_FACTORS:null;
+      if(name==='EF_META') return (typeof EF_META!=='undefined')?EF_META:null;
+    }catch(e){}
+    return null;
+  }
+  function co2val(r){
+    if(typeof window.co2==='function'){ try{ return window.co2(r); }catch(e){} }
+    const EF=gv('EMISSION_FACTORS')||{};
+    return r.weight*((EF[r.type]!==undefined)?EF[r.type]:0.7933);
+  }
+  function fmtKg(v){ return (Math.abs(v)>=1000)?(v/1000).toFixed(2)+' ตัน':v.toFixed(1)+' กก.'; }
+  function fmtC(v){ if(typeof window.fmtCO2==='function'){try{return window.fmtCO2(v);}catch(e){}} return (Math.abs(v)>=1000)?(v/1000).toFixed(2)+' tCO₂e':v.toFixed(1)+' kgCO₂e'; }
+  function ymNow(off){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+off); return d.toISOString().slice(0,7); }
+  function targetNote(){ const S=gv('SETTINGS')||{}; return S.recycleTarget?' (เป้า '+S.recycleTarget+'%)':''; }
+  function calc(R,T){ let total=0,c=0,byType={}; Object.keys(T).forEach(k=>byType[k]=0); R.forEach(r=>{total+=r.weight; if(byType[r.type]!=null)byType[r.type]+=r.weight; c+=co2val(r);}); const rec=byType['recycle']||0; return {total,co2:c,byType,rate:total?rec/total*100:0,count:R.length}; }
+
+  function ovHTML(R,T,label){
+    if(!R.length) return '📊 <b>'+esc(label)+'</b><br>ยังไม่มีข้อมูลในช่วงนี้ครับ';
+    const s=calc(R,T);
+    let h='📊 <b>สรุป '+esc(label)+'</b><br>'+
+      '• รายการ: '+s.count+' · น้ำหนักรวม <b>'+fmtKg(s.total)+'</b><br>'+
+      '• อัตรารีไซเคิล: <b>'+s.rate.toFixed(1)+'%</b>'+targetNote()+'<br>'+
+      '• คาร์บอนรวม: <b>'+fmtC(s.co2)+'</b><br>—— แยกประเภท ——<br>';
+    Object.keys(T).forEach(k=>{ if(s.byType[k]>0) h+='&nbsp;'+T[k].icon+' '+esc(T[k].name)+': '+fmtKg(s.byType[k])+'<br>'; });
+    return h;
+  }
+  function monthHTML(D,T){
+    const tm=ymNow(0), pm=ymNow(-1);
+    const cur=D.filter(r=>r.date&&r.date.slice(0,7)===tm);
+    const prev=D.filter(r=>r.date&&r.date.slice(0,7)===pm);
+    let h=ovHTML(cur,T,'เดือนนี้');
+    if(cur.length&&prev.length){ let c=0,p=0; cur.forEach(r=>c+=r.weight); prev.forEach(r=>p+=r.weight); const diff=c-p, pct=p?diff/p*100:0; h+='เทียบเดือนก่อน: '+(diff>=0?'🔺':'🔻')+' '+Math.abs(pct).toFixed(1)+'% ('+fmtKg(Math.abs(diff))+')'; }
+    return h;
+  }
+  function recycleHTML(D){
+    const rec=D.filter(r=>r.type==='recycle');
+    if(!rec.length) return '🌿 <b>ขยะรีไซเคิล</b><br>ยังไม่มีข้อมูลครับ';
+    let total=0; const cats={};
+    rec.forEach(r=>{ total+=r.weight; let c='อื่นๆ'; if(typeof window.getCategory==='function'&&r.material){const g=window.getCategory(r.material); if(g&&g!=='-')c=g;} cats[c]=(cats[c]||0)+r.weight; });
+    let h='🌿 <b>สรุปขยะรีไซเคิล</b><br>• น้ำหนักรวม <b>'+fmtKg(total)+'</b> ('+rec.length+' รายการ)<br>—— แยกวัสดุ ——<br>';
+    Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([c,w])=>{ h+='&nbsp;'+(CAT_ICON[c]||'•')+' '+esc(c)+': '+fmtKg(w)+' ('+(w/total*100).toFixed(0)+'%)<br>'; });
+    return h;
+  }
+  function carbonHTML(D){
+    if(!D.length) return '🌍 <b>ESG / คาร์บอน</b><br>ยังไม่มีข้อมูลครับ';
+    let c=0,total=0,recW=0; D.forEach(r=>{c+=co2val(r); total+=r.weight; if(r.type==='recycle')recW+=r.weight;});
+    const meta=gv('EF_META')||{}; const base=meta.baseline||0.7933; const saved=recW*(base-0.0064);
+    let h='🌍 <b>สรุป ESG / คาร์บอน (ทั้งหมด)</b><br>'+
+      '• คาร์บอนที่ปล่อยรวม: <b>'+fmtC(c)+'</b><br>'+
+      '• น้ำหนักขยะรวม: '+fmtKg(total)+'<br>'+
+      '• รีไซเคิลช่วยลดได้ ≈ <b>'+fmtC(saved)+'</b><br>';
+    const trees=saved/9; if(trees>=1) h+='&nbsp;≈ เทียบการปลูกต้นไม้ '+Math.round(trees)+' ต้น/ปี';
+    return h;
+  }
+  function buildingHTML(D){
+    if(!D.length) return 'ยังไม่มีข้อมูลครับ';
+    const m={}; D.forEach(r=>{m[r.building]=(m[r.building]||0)+r.weight;});
+    let h='🏢 <b>สรุปตามอาคาร</b><br>';
+    Object.entries(m).sort((a,b)=>b[1]-a[1]).forEach(([b,w],i)=>{ const nm=(typeof window.bName==='function')?window.bName(b):b; h+='&nbsp;'+(i+1)+'. '+esc(nm)+': '+fmtKg(w)+'<br>'; });
+    return h;
+  }
+  function typesHTML(D,T,keys,label){
+    let h='📋 <b>'+esc(label||'สรุป')+'</b><br>';
+    keys.forEach(k=>{ const R=D.filter(r=>r.type===k); const ic=T[k]?T[k].icon:''; const nm=T[k]?T[k].name:k;
+      if(!R.length){ h+='&nbsp;'+ic+' '+esc(nm)+': —<br>'; return; }
+      let w=0,c=0; R.forEach(r=>{w+=r.weight;c+=co2val(r);}); h+='&nbsp;'+ic+' '+esc(nm)+': <b>'+fmtKg(w)+'</b> · '+fmtC(c)+' ('+R.length+' รายการ)<br>'; });
+    return h;
+  }
+  function adminHTML(){
+    const S=gv('SETTINGS')||{}, B=gv('BUILDINGS')||{}, meta=gv('EF_META')||{};
+    let h='⚙️ <b>การตั้งค่าระบบ</b><br>'+
+      '• องค์กร: '+esc(S.org||'-')+'<br>'+
+      '• เป้าหมายรีไซเคิล: '+(S.recycleTarget||30)+'%<br>'+
+      '• จำนวนอาคาร: '+Object.keys(B).length+'<br>'+
+      '• Emission Factor พื้นฐาน: '+(meta.baseline||0.7933)+' kgCO₂e/กก.<br>';
+    if(meta.reference) h+='&nbsp;อ้างอิง: '+esc(meta.reference);
+    return h;
+  }
+
+  /* ตัวรวมสรุปข้อมูลตาม kind */
+  function dataSummary(kind){
+    const D=gv('data'), T=gv('TYPES');
+    if(!D||!T) return '⚠️ ยังอ่านข้อมูลระบบไม่ได้ครับ ลองเปิดบอทในหน้าระบบ (ที่โหลดข้อมูลแล้ว) อีกครั้งนะครับ';
+    if(kind==='month') return monthHTML(D,T);
+    if(kind==='year'){ const y=String(new Date().getFullYear()); return ovHTML(D.filter(r=>r.date&&r.date.slice(0,4)===y),T,'ปีนี้ ('+y+')'); }
+    if(kind==='recycle') return recycleHTML(D);
+    if(kind==='carbon'||kind==='esg') return carbonHTML(D);
+    if(kind==='building') return buildingHTML(D);
+    if(kind==='staff') return typesHTML(D,T,['general','food','hazard','ewaste'],'หมวดขยะสำนักงาน');
+    if(kind==='ewastep') return typesHTML(D,T,['ewastep'],'Ewast+ (AIS)');
+    if(kind==='admin') return adminHTML();
+    if(kind.indexOf('type:')===0){ const k=kind.slice(5); return typesHTML(D,T,[k],T[k]?T[k].name:k); }
+    return ovHTML(D,T,'ทั้งหมด'); // overall/dashboard
+  }
+
+  /* ════════ ระบุอาคาร + พาเข้าไปดูอาคารนั้นเอง ════════ */
+  const BLD_FILTERABLE=['general','food','hazard','ewaste','ewastep','recycle','monthly','esg'];
+  const BLD_ALIAS={ ari:['ari','อารี','อาริ','อารีฮิลส์','ฮิลส์','hills'], ksl:['ksl','เคเอสแอล','เคเอสเเอล'] };
+
+  function bnameOf(key){ return (typeof window.bName==='function')?window.bName(key):key; }
+  function matchBuilding(q){
+    const B=gv('BUILDINGS')||{};
+    for(const k in B){ const nm=(B[k].name||'').toLowerCase(); if(q.includes(k)||(nm&&q.includes(nm))) return k; }
+    for(const k in BLD_ALIAS){ if(BLD_ALIAS[k].some(a=>q.includes(a))) return k; }
+    return null;
+  }
+  function curPageType(){
+    try{
+      const np=document.querySelector('.nav-tab.active'); let p=np?np.dataset.page:'dashboard';
+      if(p==='staff'){ const sub=document.querySelector('#page-staff .staff-sub.active'); return sub?sub.id.replace('page-',''):'food'; }
+      return p;
+    }catch(e){ return 'dashboard'; }
+  }
+  function applyBuilding(key){          // กดกรองอาคารให้เอง คืนค่า type ของหน้าที่ใช้
+    try{
+      if(typeof window.pickBuilding!=='function') return null;
+      let type=curPageType();
+      if(BLD_FILTERABLE.indexOf(type)===-1){            // หน้าปัจจุบันกรองอาคารไม่ได้ → ไปหน้ารายเดือน
+        const tab=document.querySelector('.nav-tab[data-page="monthly"]'); if(tab) tab.click();
+        type='monthly';
+      }
+      window.pickBuilding(type, key);
+      return type;
+    }catch(e){ return null; }
+  }
+  function gotoBuildingPage(key, ptype){ // ปุ่ม: เปิดอาคาร X ในหน้าที่เลือก
+    try{
+      const navMap={monthly:'monthly',esg:'esg',recycle:'recycle',ewastep:'ewastep'};
+      const navPage=navMap[ptype]||ptype;
+      const tab=document.querySelector('.nav-tab[data-page="'+navPage+'"]'); if(tab) tab.click();
+      if(typeof window.pickBuilding==='function') window.pickBuilding(ptype, key);
+      return navPage;
+    }catch(e){ return null; }
+  }
+  function buildingDetailHTML(key){
+    const D=gv('data'), T=gv('TYPES');
+    if(!D||!T) return '⚠️ ยังอ่านข้อมูลระบบไม่ได้ครับ ลองเปิดบอทในหน้าระบบอีกครั้งนะครับ';
+    const nm=bnameOf(key);
+    const R=D.filter(r=>r.building===key);
+    if(!R.length) return '🏢 <b>อาคาร '+esc(nm)+'</b><br>ยังไม่มีข้อมูลของอาคารนี้ครับ';
+    const s=calc(R,T);
+    let h='🏢 <b>อาคาร '+esc(nm)+'</b><br>'+
+      '• รายการ: '+s.count+' · น้ำหนักรวม <b>'+fmtKg(s.total)+'</b><br>'+
+      '• อัตรารีไซเคิล: <b>'+s.rate.toFixed(1)+'%</b>'+targetNote()+'<br>'+
+      '• คาร์บอนรวม: <b>'+fmtC(s.co2)+'</b><br>—— แยกประเภท ——<br>';
+    Object.keys(T).forEach(k=>{ if(s.byType[k]>0) h+='&nbsp;'+T[k].icon+' '+esc(T[k].name)+': '+fmtKg(s.byType[k])+'<br>'; });
+    return h;
+  }
+
+  /* ════════ ส่งออก Excel (.xlsx) — ตัวเขียนจิ๋ว ไม่พึ่งไลบรารี ════════ */
+  function _crc32(buf){ let c,t=_crc32.t; if(!t){t=_crc32.t=[];for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}} let crc=0^(-1); for(let i=0;i<buf.length;i++)crc=(crc>>>8)^t[(crc^buf[i])&0xFF]; return (crc^(-1))>>>0; }
+  function _sb(s){ return new TextEncoder().encode(s); }
+  function _col(n){ let s='';n++; while(n>0){let m=(n-1)%26; s=String.fromCharCode(65+m)+s; n=Math.floor((n-1)/26);} return s; }
+  function _xx(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function _sheetXML(rows){
+    let x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';
+    rows.forEach((row,ri)=>{ x+='<row r="'+(ri+1)+'">'; row.forEach((cell,ci)=>{ const ref=_col(ci)+(ri+1);
+      if(typeof cell==='number'&&isFinite(cell)) x+='<c r="'+ref+'"><v>'+cell+'</v></c>';
+      else x+='<c r="'+ref+'" t="inlineStr"><is><t xml:space="preserve">'+_xx(cell==null?'':cell)+'</t></is></c>'; }); x+='</row>'; });
+    return x+'</sheetData></worksheet>';
+  }
+  function buildXLSX(rows, sheetName){
+    sheetName=(sheetName||'Sheet1').slice(0,31).replace(/[\\\/\?\*\[\]:]/g,'_');
+    const files=[
+      ['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>'],
+      ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+      ['xl/workbook.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="'+_xx(sheetName)+'" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+      ['xl/_rels/workbook.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>'],
+      ['xl/worksheets/sheet1.xml', _sheetXML(rows)]
+    ];
+    const enc=[],central=[]; let offset=0;
+    const u16=n=>[n&0xFF,(n>>8)&0xFF], u32=n=>[n&0xFF,(n>>8)&0xFF,(n>>16)&0xFF,(n>>24)&0xFF];
+    const push=(a,b)=>{ for(let i=0;i<b.length;i++)a.push(b[i]); };
+    files.forEach(([name,content])=>{
+      const nameB=_sb(name),dataB=_sb(content),crc=_crc32(dataB);
+      const lh=[]; push(lh,u32(0x04034b50)); push(lh,u16(20)); push(lh,u16(0)); push(lh,u16(0)); push(lh,u16(0)); push(lh,u16(0));
+      push(lh,u32(crc)); push(lh,u32(dataB.length)); push(lh,u32(dataB.length)); push(lh,u16(nameB.length)); push(lh,u16(0));
+      push(enc,lh); push(enc,nameB); push(enc,dataB);
+      const ch=[]; push(ch,u32(0x02014b50)); push(ch,u16(20)); push(ch,u16(20)); push(ch,u16(0)); push(ch,u16(0)); push(ch,u16(0)); push(ch,u16(0));
+      push(ch,u32(crc)); push(ch,u32(dataB.length)); push(ch,u32(dataB.length)); push(ch,u16(nameB.length)); push(ch,u16(0)); push(ch,u16(0)); push(ch,u16(0)); push(ch,u16(0)); push(ch,u32(0)); push(ch,u32(offset));
+      push(ch,nameB); central.push(ch); offset+=lh.length+nameB.length+dataB.length;
+    });
+    const cdStart=offset; let cdLen=0; central.forEach(c=>{ push(enc,c); cdLen+=c.length; });
+    const eo=[]; push(eo,u32(0x06054b50)); push(eo,u16(0)); push(eo,u16(0)); push(eo,u16(files.length)); push(eo,u16(files.length)); push(eo,u32(cdLen)); push(eo,u32(cdStart)); push(eo,u16(0));
+    push(enc,eo); return new Uint8Array(enc);
+  }
+  function safeName(s){ return String(s).replace(/[\\\/:*?"<>|]/g,'').replace(/\s+/g,'_').slice(0,80); }
+  function downloadReport(rows, filename, kind, sheetName){
+    try{
+      let blob,name=filename;
+      if(kind==='csv'){
+        const csv=rows.map(r=>r.map(c=>{ c=(c==null?'':String(c)); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(',')).join('\r\n');
+        blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}); name=name.replace(/\.xlsx$/i,'')+'.csv';
+      }else{
+        blob=new Blob([buildXLSX(rows,sheetName)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      }
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click();
+      setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); return true;
+    }catch(e){ return false; }
+  }
+
+  /* ════════ แปลงเดือน/ปี (รองรับ พ.ศ.) ════════ */
+  const THMON=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  const THMON_KW={'มกรา':1,'ม.ค':1,'กุมภา':2,'ก.พ':2,'มีนา':3,'มี.ค':3,'เมษา':4,'เม.ย':4,'พฤษภา':5,'พ.ค':5,'มิถุนา':6,'มิ.ย':6,'กรกฎา':7,'ก.ค':7,'สิงหา':8,'ส.ค':8,'กันยา':9,'ก.ย':9,'ตุลา':10,'ต.ค':10,'พฤศจิกา':11,'พ.ย':11,'ธันวา':12,'ธ.ค':12};
+  function detectMonthYear(q){
+    if(/เดือนนี้/.test(q)) return {ym:ymNow(0),label:'เดือนนี้'};
+    let mo=0,best=0; for(const k in THMON_KW){ if(q.includes(k)&&k.length>best){best=k.length;mo=THMON_KW[k];} }
+    const my=q.match(/(25\d{2}|20\d{2}|19\d{2})/); let ce=null,be=null;
+    if(my){ let y=parseInt(my[1],10); if(y>2400){be=y;ce=y-543;}else{ce=y;be=y+543;} }
+    if(mo){ const y=ce||new Date().getFullYear(); const mm=('0'+mo).slice(-2); return {ym:y+'-'+mm,label:THMON[mo]+' '+(be||y+543)+' (ค.ศ.'+y+')',year:String(y)}; }
+    if(ce) return {yearOnly:true,year:String(ce),label:'ปี '+(be||ce+543)+' (ค.ศ.'+ce+')'};
+    return null;
+  }
+  function detectType(q){
+    let best=null,score=0;
+    WTYPES.forEach(t=>{ let sc=0; if(q.includes(t.n.toLowerCase()))sc+=5; t.kw.forEach(k=>{if(q.includes(k))sc+=2;}); if(sc>score){score=sc;best=t;} });
+    return (best&&score>0)?best.key:null;
+  }
+  function buildReport(pType,pBld,pYM,kind){
+    const D=gv('data'),T=gv('TYPES'); if(!D||!T) return null;
+    let R=D.slice();
+    if(pType) R=R.filter(r=>r.type===pType);
+    if(pBld)  R=R.filter(r=>r.building===pBld);
+    if(pYM){ if(pYM.yearOnly) R=R.filter(r=>r.date&&r.date.slice(0,4)===pYM.year); else if(pYM.ym) R=R.filter(r=>r.date&&r.date.slice(0,7)===pYM.ym); }
+    R.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+    const parts=[]; if(pType)parts.push(T[pType].name); if(pBld)parts.push('อาคาร '+bnameOf(pBld)); if(pYM)parts.push(pYM.label);
+    const label=parts.length?parts.join(' · '):'ทั้งหมด';
+    let tw=0,tc=0; R.forEach(r=>{tw+=r.weight; tc+=co2val(r);});
+    return {R,label,tw,tc,
+      filename:safeName('รายงานขยะ'+(pType?'_'+T[pType].name:'')+(pBld?'_'+bnameOf(pBld):'')+(pYM?'_'+(pYM.ym||pYM.year||''):''))+(kind==='csv'?'.csv':'.xlsx'),
+      sheet:safeName((pType?T[pType].name:'ขยะ')+(pBld?' '+bnameOf(pBld):''))};
+  }
+  function reportRows(rep){
+    const T=gv('TYPES')||{};
+    const rows=[['วันที่','ประเภท','อาคาร','ชั้น','น้ำหนัก (กก.)','ผู้บันทึก','วัสดุ','คาร์บอน (kgCO₂e)']];
+    rep.R.forEach(r=>{ rows.push([ r.date||'', (T[r.type]?T[r.type].name:r.type), bnameOf(r.building), String(r.floor==null?'':r.floor), +(+r.weight).toFixed(2), r.recorder||'', r.material||'', +co2val(r).toFixed(2) ]); });
+    rows.push(['รวม','','','', +rep.tw.toFixed(2), '', '', +rep.tc.toFixed(2)]);
+    return rows;
+  }
+
+  /* ════════ สมองแบบ rule-based ════════ */
+  const ASK=/สรุป|ภาพรวม|รายงาน|สถิติ|เท่าไหร่|เท่าไร|กี่กิโล|กี่กก|กี่ตัน|ทั้งหมดกี่|มีเท่า|ตอนนี้มี|ยอดรวม|ดูข้อมูล|แสดงข้อมูล|มีขยะ/;
+
+  function think(qRaw){
+    const q=qRaw.toLowerCase().trim();
+
+    if(/^(สวัสดี|หวัดดี|hello|hi|ดีครับ|ดีค่ะ|ทัก)/.test(q))
+      return {a:'สวัสดีครับ! ผมคือ <b>ECO-BOT</b> 🌱 ผู้ช่วยระบบจัดการขยะ<br>พิมพ์ชื่อขยะเพื่อดูว่าทิ้งหมวดไหน หรือถาม "สรุปภาพรวม" / "คาร์บอนเท่าไหร่" ให้ผมอ่านข้อมูลจริงมาบอกได้เลยครับ'};
+
+    if(/ช่วยอะไร|ทำอะไรได้|help|คำสั่ง|วิธีใช้|เมนู/.test(q))
+      return {a:'ผมช่วยได้ดังนี้ครับ:<br>'+
+        '• ♻️ บอกว่าขยะชิ้นนี้อยู่หมวดไหน — พิมพ์ชื่อขยะ<br>'+
+        '• 📊 อ่านข้อมูลจริงมาสรุป — น้ำหนัก/รีไซเคิล/คาร์บอน/อาคาร/เดือน<br>'+
+        '• 🏢 เอ่ยชื่ออาคาร (เช่น "Ari Hills", "KSL") ผมจะกดเข้าไปดูอาคารนั้นให้เอง<br>'+
+        '• 📥 ส่งออก Excel/CSV ตามเงื่อนไข เช่น "ตรวจสอบขยะทั่วไป อาคาร KSL เดือนมกราคม 2569 เป็น excel"<br>'+
+        '• 🧭 พาไปแท็บต่างๆ แล้วสรุปข้อมูลหน้านั้นให้<br>'+
+        '• 📝 เปิดฟอร์มบันทึก, ⬇️ Export CSV, 🌗 สลับธีม',
+        acts:[['data:overall','📊 สรุปภาพรวม'],['data:carbon','🌍 คาร์บอน'],['data:building','🏢 ตามอาคาร']]};
+
+    if(/กี่ประเภท|กี่ชนิด|กี่แบบ|ประเภทขยะ|แยกขยะ/.test(q)){
+      let s='ระบบแบ่งขยะเป็น <b>6 ประเภท</b> ครับ:<br>';
+      WTYPES.forEach(t=>{ s+=t.icon+' <b>'+esc(t.n)+'</b><br>'; });
+      s+='พิมพ์ชื่อขยะที่อยากรู้ ผมจะบอกว่าทิ้งหมวดไหน ♻️';
+      return {a:s, acts:[['data:overall','📊 สรุปข้อมูลจริง'],['page:staff','🧹 หมวดสำนักงาน']]};
+    }
+
+    if(/หมวดรีไซเคิล|รีไซเคิลมีอะไร|วัสดุรีไซเคิล|แยกรีไซเคิล/.test(q)){
+      let s='ขยะรีไซเคิลแบ่งเป็น <b>4 กลุ่มวัสดุ</b> ครับ:<br>';
+      RCAT.forEach(c=>{ s+=c.icon+' <b>'+esc(c.n)+'</b> — '+esc(c.items)+'<br>'; });
+      return {a:s, acts:[['data:recycle','🌿 สรุปรีไซเคิลจริง'],['page:recycle','➡️ ไปหน้ารีไซเคิล']]};
+    }
+
+    /* ── ตรวจสอบ/รายงานตามเงื่อนไข + ส่งออก Excel ── */
+    const exportIntent=/excel|xlsx|xls|สเปรดชีต|spreadsheet|ส่งออก|export|ดาวน์โหลด|download|พิมพ์ออก|พิมพ์เป็น|ออกไฟล์|csv|ไฟล์/.test(q);
+    const reportIntent=/ตรวจสอบ|รายงาน|ปริมาณ|ดูปริมาณ|ดึงข้อมูล|ขอข้อมูล|เช็ค/.test(q);
+    const rType=detectType(q), rBld=matchBuilding(q), rYM=detectMonthYear(q);
+    if(exportIntent || (reportIntent && (rType||rBld||rYM))){
+      const kind=(/csv/.test(q) && !/excel|xlsx|xls/.test(q))?'csv':'xlsx';
+      const rep=buildReport(rType,rBld,rYM,kind);
+      if(!rep) return {a:'⚠️ ยังอ่านข้อมูลระบบไม่ได้ครับ ลองเปิดบอทในหน้าระบบอีกครั้งนะครับ'};
+      let a='🔎 <b>ผลการตรวจสอบ</b><br>เงื่อนไข: <b>'+esc(rep.label)+'</b><br>'+
+            '• จำนวนรายการ: '+rep.R.length+'<br>'+
+            '• น้ำหนักรวม: <b>'+fmtKg(rep.tw)+'</b><br>'+
+            '• คาร์บอนรวม: <b>'+fmtC(rep.tc)+'</b>';
+      if(rType==='recycle'){ const r2=calc(rep.R,gv('TYPES')||{}); a+='<br>• อัตรารีไซเคิล (ในชุดนี้): 100% ของวัสดุรีไซเคิล'; }
+      if(!rep.R.length){
+        return {a:'🔎 <b>ผลการตรวจสอบ</b><br>เงื่อนไข: <b>'+esc(rep.label)+'</b><br>❌ ไม่พบข้อมูลตามเงื่อนไขนี้ครับ ลองปรับเดือน/ปี หรืออาคารดูนะครับ'};
+      }
+      if(exportIntent){
+        a+='<br>📄 กำลังสร้างไฟล์ <b>'+(kind==='csv'?'CSV':'Excel (.xlsx)')+'</b> ให้ดาวน์โหลด...';
+        return {a:a, download:{rows:reportRows(rep), filename:rep.filename, kind:kind, sheet:rep.sheet, label:rep.label}};
+      }
+      // แค่ตรวจสอบ ไม่ส่งออก → เสนอปุ่มส่งออก
+      const fbuild=(rType?'1':'')+(rBld?'1':'')+(rYM?'1':'');
+      return {a:a, reportCtx:{rType,rBld,rYM,label:rep.label},
+        acts:[['xls:xlsx','📊 ดาวน์โหลด Excel'],['xls:csv','📄 ดาวน์โหลด CSV']]};
+    }
+
+    /* ── เอ่ยชื่ออาคาร → พาเข้าไปดูอาคารนั้นเอง ── */
+    const bkey=matchBuilding(q);
+    const hasType=WTYPES.some(t=>q.includes(t.n.toLowerCase())||t.kw.some(k=>q.includes(k)));
+    const navWord=/ไป|เปิด|ดู|เข้า|สลับ|เลือก|กรอง|หน้า|switch|go|filter/.test(q);
+    const wantThrow=/ทิ้ง|หมวดไหน|ทิ้งที่ไหน|อยู่หมวด/.test(q);
+    if(bkey && !wantThrow && (!hasType || navWord || ASK.test(q))){
+      const nm=bnameOf(bkey);
+      return {
+        a:'🏢 กำลังเปิดดูข้อมูล <b>อาคาร '+esc(nm)+'</b> ให้ครับ...<br>'+buildingDetailHTML(bkey),
+        building:bkey,
+        acts:[['bld:'+bkey+':monthly','📅 รายเดือน'],['bld:'+bkey+':recycle','🌿 รีไซเคิล'],['bld:'+bkey+':esg','🌍 ESG'],['data:building','🏢 เทียบทุกอาคาร']]
+      };
+    }
+
+    /* ── อ่านข้อมูลจริง ── */
+    const wantData = ASK.test(q) || /อัตรารีไซเคิล|รีไซเคิลกี่เปอร|สัดส่วนรีไซเคิล|คาร์บอนรวม|co2รวม/.test(q);
+    if(wantData){
+      if(/อาคาร/.test(q)) return {a:dataSummary('building'), acts:[['page:dashboard','📊 Dashboard']]};
+      if(/เดือน/.test(q)) return {a:dataSummary('month'), acts:[['page:monthly','📅 หน้ารายเดือน']]};
+      if(/ปีนี้|ทั้งปี|รายปี/.test(q)) return {a:dataSummary('year'), acts:[['page:dashboard','📊 Dashboard']]};
+      if(/คาร์บอน|co2|co₂|ก๊าซ|carbon/.test(q)) return {a:dataSummary('carbon'), acts:[['page:esg','🌍 หน้า ESG'],['data:recycle','🌿 รีไซเคิล']]};
+      if(/รีไซเคิล/.test(q)){
+        if(/อัตรา|เปอร์เซ็นต์|%|สัดส่วน/.test(q)) return {a:dataSummary('overall'), acts:[['data:recycle','🌿 ดูแยกวัสดุ']]};
+        return {a:dataSummary('recycle'), acts:[['page:recycle','🌿 หน้ารีไซเคิล'],['form:recycle','📝 บันทึก']]};
+      }
+      const t=WTYPES.find(t=>q.includes(t.n.toLowerCase())||t.kw.some(k=>q.includes(k)));
+      if(t) return {a:dataSummary('type:'+t.key), acts:[['page:'+t.page,'➡️ ไปหน้าที่เกี่ยวข้อง']]};
+      return {a:dataSummary('overall'), acts:[['page:dashboard','📊 Dashboard'],['data:carbon','🌍 คาร์บอน'],['data:building','🏢 อาคาร']]};
+    }
+
+    for(const f of FAQ){ if(f.kw.some(k=>q.includes(k))) return {a:f.a}; }
+    for(const s of SYS){ if(s.kw.some(k=>q.includes(k))) return {a:s.a, acts:s.acts}; }
+
+    /* จับคู่ประเภทขยะ */
+    let best=null, score=0;
+    WTYPES.forEach(t=>{ let sc=0; if(q.includes(t.n.toLowerCase()))sc+=5; t.kw.forEach(k=>{if(q.includes(k))sc+=2;}); if(sc>score){score=sc;best=t;} });
+    if(best&&score>0){
+      let s='ทิ้งใน '+best.icon+' <b>'+esc(best.n)+'</b> ครับ<br>📦 ตัวอย่าง: '+esc(best.items)+'<br>💡 <i>'+esc(best.tip)+'</i>';
+      if(best.key==='recycle'){ const cat=RCAT.find(c=>c.kw.some(k=>q.includes(k))); if(cat) s+='<br>🔎 อยู่กลุ่ม '+cat.icon+' <b>'+esc(cat.n)+'</b>'; }
+      return {a:s, acts:[['page:'+best.page,'➡️ ไปหน้าที่เกี่ยวข้อง'],['form:'+best.key,'📝 บันทึก'+best.n],['data:type:'+best.key,'📊 ดูยอดสะสม']]};
+    }
+
+    if(/ขอบคุณ|thank|เยี่ยม|เก่ง|สุดยอด/.test(q))
+      return {a:'ยินดีครับ! 😊 ช่วยกันแยกขยะ ช่วยกันลดคาร์บอนนะครับ 🌍'};
+
+    return {a:'ขอโทษครับ ผมยังไม่แน่ใจ 🤔 ลองถามแบบนี้ได้ครับ:<br>'+
+      '• พิมพ์ชื่อขยะ เช่น "ขวดแก้ว" "ถ่านไฟฉาย" "เศษอาหาร"<br>'+
+      '• "สรุปภาพรวม" · "คาร์บอนเท่าไหร่" · "รีไซเคิลเท่าไหร่" · "แต่ละอาคาร"',
+      acts:[['data:overall','📊 สรุปภาพรวม'],['data:carbon','🌍 คาร์บอน']]};
+  }
+
+  let lastReport=null;   // จำเงื่อนไขล่าสุดไว้ให้ปุ่มส่งออก
+  function reply(q){
+    typing();
+    setTimeout(()=>{
+      const t=document.getElementById('botTyping'); if(t) t.remove();
+      const r=think(q);
+      addMsg(r.a+actHTML(r.acts),false);
+      speak(r.a);
+      if(r.reportCtx) lastReport=r.reportCtx;
+      if(r.download){                       // สร้าง+ดาวน์โหลดไฟล์เอง
+        setTimeout(()=>{
+          const ok=downloadReport(r.download.rows, r.download.filename, r.download.kind, r.download.sheet);
+          addMsg(ok ? ('✅ ดาวน์โหลดไฟล์ <b>'+esc(r.download.filename)+'</b> แล้วครับ ('+r.download.rows.length+' แถวรวมหัวตาราง)<br>เปิดด้วย Excel / Google Sheets ได้เลย')
+                    : '❌ สร้างไฟล์ไม่สำเร็จครับ ลองใหม่อีกครั้งนะครับ', false);
+        },300);
+      }
+      if(r.building){                       // กดเข้าไปกรองอาคารให้เองอัตโนมัติ
+        setTimeout(()=>{
+          const usedType=applyBuilding(r.building);
+          if(usedType) addMsg('✅ สลับมุมมองไปที่ <b>อาคาร '+esc(bnameOf(r.building))+'</b> ในหน้า <b>'+esc(PAGE_LABEL[usedType]||usedType)+'</b> แล้วครับ',false);
+          else addMsg('ℹ️ ดูข้อมูลอาคารด้านบนได้เลยครับ (กรองในหน้าจริงได้จากปุ่ม "เลือกอาคาร" บนหน้านั้น)',false);
+        },350);
+      }
+    },500+Math.random()*350);
+  }
+  function send(q){ q=(q||input.value).trim(); if(!q) return; addMsg(esc(q),true); input.value=''; reply(q); }
+
+  /* ════════ ปุ่ม action: พาไปหน้า + สรุป / เปิดฟอร์ม / ฟังก์ชัน / สรุปข้อมูล ════════ */
+  const PAGE_SUM={dashboard:'overall',monthly:'month',staff:'staff',ewastep:'ewastep',recycle:'recycle',esg:'carbon',admin:'admin'};
+  const PAGE_LABEL={dashboard:'Dashboard',monthly:'สรุปรายเดือน',staff:'หมวดขยะสำนักงาน',ewastep:'Ewast+ (AIS)',recycle:'ขยะรีไซเคิล',esg:'ESG / คาร์บอน',admin:'Admin',
+    general:'ขยะทั่วไป',food:'ขยะเศษอาหาร',hazard:'ขยะอันตราย',ewaste:'ขยะอิเล็กทรอนิกส์'};
+  function closeWin(){ win.classList.remove('open'); }
+
+  msgs.addEventListener('click',e=>{
+    const b=e.target.closest('[data-act]'); if(!b) return;
+    const act=b.getAttribute('data-act'); const i=act.indexOf(':');
+    const kind=act.slice(0,i), arg=act.slice(i+1);
+    try{
+      if(kind==='page'){
+        const tab=document.querySelector('.nav-tab[data-page="'+arg+'"]');
+        if(tab){ tab.click(); }
+        else if(typeof window.bottomGo==='function'){ window.bottomGo(arg); }
+        else { addMsg('ไม่พบหน้านี้ในระบบครับ',false); return; }
+        const sk=PAGE_SUM[arg];
+        if(sk) setTimeout(()=>{ addMsg('✅ เปิดหน้า <b>'+esc(PAGE_LABEL[arg]||arg)+'</b> แล้วครับ<br>'+dataSummary(sk),false); }, 430);
+      } else if(kind==='form'){
+        if(typeof window.openForm==='function'){ window.openForm(arg); closeWin(); }
+        else addMsg('เปิดฟอร์มบันทึกได้จากหน้าที่เกี่ยวข้องครับ',false);
+      } else if(kind==='fn'){
+        if(typeof window[arg]==='function'){ window[arg](); }
+        else addMsg('ฟังก์ชันนี้ใช้ได้จากหน้าระบบครับ',false);
+      } else if(kind==='data'){
+        addMsg(dataSummary(arg),false);
+      } else if(kind==='bld'){
+        const p=arg.split(':'); const key=p[0], ptype=p[1]||'monthly';
+        const np=gotoBuildingPage(key, ptype);
+        addMsg(np ? ('✅ เปิด <b>อาคาร '+esc(bnameOf(key))+'</b> ในหน้า <b>'+esc(PAGE_LABEL[np]||np)+'</b> แล้วครับ')
+                  : 'เปิดอาคารนี้ได้จากปุ่ม "เลือกอาคาร" บนหน้าจริงครับ', false);
+      } else if(kind==='xls'){
+        if(!lastReport){ addMsg('ลองสั่งใหม่อีกครั้งครับ เช่น "ตรวจสอบขยะทั่วไป อาคาร KSL เดือนมกราคม 2569"',false); return; }
+        const k=(arg==='csv')?'csv':'xlsx';
+        const rep=buildReport(lastReport.rType,lastReport.rBld,lastReport.rYM,k);
+        if(!rep||!rep.R.length){ addMsg('ไม่พบข้อมูลให้ส่งออกครับ',false); return; }
+        const ok=downloadReport(reportRows(rep), rep.filename, k, rep.sheet);
+        addMsg(ok ? ('✅ ดาวน์โหลด <b>'+esc(rep.filename)+'</b> แล้วครับ ('+rep.R.length+' รายการ)') : '❌ สร้างไฟล์ไม่สำเร็จครับ', false);
+      }
+    }catch(err){ addMsg('เกิดข้อผิดพลาดเล็กน้อยครับ ลองอีกครั้งนะครับ',false); }
+  });
+
+  /* ════════ events ════════ */
+  fab.addEventListener('click',()=>{
+    win.classList.toggle('open');
+    if(win.classList.contains('open')){
+      if(notif) notif.style.display='none';
+      if(!msgs.children.length){
+        addMsg('สวัสดีครับ! 👋 ผมคือ <b>ECO-BOT</b> ผู้ช่วยระบบจัดการขยะ 🌱<br>ถามได้ทั้ง "ขยะนี้ทิ้งหมวดไหน" และให้ผม <b>อ่านข้อมูลจริงมาสรุป</b> เช่น "สรุปภาพรวม" หรือกดปุ่มด้านล่างได้เลยครับ',false);
+        addMsg('ลองเริ่มจากนี่ได้ครับ 👇'+actHTML([['data:overall','📊 สรุปภาพรวม'],['data:carbon','🌍 คาร์บอน'],['page:dashboard','📈 เปิด Dashboard']]),false);
+      }
+      setTimeout(()=>input.focus(),100);
+    }
+  });
+  document.getElementById('botClose').addEventListener('click',closeWin);
+  document.getElementById('botSend').addEventListener('click',()=>send());
+  input.addEventListener('keydown',e=>{ if(e.key==='Enter') send(); });
+  document.querySelectorAll('#esgbot .bot-chip').forEach(c=>{ c.addEventListener('click',()=>send(c.getAttribute('data-q'))); });
+
+  /* ════════ เสียงพูดตอบ (TTS) ════════ */
+  let speakOn=true;
+  const spkBtn=document.getElementById('botSpk');
+  spkBtn.addEventListener('click',()=>{
+    speakOn=!speakOn; spkBtn.textContent=speakOn?'🔊':'🔇'; spkBtn.classList.toggle('on',speakOn);
+    if(!speakOn&&window.speechSynthesis) speechSynthesis.cancel();
+  });
+  function speak(html){
+    if(!speakOn||!('speechSynthesis' in window)) return;
+    let txt=html.replace(/<[^>]+>/g,' ')
+                .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\u{FE0F}\u{2122}]/gu,'')
+                .replace(/&nbsp;/g,' ').replace(/——/g,' ').replace(/\s+/g,' ').trim();
+    if(!txt) return;
+    try{
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(txt);
+      u.lang='th-TH'; u.rate=1.05; u.pitch=1.0;
+      const th=speechSynthesis.getVoices().find(v=>/th/i.test(v.lang)); if(th) u.voice=th;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=()=>{}; }
+
+  /* ════════ พูดสั่งงาน (STT) ════════ */
+  const micBtn=document.getElementById('botMic'), listenBar=document.getElementById('botListenBar');
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ micBtn.style.display='none'; }
+  else{
+    const rec=new SR(); rec.lang='th-TH'; rec.interimResults=false; rec.maxAlternatives=1;
+    let listening=false;
+    micBtn.addEventListener('click',()=>{ if(listening){rec.stop();return;} try{ if(window.speechSynthesis)speechSynthesis.cancel(); rec.start(); }catch(e){} });
+    rec.onstart=()=>{ listening=true; micBtn.classList.add('listening'); listenBar.classList.add('show'); };
+    rec.onend  =()=>{ listening=false; micBtn.classList.remove('listening'); listenBar.classList.remove('show'); };
+    rec.onerror=(e)=>{ listening=false; micBtn.classList.remove('listening'); listenBar.classList.remove('show');
+      if(e.error==='not-allowed'||e.error==='service-not-allowed') addMsg('⚠️ ใช้ไมค์ไม่ได้ครับ กรุณาอนุญาตให้เว็บใช้ไมโครโฟนแล้วลองใหม่',false); };
+    rec.onresult=(e)=>{ const text=e.results[0][0].transcript; if(text&&text.trim()) send(text.trim()); };
   }
 })();
 </script>
+
+
 </body>
 </html>
