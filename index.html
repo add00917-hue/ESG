@@ -3031,13 +3031,32 @@ function renderKioskQR(){
       </div>
     </div>`;
   const el=document.getElementById('kqr-main');if(!el)return;
-  QRCode.toCanvas(document.createElement('canvas'),url,{width:220,margin:1,color:{dark:'#0f766e',light:'#ffffff'}},(e,cv)=>{if(!e){cv.id='kqr-canvas';el.innerHTML='';el.appendChild(cv);}});
+  kqrMake(el,url,220);
+}
+function kqrMake(el,url,size){
+  size=size||220;el.innerHTML='<div style="color:#94a3b8;font-size:13px;padding:20px">กำลังสร้าง QR…</div>';
+  if(typeof QRCode!=='undefined'&&QRCode.toCanvas){
+    try{
+      QRCode.toCanvas(document.createElement('canvas'),url,{width:size,margin:1,color:{dark:'#0f766e',light:'#ffffff'}},function(e,cv){
+        if(e||!cv){kqrImgFallback(el,url,size);return;}
+        cv.id='kqr-canvas';el.innerHTML='';el.appendChild(cv);
+      });
+      return;
+    }catch(err){}
+  }
+  kqrImgFallback(el,url,size);
+}
+function kqrImgFallback(el,url,size){
+  el.innerHTML='<img id="kqr-img" width="'+size+'" height="'+size+'" alt="QR code" style="display:block" '+
+    'src="https://api.qrserver.com/v1/create-qr-code/?size='+size+'x'+size+'&margin=8&color=0f766e&data='+encodeURIComponent(url)+'" '+
+    'onerror="this.parentNode.innerHTML=\'<div style=&quot;color:#dc2626;font-size:13px;padding:16px&quot;>สร้าง QR ไม่ได้ (ออฟไลน์) — ใช้ปุ่มคัดลอกลิงก์แทนได้</div>\'">';
 }
 function downloadKioskQR(){
   const cv=document.getElementById('kqr-canvas');
-  if(!cv){toast('ยังสร้าง QR ไม่เสร็จ');return;}
-  const a=document.createElement('a');a.download='QR-บันทึกปริมาณขยะสำนักงาน.png';a.href=cv.toDataURL('image/png');a.click();
-  toast('บันทึกรูป QR แล้ว');
+  if(cv){const a=document.createElement('a');a.download='QR-บันทึกปริมาณขยะสำนักงาน.png';a.href=cv.toDataURL('image/png');a.click();toast('บันทึกรูป QR แล้ว');return;}
+  const img=document.getElementById('kqr-img');
+  if(img){window.open(img.src,'_blank');toast('เปิดรูป QR แล้ว — คลิกขวา/กดค้างเพื่อบันทึก');return;}
+  toast('ยังสร้าง QR ไม่เสร็จ');
 }
 function printKioskQR(){
   const url=kioskMainUrl();
