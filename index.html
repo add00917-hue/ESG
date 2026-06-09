@@ -736,8 +736,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div><div class="page-title"><span class="dot" style="background:var(--c-food)"></span>ขยะเศษอาหาร</div>
       <div class="page-sub">บันทึกโดยแม่บ้านอาคาร · เก็บข้อมูลรายวัน แยกชั้น</div></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-accent" onclick="openQR('staff')"><span>📱</span>QR Code</button>
-      <button class="btn btn-primary" onclick="openForm('food')"><span>➕</span>บันทึกข้อมูล</button>
+      <button class="btn btn-primary" onclick="openEntry('food')"><span>➕</span>บันทึกข้อมูล</button>
     </div>
   </div>
   <div class="kpi-grid" id="wp-kpi-food"></div>
@@ -771,8 +770,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div><div class="page-title"><span class="dot" style="background:var(--c-general)"></span>ขยะทั่วไป</div>
       <div class="page-sub">บันทึกโดยแม่บ้านอาคาร · เก็บข้อมูลรายวัน แยกชั้น</div></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-accent" onclick="openQR('staff')"><span>📱</span>QR Code</button>
-      <button class="btn btn-primary" onclick="openForm('general')"><span>➕</span>บันทึกข้อมูล</button>
+      <button class="btn btn-primary" onclick="openEntry('general')"><span>➕</span>บันทึกข้อมูล</button>
     </div>
   </div>
   <div class="kpi-grid" id="wp-kpi-general"></div>
@@ -806,8 +804,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div><div class="page-title"><span class="dot" style="background:var(--c-hazard)"></span>ขยะอันตราย</div>
       <div class="page-sub">บันทึกโดยแม่บ้านอาคาร · ต้องจัดการตามมาตรฐานความปลอดภัย</div></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-accent" onclick="openQR('staff')"><span>📱</span>QR Code</button>
-      <button class="btn btn-primary" onclick="openForm('hazard')"><span>➕</span>บันทึกข้อมูล</button>
+      <button class="btn btn-primary" onclick="openEntry('hazard')"><span>➕</span>บันทึกข้อมูล</button>
     </div>
   </div>
   <div class="kpi-grid" id="wp-kpi-hazard"></div>
@@ -841,8 +838,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div><div class="page-title"><span class="dot" style="background:var(--c-ewaste)"></span>ขยะอิเล็กทรอนิกส์</div>
       <div class="page-sub">บันทึกโดยแม่บ้านอาคาร · เก็บข้อมูลรายวัน แยกชั้น</div></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-accent" onclick="openQR('staff')"><span>📱</span>QR Code</button>
-      <button class="btn btn-primary" onclick="openForm('ewaste')"><span>➕</span>บันทึกข้อมูล</button>
+      <button class="btn btn-primary" onclick="openEntry('ewaste')"><span>➕</span>บันทึกข้อมูล</button>
     </div>
   </div>
   <div class="kpi-grid" id="wp-kpi-ewaste"></div>
@@ -877,7 +873,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="page-head">
     <div><div class="page-title"><span class="dot" style="background:var(--c-ewastep)"></span>ขยะอิเล็กทรอนิกส์ (โครงการ AIS Ewast+)</div>
       <div class="page-sub">เลือกวันที่ย้อนหลังได้ · โครงการรับคืนซากอิเล็กทรอนิกส์</div></div>
-    <button class="btn btn-primary" onclick="openForm('ewastep')"><span>➕</span>บันทึกข้อมูล</button>
+    <button class="btn btn-primary" onclick="openEntry('ewastep')"><span>➕</span>บันทึกข้อมูล</button>
   </div>
   <div class="kpi-grid" id="wp-kpi-ewastep"></div>
   <div class="card">
@@ -910,8 +906,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div><div class="page-title"><span class="dot" style="background:var(--c-recycle)"></span>ขยะรีไซเคิล</div>
       <div class="page-sub">ข้อมูลจาก Vendor ภายนอก · บันทึกผ่าน QR Code ได้</div></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-accent" onclick="openQR('vendor')"><span>📱</span>QR Code</button>
-      <button class="btn btn-primary" onclick="openForm('recycle')"><span>➕</span>บันทึกข้อมูล</button>
+      <button class="btn btn-primary" onclick="openEntry('recycle')"><span>➕</span>บันทึกข้อมูล</button>
     </div>
   </div>
   <div class="kpi-grid" id="cat-kpi"></div>
@@ -1022,22 +1017,6 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📱</span>QR Code สำหรับการบันทึกข้อมูล</div></div>
-    <div class="admin-grid">
-      <div class="b-card">
-        <h3>🧹 QR แม่บ้านอาคาร</h3>
-        <p class="page-sub" style="margin-bottom:12px">สำหรับบันทึก ขยะทั่วไป / อันตราย / อิเล็กทรอนิกส์ — แสกนแล้วเลือกประเภท อาคาร ชั้น และกรอกน้ำหนัก</p>
-        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="openQR('staff')">สร้าง / แสดง QR Code</button>
-      </div>
-      <div class="b-card">
-        <h3>🚚 QR Vendor ภายนอก</h3>
-        <p class="page-sub" style="margin-bottom:12px">สำหรับบันทึกขยะรีไซเคิลจาก Vendor ภายนอก</p>
-        <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="openQR('vendor')">สร้าง / แสดง QR Code</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
     <div class="card-head"><div class="card-title"><span class="ic">🎨</span>ตั้งค่าองค์กร &amp; เป้าหมาย</div></div>
     <div class="grid-2">
       <div>
@@ -1084,9 +1063,16 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">🧹</span>QR Code บันทึกขยะสำนักงาน — แยกตามอาคาร (สำหรับแม่บ้าน)</div></div>
-    <p class="page-sub" style="margin-bottom:14px">QR แต่ละอาคาร สแกนแล้วเปิดหน้าบันทึกเฉพาะ: เข้าสู่ระบบ → ยืนยันอาคาร → เลือกชั้น/ประเภท → กรอกน้ำหนัก บันทึก (ตรวจสอบผู้ใช้กับ Google Sheets ชีต Users) เหมาะพิมพ์ติดที่จุดทิ้งขยะแต่ละอาคาร</p>
-    <div class="kqr-grid" id="admin-kiosk-qr"></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📱</span>การจัดการ QR code บันทึกปริมาณขยะสำนักงาน</div></div>
+    <p class="page-sub" style="margin-bottom:14px">QR code สำหรับให้พนักงานสแกนเพื่อเปิดหน้าบันทึกปริมาณขยะ: เข้าสู่ระบบ → เลือกอาคาร → เลือกชั้น → กรอกน้ำหนักแยกชนิด → ส่ง (เชื่อมกับ Google Sheets) กดบันทึก/พิมพ์ QR ไปใช้ได้เลย</p>
+    <div class="field">
+      <label class="form-label">ลิงก์หน้าบันทึก (ที่โฮสต์ไว้)</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input class="input" id="kiosk-base" style="flex:1;min-width:240px" placeholder="https://....github.io/.../">
+        <button class="btn btn-ghost" onclick="saveKioskBase()"><span>💾</span>บันทึกลิงก์</button>
+      </div>
+    </div>
+    <div id="admin-kiosk-qr" style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px"></div>
   </div>
 
   <div class="card">
@@ -1181,6 +1167,119 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-form')">ยกเลิก</button>
       <button class="btn btn-primary" onclick="saveRecord()"><span>💾</span>บันทึกข้อมูล</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ENTRY MODAL (flow แบบ Kiosk: เลือกชั้น → กรอกหลายชนิด → ส่ง) ============ -->
+<style>
+#modal-entry .e-wt{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:8px;position:relative;overflow:hidden;background:#fff}
+#modal-entry .e-wt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,#cbd5e1)}
+#modal-entry .e-wt.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset}
+#modal-entry .rec-card{cursor:pointer}
+#modal-entry .e-ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:19px;flex-shrink:0}
+#modal-entry .e-info{flex:1;min-width:0}
+#modal-entry .e-nm{font-weight:700;font-size:14px}
+#modal-entry .e-sub{font-size:11px;color:#94a3b8;margin-top:1px}
+#modal-entry .e-kg{display:flex;align-items:center;gap:4px;flex-shrink:0}
+#modal-entry .e-kg button{width:32px;height:36px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-size:18px;font-weight:700;cursor:pointer;line-height:1}
+#modal-entry .e-kg input{width:62px;text-align:center;padding:8px 4px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit}
+#modal-entry .e-ctx{background:#f1f5f9;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:13px;font-weight:600;color:#334155}
+#modal-entry .chev{transition:transform .2s;color:#94a3b8;font-size:16px}
+#modal-entry .e-wt.open .chev{transform:rotate(180deg)}
+#modal-entry .e-rec-panel{display:none;margin:-2px 0 8px;padding:8px;background:#f8fafc;border:1px solid #eef2f7;border-radius:10px}
+#modal-entry .e-rec-panel.open{display:block}
+#modal-entry .e-rec-g{font-size:12px;font-weight:700;margin:6px 2px 5px}
+#modal-entry .e-mat{display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border:1px solid #eef2f7;border-radius:8px;margin-bottom:5px}
+#modal-entry .e-mat.on{border-color:#22c55e}
+#modal-entry .e-mat .mn{flex:1;font-size:12px;min-width:0;font-weight:500}
+#modal-entry #e-buildings .floor-chip,#modal-entry #e-floors .floor-chip{font-weight:600}
+#modal-entry .e-grp{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;background:#fff;cursor:pointer;margin-bottom:8px;font-family:inherit}
+#modal-entry .e-grp.has{border-color:var(--c)}
+#modal-entry .e-grp.open{border-color:var(--c);background:#f8fafc}
+#modal-entry .e-grp-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:20px;flex-shrink:0;background:var(--cs)}
+#modal-entry .e-grp-nm{flex:1;font-weight:700;font-size:15px;line-height:1.2}
+#modal-entry .e-grp-nm small{display:block;font-weight:500;font-size:12px;color:#94a3b8;margin-top:2px}
+#modal-entry .e-grp .chev{color:#94a3b8;font-size:18px;transition:transform .2s}
+#modal-entry .e-grp.open .chev{transform:rotate(180deg)}
+#modal-entry .e-grp-panel{display:none;margin:-2px 0 10px;padding:4px 2px}
+#modal-entry .e-grp-panel.open{display:block}
+#modal-entry .modal{max-width:820px}
+#modal-entry .e-rec-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;align-items:start}
+#modal-entry .e-rec-col{border:1px solid #eef2f7;border-radius:10px;padding:8px 10px;background:#fbfdff}
+#modal-entry .e-rec-col .e-rec-g{margin-top:0}
+@media(max-width:640px){#modal-entry .e-rec-cols{grid-template-columns:1fr}}
+</style>
+<div class="overlay" id="modal-entry">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title"><span class="ic" style="background:#dcfce7;color:#15803d">♻️</span><span id="entry-title">บันทึกขยะ</span></div>
+      <button class="icon-btn" onclick="closeModal('modal-entry')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="entry-step1">
+        <div class="field">
+          <label>วันที่ <span class="req">*</span> <span class="hint">(เลือกย้อนหลังได้ ไม่เกินวันนี้)</span></label>
+          <button type="button" class="input" id="e-date-btn" onclick="entryOpenCal()" style="text-align:left;cursor:pointer">—</button>
+        </div>
+        <div class="field">
+          <label>อาคาร <span class="req">*</span></label>
+          <div class="floor-grid" id="e-buildings"></div>
+        </div>
+        <div class="field" id="e-floor-field" style="display:none">
+          <label>ชั้น <span class="req">*</span></label>
+          <div class="floor-grid" id="e-floors"></div>
+        </div>
+      </div>
+      <div id="entry-step2" style="display:none">
+        <div class="e-ctx" id="entry-ctx"></div>
+        <div id="e-types"></div>
+      </div>
+    </div>
+    <div class="modal-foot" id="entry-foot1">
+      <button class="btn btn-ghost" onclick="closeModal('modal-entry')">ยกเลิก</button>
+      <button class="btn btn-primary" id="entry-next" onclick="entryGoTypes()" disabled><span>→</span>ถัดไป</button>
+    </div>
+    <div class="modal-foot" id="entry-foot2" style="display:none">
+      <button class="btn btn-ghost" onclick="entryBack()">← กลับ</button>
+      <button class="btn btn-primary" onclick="entrySubmit()"><span>💾</span>บันทึกทั้งหมด (<span id="entry-kg">0</span> กก.)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ENTRY THAI CALENDAR ============ -->
+<style>
+#modal-ecal .ecal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+#modal-ecal .ecal-head .ttl{font-weight:700;font-size:16px}
+#modal-ecal .ecal-head button{width:38px;height:38px;border:1px solid #e5e7eb;background:#fff;border-radius:10px;font-size:20px;cursor:pointer}
+#modal-ecal .ecal-head button:disabled{opacity:.3;cursor:default}
+#modal-ecal .ecal-dows{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+#modal-ecal .ecal-dows span{text-align:center;font-size:11px;color:#94a3b8;font-weight:600;padding:4px 0}
+#modal-ecal .ecal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+#modal-ecal .ecal-grid .pad{height:40px}
+#modal-ecal .ecal-day{height:40px;border:none;background:#f1f5f9;border-radius:9px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+#modal-ecal .ecal-day.today{outline:2px solid #f59e0b;outline-offset:-2px}
+#modal-ecal .ecal-day.sel{background:#0f766e;color:#fff}
+#modal-ecal .ecal-day:disabled{opacity:.3;cursor:default;background:transparent}
+</style>
+<div class="overlay" id="modal-ecal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-head">
+      <div class="modal-title"><span class="ic" style="background:#dcfce7;color:#15803d">📅</span><span>เลือกวันที่บันทึก</span></div>
+      <button class="icon-btn" onclick="closeModal('modal-ecal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="ecal-head">
+        <button type="button" id="ecal-prev" onclick="entryCalNav(-1)">‹</button>
+        <div class="ttl" id="ecal-title">—</div>
+        <button type="button" id="ecal-next" onclick="entryCalNav(1)">›</button>
+      </div>
+      <div class="ecal-dows"><span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span></div>
+      <div class="ecal-grid" id="ecal-grid"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-ecal')">ปิด</button>
+      <button class="btn btn-primary" onclick="entryCalToday()">วันนี้</button>
     </div>
   </div>
 </div>
@@ -1421,14 +1520,19 @@ function load(){
     if(localStorage.getItem('wms_ver')!=='5'){localStorage.removeItem('wms_data');localStorage.setItem('wms_ver','5');}
     const d=JSON.parse(localStorage.getItem('wms_data'));if(d&&d.length)return d;
   }catch(e){}
-  return seed();
+  var _su=null;try{_su=localStorage.getItem('wms_gs_url');}catch(e){}
+  return (_su!=='')?[]:seed();   // _su==='' = ตัดการเชื่อมต่อ ⇒ ใช้ demo; อื่นๆ (null/มี URL) = โหมดเชื่อมต่อ ⇒ รอข้อมูลจริง
 }
 function save(){localStorage.setItem('wms_data',JSON.stringify(data));}
 
 /* ===== GOOGLE SHEETS SYNC LAYER ===== */
 /* ทำงานได้ทั้งโหมด Local (ไม่ใส่ URL) และโหมด Google Sheets (ใส่ URL ของ Apps Script Web App)
    ออกแบบให้ไม่กระทบ UI: ถ้าไม่เชื่อมต่อ ระบบทำงานแบบ Local เหมือนเดิมทุกประการ */
-let GS_URL=localStorage.getItem('wms_gs_url')||'';
+const DEFAULT_GS_URL='https://script.google.com/macros/s/AKfycbwTlAsS0d2ySMI7Cq8uTdq6sNa6_-BerwRM-kVFClcZZms7sUlWstr2Dn8DmGx_ismR/exec';
+let _gsSaved=localStorage.getItem('wms_gs_url');
+let GS_URL=(_gsSaved===null)?DEFAULT_GS_URL:_gsSaved;
+const DEFAULT_KIOSK_URL='https://add00917-hue.github.io/Waste-and-Recyclable-Waste/';
+let KIOSK_BASE=localStorage.getItem('wms_kiosk_url')||DEFAULT_KIOSK_URL;
 function gsConfigured(){return !!GS_URL;}
 async function gsGetAll(){
   const res=await fetch(GS_URL+(GS_URL.includes('?')?'&':'?')+'action=getAll&t='+Date.now());
@@ -1445,7 +1549,7 @@ async function gsPush(table,op,payload){
 }
 function applyRemote(all){
   if(!all)return;
-  if(Array.isArray(all.records)&&all.records.length){data=all.records;localStorage.setItem('wms_data',JSON.stringify(data));}
+  if(Array.isArray(all.records)){data=all.records;localStorage.setItem('wms_data',JSON.stringify(data));}
   if(all.buildings&&Object.keys(all.buildings).length){BUILDINGS=all.buildings;localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));}
   if(all.ef){if(all.ef.factors)EMISSION_FACTORS=Object.assign({},DEFAULT_EF,all.ef.factors);
     if(all.ef.cat)CAT_FACTORS=Object.assign({},DEFAULT_CAT,all.ef.cat);
@@ -1469,7 +1573,7 @@ async function connectGS(url,silent){
     else{setConnStatus('error');if(!silent)alert('เชื่อมต่อไม่สำเร็จ: '+((all&&all.error)||'รูปแบบข้อมูลไม่ถูกต้อง'));}
   }catch(e){setConnStatus('error');if(!silent)alert('เชื่อมต่อไม่สำเร็จ: '+e.message+'\n\nตรวจสอบว่า URL ถูกต้อง และตั้งค่า Web App เป็น "Anyone" แล้ว');}
 }
-function disconnectGS(){GS_URL='';localStorage.removeItem('wms_gs_url');setConnStatus('local');toast('ตัดการเชื่อมต่อ Google Sheets แล้ว (กลับเป็นโหมด Local)');}
+function disconnectGS(){GS_URL='';localStorage.setItem('wms_gs_url','');setConnStatus('local');toast('ตัดการเชื่อมต่อ Google Sheets แล้ว (กลับเป็นโหมด Local)');}
 async function gsLogin(user,pass){
   if(!gsConfigured())return {ok:false,error:'ยังไม่ได้เชื่อมต่อ Google Sheets'};
   try{
@@ -2312,6 +2416,154 @@ function saveRecord(){
   closeModal('modal-form');renderTable(formType,curFilter[formType]||'all');toast('บันทึก '+TYPES[formType].name+' สำเร็จ');
 }
 
+/* ===== ENTRY (flow แบบ Kiosk ในแอป: เลือกอาคาร/ชั้น → กรอกหลายชนิด → ส่ง) ===== */
+let entryDate='',entryBld='',entryFloor='',entryDraft=null,entryRecOpen=false,entryOpenGroup='office';
+const ENTRY_TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+let entryCalView={y:0,m:0};
+function eG(id){return document.getElementById(id);}
+function entryYMD(k){const p=String(k).split('-').map(Number);return{y:p[0],m:p[1]-1,d:p[2]};}
+function entryYMDKey(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+function entryThaiFull(k){if(!k)return '—';const o=entryYMD(k);return o.d+' '+ENTRY_TH_MONTHS[o.m]+' '+(o.y+543);}
+function entryTodayP(){const t=new Date();return{y:t.getFullYear(),m:t.getMonth(),d:t.getDate()};}
+function entryIsFuture(y,m,d){const t=entryTodayP();if(y!==t.y)return y>t.y;if(m!==t.m)return m>t.m;return d>t.d;}
+function entryDateDisplay(){const b=eG('e-date-btn');if(b)b.textContent=entryThaiFull(entryDate);}
+function entryOpenCal(){const o=entryYMD(entryDate);entryCalView={y:o.y,m:o.m};openModal('modal-ecal');entryRenderCal();}
+function entryCalNav(s){let y=entryCalView.y,m=entryCalView.m+s;if(m<0){m=11;y--;}if(m>11){m=0;y++;}const t=entryTodayP();if(y>t.y||(y===t.y&&m>t.m))return;entryCalView={y,m};entryRenderCal();}
+function entryRenderCal(){
+  const y=entryCalView.y,m=entryCalView.m,t=entryTodayP(),sel=entryYMD(entryDate);
+  eG('ecal-title').textContent=ENTRY_TH_MONTHS[m]+' '+(y+543);
+  eG('ecal-next').disabled=(y>t.y||(y===t.y&&m>=t.m));
+  const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let cells='';
+  for(let i=0;i<first;i++)cells+='<div class="pad"></div>';
+  for(let d=1;d<=days;d++){
+    const fut=entryIsFuture(y,m,d),isSel=(sel.y===y&&sel.m===m&&sel.d===d),isToday=(t.y===y&&t.m===m&&t.d===d);
+    cells+=`<button type="button" class="ecal-day${isSel?' sel':''}${isToday?' today':''}" ${fut?'disabled':''} onclick="entryCalPick(${y},${m},${d})">${d}</button>`;
+  }
+  eG('ecal-grid').innerHTML=cells;
+}
+function entryCalPick(y,m,d){if(entryIsFuture(y,m,d))return;entryDate=entryYMDKey(y,m,d);closeModal('modal-ecal');entryDateDisplay();if(eG('entry-step2')&&eG('entry-step2').style.display!=='none')eG('entry-ctx').textContent='🏢 '+bName(entryBld)+' · ชั้น '+entryFloor+' · '+entryThaiShort(entryDate);}
+function entryCalToday(){const t=entryTodayP();entryDate=entryYMDKey(t.y,t.m,t.d);closeModal('modal-ecal');entryDateDisplay();}
+function entryIsAdmin(){return !!(USER&&(USER.role==='admin'||(Array.isArray(USER.can)&&USER.can.indexOf('admin')>-1)));}
+function entryAllowedKeys(){return entryIsAdmin()?Object.keys(TYPES):STAFF_TYPES;}
+function entryClean(v){let s=String(v).replace(/[^\d.]/g,'');const i=s.indexOf('.');if(i>=0)s=s.slice(0,i+1)+s.slice(i+1).replace(/\./g,'');const n=parseFloat(s);return(isNaN(n)||n<0)?0:Math.round(n*100)/100;}
+function entryFmtKg(n){const v=Math.round((Number(n)||0)*100)/100;return v%1===0?v.toFixed(0):v.toFixed(2);}
+function entryThaiShort(key){const p=String(key).split('-');return p[2]+'/'+p[1]+'/'+(parseInt(p[0],10)+543);}
+function openEntry(focusType){
+  if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
+  entryBld='';entryFloor='';entryRecOpen=(focusType==='recycle');entryOpenGroup=(focusType==='recycle'?'recycle':(focusType==='ewastep'?'ewastep':'office'));
+  const today=new Date().toISOString().split('T')[0];entryDate=today;
+  entryDateDisplay();
+  entryRenderBuildings();
+  eG('e-floor-field').style.display='none';eG('e-floors').innerHTML='';
+  eG('entry-step1').style.display='block';eG('entry-step2').style.display='none';
+  eG('entry-foot1').style.display='flex';eG('entry-foot2').style.display='none';
+  eG('entry-next').disabled=true;
+  openModal('modal-entry');
+}
+function entryRenderBuildings(){
+  const wrap=eG('e-buildings');if(!wrap)return;
+  wrap.innerHTML=Object.keys(BUILDINGS).map(b=>`<div class="floor-chip" data-b="${b}" onclick="entryPickBuilding('${b}')">${bName(b)}</div>`).join('');
+}
+function entryPickBuilding(b){
+  entryBld=b;
+  document.querySelectorAll('#e-buildings .floor-chip').forEach(x=>x.classList.toggle('sel',x.dataset.b===b));
+  entryRenderFloors();
+}
+function entryRenderFloors(){
+  const b=entryBld;entryFloor='';
+  const ff=eG('e-floor-field');
+  if(!b||!BUILDINGS[b]){ff.style.display='none';eG('entry-next').disabled=true;return;}
+  ff.style.display='block';
+  eG('e-floors').innerHTML=(BUILDINGS[b].floors||[]).map(f=>`<div class="floor-chip" onclick="entryPickFloor(this,'${String(f).replace(/'/g,"\\'")}')">ชั้น ${f}</div>`).join('');
+  eG('entry-next').disabled=true;
+}
+function entryPickFloor(el,f){document.querySelectorAll('#e-floors .floor-chip').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');entryFloor=f;eG('entry-next').disabled=false;}
+function entryGoTypes(){
+  if(!entryBld||!entryFloor){alert('กรุณาเลือกอาคารและชั้น');return;}
+  entryDraft={recycle:{}};entryAllowedKeys().forEach(k=>{if(k!=='recycle')entryDraft[k]=0;});
+  eG('entry-step1').style.display='none';eG('entry-step2').style.display='block';
+  eG('entry-foot1').style.display='none';eG('entry-foot2').style.display='flex';
+  eG('entry-ctx').textContent='🏢 '+bName(entryBld)+' · ชั้น '+entryFloor+' · '+entryThaiShort(entryDate);
+  entryRenderTypes();
+}
+function entryBack(){eG('entry-step2').style.display='none';eG('entry-step1').style.display='block';eG('entry-foot2').style.display='none';eG('entry-foot1').style.display='flex';}
+function entryRecSubtotal(){let s=0;Object.values(entryDraft.recycle).forEach(w=>s+=(w||0));return s;}
+const ENTRY_GROUPS=[
+  {id:'office',  name:'หมวดขยะสำนักงาน', sub:'ทั่วไป · เศษอาหาร · อันตราย · อิเล็กทรอนิกส์', icon:'🗑️', color:'#3b82f6', bg:'#dbeafe', types:['general','food','hazard','ewaste']},
+  {id:'ewastep', name:'ขยะ Ewast+ (AIS)',  sub:'โครงการ AIS Ewast+',                         icon:'💻', color:'#f59e0b', bg:'#fef3c7', types:['ewastep']},
+  {id:'recycle', name:'ขยะรีไซเคิล',        sub:'15 วัสดุ · 4 หมวด',                          icon:'🌿', color:'#22c55e', bg:'#dcfce7', types:['recycle'], recycle:true}
+];
+function entryGroupSubtotal(g){
+  if(g.recycle)return entryRecSubtotal();
+  let s=0;g.types.forEach(k=>s+=(entryDraft[k]||0));return s;
+}
+function entryGroupCount(g){
+  if(g.recycle)return Object.values(entryDraft.recycle).filter(w=>w>0).length;
+  return g.types.filter(k=>entryDraft[k]>0).length;
+}
+function entryTypeRowHTML(k){
+  const t=TYPES[k],w=entryDraft[k]||0;
+  return `<div class="e-wt ${w>0?'on':''}" style="--c:${t.color}">
+    <div class="e-ic" style="background:${t.bg}">${t.icon}</div>
+    <div class="e-info"><div class="e-nm">${t.name}</div><div class="e-sub">น้ำหนัก กิโลกรัม</div></div>
+    <div class="e-kg"><button type="button" onclick="entryAdj('${k}',-1)">−</button>
+      <input type="number" inputmode="decimal" step="0.01" min="0" value="${w>0?w:''}" placeholder="0" onfocus="this.select()" oninput="entrySet('${k}',this.value)">
+      <button type="button" onclick="entryAdj('${k}',1)">+</button></div></div>`;
+}
+function entryRenderTypes(){
+  const admin=entryIsAdmin();
+  eG('e-types').innerHTML=ENTRY_GROUPS.filter(g=>admin||g.id==='office').map(g=>{
+    const sub=entryGroupSubtotal(g),cnt=entryGroupCount(g),open=(entryOpenGroup===g.id);
+    const info=sub>0?(entryFmtKg(sub)+' กก. · '+cnt+' รายการ'):g.sub;
+    let panel='';
+    if(g.recycle)panel=entryRecPanel();
+    else panel=g.types.map(entryTypeRowHTML).join('');
+    return `<button type="button" class="e-grp ${sub>0?'has':''} ${open?'open':''}" style="--c:${g.color};--cs:${g.bg}" onclick="entryToggleGroup('${g.id}')">
+        <span class="e-grp-ic">${g.icon}</span>
+        <span class="e-grp-nm">${g.name}<small>${info}</small></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="e-grp-panel ${open?'open':''}">${panel}</div>`;
+  }).join('');
+  entryUpdKg();
+}
+function entryToggleGroup(id){entryOpenGroup=(entryOpenGroup===id?null:id);entryRenderTypes();}
+function entryRecPanel(){
+  return '<div class="e-rec-cols">'+Object.keys(RECYCLE_CATEGORIES).map(c=>{
+    const cat=RECYCLE_CATEGORIES[c];
+    const rows=cat.items.map(m=>{const w=entryDraft.recycle[m]||0;const s=m.replace(/'/g,"\\'");
+      return `<div class="e-mat ${w>0?'on':''}"><div class="mn">${m}</div><div class="e-kg">
+        <button type="button" onclick="entryAdjMat('${s}',-1)">−</button>
+        <input type="number" inputmode="decimal" step="0.01" min="0" value="${w>0?w:''}" placeholder="0" onfocus="this.select()" oninput="entrySetMat('${s}',this.value)">
+        <button type="button" onclick="entryAdjMat('${s}',1)">+</button></div></div>`;}).join('');
+    return `<div class="e-rec-col"><div class="e-rec-g" style="color:${cat.color}">${cat.icon} ${c}</div>${rows}</div>`;
+  }).join('')+'</div>';
+}
+function entryToggleRec(e){if(e&&e.target&&e.target.closest('.e-kg'))return;entryRecOpen=!entryRecOpen;entryRenderTypes();}
+function entrySet(k,v){entryDraft[k]=entryClean(v);entryUpdKg();}
+function entryAdj(k,d){entryDraft[k]=Math.max(0,Math.round(((entryDraft[k]||0)+d)*100)/100);entryRenderTypes();}
+function entrySetMat(m,v){entryDraft.recycle[m]=entryClean(v);entryUpdKg();}
+function entryAdjMat(m,d){entryDraft.recycle[m]=Math.max(0,Math.round(((entryDraft.recycle[m]||0)+d)*100)/100);entryRenderTypes();}
+function entryTotal(){let s=0;entryAllowedKeys().forEach(k=>{if(k!=='recycle')s+=(entryDraft[k]||0);});return s+entryRecSubtotal();}
+function entryUpdKg(){eG('entry-kg').textContent=entryFmtKg(entryTotal());}
+function entrySubmit(){
+  const recs=[],now=new Date().toISOString(),date=entryDate;
+  entryAllowedKeys().forEach(k=>{
+    if(k==='recycle')return;
+    if(entryDraft[k]>0){const r={id:uid(),type:k,date,building:entryBld,floor:entryFloor,weight:+entryDraft[k].toFixed(2),recorder:TYPES[k].recorder,createdBy:(USER&&USER.name)||'',createdAt:now};if(k==='ewastep')r.note='AIS Ewast+';recs.push(r);}
+  });
+  if(entryAllowedKeys().includes('recycle'))Object.keys(entryDraft.recycle).forEach(m=>{
+    if(entryDraft.recycle[m]>0)recs.push({id:uid(),type:'recycle',date,building:entryBld,floor:entryFloor,weight:+entryDraft.recycle[m].toFixed(2),material:m,vendor:'Vendor ภายนอก',recorder:TYPES.recycle.recorder,createdBy:(USER&&USER.name)||'',createdAt:now});
+  });
+  if(!recs.length){alert('กรุณากรอกน้ำหนักอย่างน้อย 1 ชนิด');return;}
+  const totalKg=entryTotal();
+  recs.forEach(r=>{data.push(r);gsPush('records','add',r);});
+  save();
+  closeModal('modal-entry');
+  const a=document.querySelector('.nav-tab.active');if(a)a.click();else if(typeof renderDashboard==='function')renderDashboard();
+  toast('บันทึก '+recs.length+' รายการ ('+entryFmtKg(totalKg)+' กก.) · '+bName(entryBld)+' ชั้น '+entryFloor);
+}
+
 /* ===== QR ===== */
 function openQR(mode){
   const url=location.origin+location.pathname+'?scan='+mode;
@@ -2747,33 +2999,53 @@ function renderAdmin(){
   const gss=document.getElementById('gs-status');if(gss)gss.textContent=gsConfigured()?('สถานะ: '+(CONN.state==='online'?'🟢 เชื่อมต่อแล้ว':CONN.state==='error'?'🔴 ผิดพลาด':'🟡 รอเชื่อมต่อ')):'สถานะ: 🟡 โหมด Local (ยังไม่เชื่อมต่อ)';
   renderKioskQR();
 }
-function kioskUrl(b){return location.origin+location.pathname+'?kiosk='+b;}
+function kioskMainUrl(){
+  const base=(KIOSK_BASE||DEFAULT_KIOSK_URL).trim();
+  return base+(GS_URL?(base.includes('?')?'&':'?')+'gs='+encodeURIComponent(GS_URL):'');
+}
+function saveKioskBase(){
+  const v=(document.getElementById('kiosk-base').value||'').trim();
+  if(!v){alert('กรุณาวางลิงก์หน้าบันทึก');return;}
+  KIOSK_BASE=v;localStorage.setItem('wms_kiosk_url',v);renderKioskQR();toast('บันทึกลิงก์แล้ว');
+}
+function openKioskHosted(){window.open(kioskMainUrl(),'_blank','noopener');}
+function copyKioskLink(){
+  const url=kioskMainUrl();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(()=>toast('คัดลอกลิงก์แล้ว'),()=>toast('คัดลอกไม่สำเร็จ'));
+  }else{prompt('คัดลอกลิงก์นี้:',url);}
+}
 function renderKioskQR(){
   const wrap=document.getElementById('admin-kiosk-qr');if(!wrap)return;
-  wrap.innerHTML=Object.keys(BUILDINGS).map(b=>{
-    const c=bColor(b);
-    return `<div class="kqr-card" style="border-top-color:${c}">
-      <h4 style="color:${c}">🏢 ${bName(b)}</h4>
-      <div class="kqr-canvas" id="kqr-${b}"></div>
-      <div class="kqr-url">${kioskUrl(b)}</div>
+  const baseInp=document.getElementById('kiosk-base');if(baseInp)baseInp.value=KIOSK_BASE;
+  const url=kioskMainUrl();
+  wrap.innerHTML=`<div class="kqr-card" style="border-top-color:var(--brand,#0f766e);max-width:300px;width:100%">
+      <h4 style="color:#0f766e">📱 QR บันทึกปริมาณขยะสำนักงาน</h4>
+      <div class="kqr-canvas" id="kqr-main"></div>
+      <div class="kqr-url">${url}</div>
       <div class="kqr-btns">
-        <button class="btn btn-ghost btn-sm" onclick="openKiosk('${b}')"><span>🔍</span>ทดลอง</button>
-        <button class="btn btn-primary btn-sm" onclick="printKioskQR('${b}')"><span>🖨️</span>พิมพ์</button>
+        <button class="btn btn-ghost btn-sm" onclick="copyKioskLink()"><span>📋</span>คัดลอก</button>
+        <button class="btn btn-ghost btn-sm" onclick="openKioskHosted()"><span>🔍</span>เปิด</button>
+        <button class="btn btn-ghost btn-sm" onclick="downloadKioskQR()"><span>⬇️</span>บันทึกรูป</button>
+        <button class="btn btn-primary btn-sm" onclick="printKioskQR()"><span>🖨️</span>พิมพ์</button>
       </div>
     </div>`;
-  }).join('');
-  Object.keys(BUILDINGS).forEach(b=>{
-    const el=document.getElementById('kqr-'+b);if(!el)return;
-    QRCode.toCanvas(document.createElement('canvas'),kioskUrl(b),{width:150,margin:1,color:{dark:bColor(b),light:'#ffffff'}},(e,cv)=>{if(!e){el.innerHTML='';el.appendChild(cv);}});
-  });
+  const el=document.getElementById('kqr-main');if(!el)return;
+  QRCode.toCanvas(document.createElement('canvas'),url,{width:220,margin:1,color:{dark:'#0f766e',light:'#ffffff'}},(e,cv)=>{if(!e){cv.id='kqr-canvas';el.innerHTML='';el.appendChild(cv);}});
 }
-function printKioskQR(b){
-  const url=kioskUrl(b);const c=bColor(b);
+function downloadKioskQR(){
+  const cv=document.getElementById('kqr-canvas');
+  if(!cv){toast('ยังสร้าง QR ไม่เสร็จ');return;}
+  const a=document.createElement('a');a.download='QR-บันทึกปริมาณขยะสำนักงาน.png';a.href=cv.toDataURL('image/png');a.click();
+  toast('บันทึกรูป QR แล้ว');
+}
+function printKioskQR(){
+  const url=kioskMainUrl();
   const w=window.open('','_blank');
-  w.document.write(`<html><head><title>QR ${bName(b)}</title><script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"><\/script>
-    <style>body{font-family:sans-serif;text-align:center;padding:40px}h1{color:${c}}#q{margin:20px auto}p{color:#666}</style></head>
-    <body><h1>🏢 ${bName(b)}</h1><h2>บันทึกขยะสำนักงาน</h2><div id="q"></div><p>สแกนเพื่อบันทึกข้อมูลขยะ — เข้าสู่ระบบด้วยชื่อผู้ใช้แม่บ้าน</p>
-    <script>QRCode.toCanvas(document.getElementById('q'),'${url}',{width:300,margin:2,color:{dark:'${c}'}},function(){setTimeout(function(){window.print()},400)});<\/script></body></html>`);
+  w.document.write(`<html><head><title>QR บันทึกปริมาณขยะสำนักงาน</title><script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"><\/script>
+    <style>body{font-family:sans-serif;text-align:center;padding:40px}h1{color:#0f766e}#q{margin:20px auto}p{color:#666}</style></head>
+    <body><h1>บันทึกปริมาณขยะสำนักงาน</h1><div id="q"></div><p>สแกนเพื่อบันทึกข้อมูลขยะ — เข้าสู่ระบบด้วยบัญชีพนักงาน</p>
+    <script>QRCode.toCanvas(document.getElementById('q'),'${url}',{width:300,margin:2,color:{dark:'#0f766e'}},function(){setTimeout(function(){window.print()},400)});<\/script></body></html>`);
   w.document.close();
 }
 function saveEFForm(){
@@ -2843,13 +3115,33 @@ function openLogin(){
   setTimeout(()=>document.getElementById('login-user').focus(),50);
 }
 function closeLogin(){document.getElementById('login').style.display='none';}
-function loginSubmit(){
+async function loginSubmit(){
   const u=document.getElementById('login-user').value.trim();
   const p=document.getElementById('login-pass').value;
   if(!u){alert('กรุณากรอกชื่อผู้ใช้');return;}
   if(!p){alert('กรุณากรอกรหัสผ่าน');return;}
-  USER={name:u};localStorage.setItem('wms_user',JSON.stringify(USER));
-  closeLogin();applyGating();toast('เข้าสู่ระบบในชื่อ '+u);
+  if(!gsConfigured()){alert('ยังไม่ได้เชื่อมต่อ Google Sheets จึงตรวจสอบผู้ใช้ไม่ได้\nกรุณาตั้งค่าการเชื่อมต่อในหน้า Admin ก่อน');return;}
+  const btn=document.querySelector('#login .btn-primary');const old=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='<span>⏳</span>กำลังตรวจสอบ...';}
+  try{
+    const res=await gsLogin(u,p);
+    if(res&&res.ok&&res.user){
+      USER={name:res.user.name||u,role:res.user.role||'staff',building:res.user.building||'',can:res.user.can||[]};
+      localStorage.setItem('wms_user',JSON.stringify(USER));
+      closeLogin();applyGating();toast('เข้าสู่ระบบในชื่อ '+USER.name+' ('+USER.role+')');
+    }else{
+      const e=res&&res.error;
+      const msg=(e==='invalid')?'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'
+               :(e==='inactive')?'บัญชีนี้ถูกปิดใช้งาน'
+               :(e==='no users')?'ยังไม่มีผู้ใช้ในชีต Users (ใช้เมนู "ใส่ผู้ใช้ตัวอย่าง" ใน Apps Script)'
+               :(e||'ตรวจสอบไม่สำเร็จ');
+      alert('เข้าสู่ระบบไม่สำเร็จ: '+msg);
+    }
+  }catch(err){
+    alert('เชื่อมต่อเพื่อตรวจสอบไม่สำเร็จ: '+err.message);
+  }finally{
+    if(btn){btn.disabled=false;btn.innerHTML=old;}
+  }
 }
 function userChipClick(){
   if(USER&&USER.name){
