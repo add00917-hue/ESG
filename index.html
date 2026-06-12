@@ -661,26 +661,26 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <canvas id="chart-trend" height="150"></canvas>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">📊</span>สัดส่วนตามประเภท</div></div>
+      <div class="card-head"><div class="card-title"><span class="ic">📊</span>สัดส่วนตามประเภท<span class="ctx-badge ctx-dash"></span></div></div>
       <div id="type-breakdown" class="typebd"></div>
     </div>
   </div>
 
   <div class="grid-2">
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">🏢</span>ปริมาณขยะตามอาคาร (แยกทุกประเภท)</div></div>
+      <div class="card-head"><div class="card-title"><span class="ic">🏢</span>ปริมาณขยะตามอาคาร (แยกทุกประเภท)<span class="ctx-badge ctx-dash"></span></div></div>
       <canvas id="chart-building" height="150"></canvas>
       <div class="table-wrap" id="building-table" style="margin-top:14px"></div>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">🌿</span>สรุปขยะรีไซเคิล (แยกหมวด)</div></div>
+      <div class="card-head"><div class="card-title"><span class="ic">🌿</span>สรุปขยะรีไซเคิล (แยกหมวด)<span class="ctx-badge ctx-dash"></span></div></div>
       <div id="recycle-summary"></div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-head">
-      <div class="card-title"><span class="ic">📉</span>แนวโน้มปริมาณขยะรายเดือน</div>
+      <div class="card-title"><span class="ic">📉</span>แนวโน้มปริมาณขยะรายเดือน<span class="ctx-badge ctx-dash"></span></div>
       <div class="filters" id="heat-ctrl"></div>
     </div>
     <canvas id="chart-heat-line" height="110"></canvas>
@@ -689,7 +689,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 
   <div class="card">
     <div class="card-head">
-      <div class="card-title"><span class="ic">🕐</span>รายการบันทึกล่าสุด</div>
+      <div class="card-title"><span class="ic">🕐</span>รายการบันทึกล่าสุด<span class="ctx-badge ctx-dash"></span></div>
     </div>
     <div class="table-wrap">
       <table>
@@ -717,14 +717,14 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="kpi-grid" id="m-kpi"></div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณขยะรายเดือน (kg)</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณขยะรายเดือน (kg)<span class="ctx-badge ctx-m"></span></div></div>
     <div class="mtype-btns" id="m-type-btns"></div>
     <div id="m-chart-caption" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
     <canvas id="chart-monthly" height="110"></canvas>
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📋</span>ตารางสรุปรายเดือน (ทุกประเภท)</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📋</span>ตารางสรุปรายเดือน (ทุกประเภท)<span class="ctx-badge ctx-m"></span></div></div>
     <div class="table-wrap"><table>
       <thead><tr id="m-thead"></tr></thead>
       <tbody id="m-tbody"></tbody>
@@ -748,7 +748,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="wp-kpi-food"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="recycle"></span><span class="ctx-badge ctx-wp" data-t="ewastep"></span><span class="ctx-badge ctx-wp" data-t="ewaste"></span><span class="ctx-badge ctx-wp" data-t="hazard"></span><span class="ctx-badge ctx-wp" data-t="general"></span><span class="ctx-badge ctx-wp" data-t="food"></span></div>
       <select class="filter-sel" id="wp-year-food" onchange="renderWastePage('food')"></select></div>
     <div id="wp-cap-food" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
     <canvas id="wp-chart-food" height="100"></canvas>
@@ -918,7 +918,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="cat-kpi"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📦</span>สรุปแยกตามประเภทวัสดุรีไซเคิล</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📦</span>สรุปแยกตามประเภทวัสดุรีไซเคิล<span class="ctx-badge ctx-wp" data-t="recycle"></span></div></div>
     <div class="grid-2">
       <canvas id="chart-material" height="160"></canvas>
       <div class="table-wrap"><table>
@@ -958,19 +958,33 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="page-head">
     <div><div class="page-title"><span class="dot" style="background:#eab308"></span>พลังงาน &amp; น้ำ (Scope 1-3)</div>
       <div class="page-sub">บันทึกการใช้น้ำมัน · ไฟฟ้า · น้ำประปา แยกตามมิเตอร์/จุดวัด เพื่อคำนวณคาร์บอนฟุตพริ้นท์</div></div>
-    <div style="display:flex;gap:10px;align-items:center">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div id="ut-bld-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
       <select class="filter-sel" id="ut-year" onchange="renderUtility()"></select>
       <button class="btn btn-primary" onclick="openUtilEntry()"><span>➕</span>บันทึกข้อมูล</button>
     </div>
   </div>
+  <div class="card" style="padding:12px 16px">
+    <div class="floor-grid" id="ut-month-chips" style="margin:0"></div>
+  </div>
   <div class="kpi-grid" id="ut-kpi"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📈</span>คาร์บอนรายเดือนจากพลังงาน &amp; น้ำ (kgCO₂e)</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📈</span><span id="ut-chart-title">คาร์บอนรายเดือนจากพลังงาน &amp; น้ำ (kgCO₂e)</span></div></div>
     <canvas id="ut-chart" height="100"></canvas>
+    <div id="ut-chart-type" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><span class="ic">📅</span>ตารางสรุปรายเดือน (ทุกประเภท)<span class="ctx-badge ctx-ut"></span></div></div>
+    <p class="page-sub" style="margin-bottom:10px">แตะแถวเดือนเพื่อกรองดูข้อมูลเดือนนั้นทั้งหน้า</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>เดือน</th><th>⛽ น้ำมัน (ลิตร)</th><th>⚡ ไฟฟ้า (kWh)</th><th>💧 ประปา (m³)</th><th>kgCO₂e รวม</th><th>tCO₂e</th></tr></thead>
+      <tbody id="ut-month-body"></tbody>
+      <tfoot id="ut-month-foot"></tfoot>
+    </table></div>
   </div>
   <div class="grid-2" id="ut-meter-cards"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📋</span>รายการบันทึก</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📋</span>รายการบันทึก<span class="ctx-badge ctx-ut-rec"></span></div>
       <div class="tbl-tools">
         <select class="filter-sel" id="ut-filter" onchange="renderUtilTable()">
           <option value="all">ทุกประเภท</option>
@@ -1024,7 +1038,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="kpi-grid" id="esg-kpi"></div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">🧮</span>สรุปปริมาณคาร์บอนฟุตพริ้นท์ตามประเภท (Setcarbon) — tCO₂e</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">🧮</span>สรุปปริมาณคาร์บอนฟุตพริ้นท์ตามประเภท (Setcarbon) — tCO₂e<span class="ctx-badge ctx-esg"></span></div></div>
     <p class="page-sub" style="margin-bottom:14px">แบ่งประเภทข้อมูลตาม Setcarbon · คำนวณ kgCO₂e ÷ 1,000 = tCO₂e · ประเภท 1 = น้ำมัน · ประเภท 2 = ไฟฟ้า · ประเภท 3 = น้ำประปา + ขยะทั่วไป + เศษอาหาร + อันตราย + อิเล็กทรอนิกส์ · อื่นๆ = รีไซเคิล + Ewast+</p>
     <div class="kpi-grid" id="esg-scope-kpi"></div>
     <div class="table-wrap" style="margin-top:14px"><table>
@@ -1036,22 +1050,22 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 
   <div class="grid-2">
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">📈</span>คาร์บอนรายเดือน (kgCO₂e)</div></div>
+      <div class="card-head"><div class="card-title"><span class="ic">📈</span>คาร์บอนรายเดือน (kgCO₂e)<span class="ctx-badge ctx-esg"></span></div></div>
       <canvas id="esg-chart-month" height="120"></canvas>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">🥧</span>สัดส่วนคาร์บอนตามประเภท</div></div>
+      <div class="card-head"><div class="card-title"><span class="ic">🥧</span>สัดส่วนคาร์บอนตามประเภท<span class="ctx-badge ctx-esg"></span></div></div>
       <canvas id="esg-chart-pie" height="120"></canvas>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">🌳</span>เทียบเท่าทางสิ่งแวดล้อม (โดยประมาณ)</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">🌳</span>เทียบเท่าทางสิ่งแวดล้อม (โดยประมาณ)<span class="ctx-badge ctx-esg"></span></div></div>
     <div class="eq-grid" id="esg-equiv"></div>
   </div>
 
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📋</span>สรุปคาร์บอนตามประเภทขยะ</div></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📋</span>สรุปคาร์บอนตามประเภทขยะ<span class="ctx-badge ctx-esg"></span></div></div>
     <div class="table-wrap"><table>
       <thead><tr><th>ประเภทขยะ</th><th>น้ำหนัก (kg)</th><th>Emission Factor</th><th>คาร์บอน (kgCO₂e)</th><th>สัดส่วน</th></tr></thead>
       <tbody id="esg-table"></tbody>
@@ -1324,6 +1338,18 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 .e-datebar .db-chip.done{border-color:#22c55e;color:#15803d;background:#f0fdf4}
 .e-datebar .db-chip.done.cur{background:#15803d;color:#fff}
 .e-datebar .db-sum{margin-left:auto;font-size:12px;font-weight:700;color:#0f766e;align-self:center}
+/* บันทึกพลังงานหลายมิเตอร์ + ตัวบ่งชี้เดือนมีข้อมูล */
+.um-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed #e2e8f0}
+.um-row:last-child{border-bottom:none}
+.um-row .um-name{flex:1;font-size:13px;font-weight:600}
+.um-row .um-name .um-has{display:block;font-size:11px;font-weight:500;color:#16a34a}
+.um-row input{width:120px;padding:9px 10px;border:1.5px solid #cbd5e1;border-radius:9px;font-family:inherit;font-size:14px;text-align:right}
+.um-row input:focus{outline:none;border-color:#0f766e}
+.floor-chip .m-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-left:5px;vertical-align:middle}
+.floor-chip.sel .m-dot{background:#bbf7d0}
+/* ป้ายบริบทบนหัวการ์ด: บอกช่วงเวลา/อาคารที่กำลังดู */
+.ctx-badge{font-size:11px;font-weight:700;color:#0f766e;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle;white-space:nowrap;display:inline-block}
+.ctx-badge:empty{display:none}
 </style>
 <div class="overlay" id="modal-ecal">
   <div class="modal" style="max-width:360px">
@@ -1365,7 +1391,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
         <div class="type-select" id="ut-m-types"></div>
       </div>
       <div class="field">
-        <label>เดือนที่บันทึก <span class="req">*</span> <span class="hint">(ข้อมูลพลังงาน &amp; น้ำ บันทึกเป็นรายเดือน)</span></label>
+        <label>เดือนที่บันทึก <span class="req">*</span> <span class="hint">● เขียว = เดือนที่มีข้อมูลแล้ว</span></label>
         <select class="filter-sel" id="ut-m-year" onchange="utilRenderMonths()" style="margin-bottom:8px"></select>
         <div class="floor-grid" id="ut-m-months"></div>
       </div>
@@ -1374,22 +1400,36 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
         <div class="floor-grid" id="ut-m-blds"></div>
       </div>
       <div class="field" id="ut-m-meter-field" style="display:none">
-        <label>มิเตอร์ / จุดวัด <span class="req">*</span></label>
-        <div class="floor-grid" id="ut-m-meters"></div>
-      </div>
-      <div class="field" id="ut-m-amount-field" style="display:none">
-        <label>ปริมาณ (<span id="ut-m-unit">หน่วย</span>) <span class="req">*</span></label>
-        <input type="number" class="input" id="ut-m-amount" placeholder="0.00" step="0.01" min="0" inputmode="decimal" oninput="utilCalcPreview()">
-        <div class="hint" id="ut-m-preview">รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง</div>
+        <label>กรอกปริมาณทุกมิเตอร์ของอาคารนี้ได้ในครั้งเดียว (<span id="ut-m-unit">หน่วย</span>) <span class="hint">เว้นว่างมิเตอร์ที่ไม่บันทึก</span></label>
+        <div id="ut-m-meter-list"></div>
+        <div class="hint" id="ut-m-preview" style="margin-top:8px">รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง</div>
       </div>
       <div class="field">
         <label>หมายเหตุ</label>
-        <input type="text" class="input" id="ut-m-note" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)">
+        <input type="text" class="input" id="ut-m-note" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี) — ใช้กับทุกรายการที่บันทึกครั้งนี้">
       </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-util')">ยกเลิก</button>
       <button class="btn btn-primary" onclick="saveUtil()"><span>💾</span>บันทึกข้อมูล</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PHOTO VIEWER ============ -->
+<div class="overlay" id="modal-photo">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-head">
+      <div class="modal-title"><span class="ic" style="background:#e0f2fe;color:#0369a1">📷</span><span id="photo-title">รูปถ่ายประกอบ</span></div>
+      <button class="icon-btn" onclick="closeModal('modal-photo')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center">
+      <img id="photo-view" alt="รูปถ่ายประกอบ" style="max-width:100%;max-height:65vh;border-radius:12px;display:block;margin:0 auto"
+        onerror="this.onerror=null;this.src=this.dataset.fallback;">
+      <div class="page-sub" style="margin-top:10px"><a id="photo-link" href="#" target="_blank" rel="noopener" style="color:#0f766e">เปิดรูปต้นฉบับใน Google Drive ↗</a></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-photo')">ปิด</button>
     </div>
   </div>
 </div>
@@ -1842,6 +1882,7 @@ function filteredUtil(){ // ใช้ตัวกรองช่วงเวล�
 function renderDashboard(){
   renderDashPeriodCtrl();
   const _lbl=document.getElementById('dash-period-label'); if(_lbl)_lbl.textContent='📅 '+dashPeriodLabel();
+  setCtx('.ctx-dash',dashPeriodLabel());
   const d=filtered();
   const sum=t=>d.filter(r=>r.type===t).reduce((a,r)=>a+r.weight,0);
   const totals={};Object.keys(TYPES).forEach(t=>totals[t]=sum(t));
@@ -2211,6 +2252,8 @@ function renderHeatLine(){
 /* ===== ปุ่มเลือกช่วงเวลา Dashboard ===== */
 function dashYears(){ const ys=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse(); return ys.length?ys:[String(new Date().getFullYear())]; }
 function dashSetMode(k){ dashMode=k; renderDashboard(); }
+/* ป้ายบริบทบนหัวการ์ด: อัปเดตตามตัวกรองที่เลือก */
+function setCtx(sel,txt){document.querySelectorAll(sel).forEach(e=>e.textContent=txt);}
 function dashSet(k,v){ if(k==='year')dashYear=v; else dashMonth=+v; renderDashboard(); }
 function dashPeriodLabel(){
   if(dashMode==='all') return 'ข้อมูลทั้งหมด';
@@ -2366,7 +2409,8 @@ function renderTable(type,bfilter){
       const ci=RECYCLE_CATEGORIES[cat]?RECYCLE_CATEGORIES[cat].icon:'';
       matCell=`<td><span class="badge" style="background:${cc}22;color:${cc}">${ci} ${cat}</span></td><td>${r.material||'-'}</td>`;
     }
-    const actions=(can('edit')||can('delete'))?`<div class="t-actions">
+    const actions=(can('edit')||can('delete')||r.photo)?`<div class="t-actions">
+        ${r.photo?`<button class="icon-btn" title="ดูรูปถ่ายประกอบ" onclick="openPhoto('${String(r.photo).replace(/'/g,'')}','${fmt(r.date)} · ${bName(r.building)} ชั้น ${String(r.floor).replace(/'/g,'')}')">📷</button>`:''}
         ${can('edit')?`<button class="icon-btn" title="แก้ไข" onclick="editRecord('${r.id}')">✏️</button>`:''}
         ${can('delete')?`<button class="icon-btn del" title="ลบ" onclick="delRecord('${r.id}','${type}')">🗑️</button>`:''}
       </div>`:'<span class="page-sub" style="font-size:12px">—</span>';
@@ -2394,6 +2438,16 @@ function renderTable(type,bfilter){
   renderWastePage(type);
 }
 function gotoPage(type,p){pageState[type]=p;renderTable(type);}
+/* ดูรูปถ่ายประกอบจาก kiosk (เก็บใน Google Drive เป็น fileId) */
+function openPhoto(fileId,title){
+  if(!fileId)return;
+  const img=document.getElementById('photo-view');
+  img.src='https://lh3.googleusercontent.com/d/'+fileId+'=w1200';                        // เส้นทางหลัก
+  img.dataset.fallback='https://drive.google.com/thumbnail?id='+fileId+'&sz=w1200';      // สำรองเมื่อโหลดไม่ได้
+  document.getElementById('photo-link').href='https://drive.google.com/file/d/'+fileId+'/view';
+  document.getElementById('photo-title').textContent='📷 '+(title||'รูปถ่ายประกอบ');
+  openModal('modal-photo');
+}
 
 /* ===== MONTH HELPERS ===== */
 function monthRange(){
@@ -2429,6 +2483,7 @@ function renderWastePage(type){
   }
   const year=ysel.value;
   const bfilter=curFilter[type]||'all';
+  setCtx('.ctx-wp[data-t="'+type+'"]','ปี '+(+year+543)+' · '+(bfilter==='all'?'ทุกอาคาร':bName(bfilter)));
   const rows=data.filter(r=>r.type===type&&(bfilter==='all'||r.building===bfilter));
 
   // monthly array for chosen year
@@ -3022,6 +3077,7 @@ function renderMonthly(){
   renderBldFilter('monthly');
   const year=document.getElementById('m-year').value;
   const bf=curFilter['monthly']||'all';
+  setCtx('.ctx-m','ปี '+(+year+543)+' · '+(bf==='all'?'ทุกอาคาร':bName(bf)));
   const yearData=data.filter(r=>r.date.slice(0,4)===year&&(bf==='all'||r.building===bf));
   const allKeys=Object.keys(TYPES);
 
@@ -3131,6 +3187,7 @@ function renderESG(){
   const year=ysel.value;
   renderBldFilter('esg');
   const bf=curFilter['esg']||'all';
+  setCtx('.ctx-esg',(year==='all'?'ทุกปี':'ปี '+(+year+543))+' · '+(bf==='all'?'ทุกอาคาร':bName(bf)));
   let rows=year==='all'?data:data.filter(r=>r.date.slice(0,4)===year);
   if(bf!=='all')rows=rows.filter(r=>r.building===bf);
 
@@ -3370,8 +3427,14 @@ function kioskLogout(){
 }
 
 /* ===== UTILITY PAGE (น้ำมัน / ไฟฟ้า / น้ำประปา) ===== */
-let utChart=null,utPage=1;
+let utChart=null,utPage=1,utViewMonth=-1,utViewBld='all',utChartType='all',utPeriodLbl='';   // ตัวกรองหน้า: เดือน / อาคาร / ชนิด(เฉพาะกราฟ)
 const UT_PAGE_SIZE=12;
+function utBldKeys(){ // อาคารทั้งหมดที่มีมิเตอร์
+  const s=new Set();Object.keys(UTILITIES).forEach(ut=>Object.keys(UTILITIES[ut].meters).forEach(b=>s.add(b)));
+  return [...s];
+}
+function utSetBld(b){utViewBld=b;utPage=1;renderUtility();}
+function utSetChartType(t){utChartType=t;renderUtility();}
 function utYearSel(){
   const sel=document.getElementById('ut-year');if(!sel)return 'all';
   if(!sel.options.length){
@@ -3382,13 +3445,50 @@ function utYearSel(){
   }
   return sel.value;
 }
-function utRows(){
+function utRows(){ // กรองตามปี + อาคาร
   const y=utYearSel();
-  return y==='all'?udata:udata.filter(r=>String(r.date).slice(0,4)===y);
+  let rows=y==='all'?udata:udata.filter(r=>String(r.date).slice(0,4)===y);
+  if(utViewBld!=='all')rows=rows.filter(r=>r.building===utViewBld);
+  return rows;
+}
+function utRowsM(){ // กรองตามปี + เดือนที่เลือก
+  const rows=utRows();
+  if(utViewMonth<0)return rows;
+  return rows.filter(r=>(+String(r.date).slice(5,7))-1===utViewMonth);
+}
+function utSetMonth(m){utViewMonth=m;utPage=1;renderUtility();}
+/* แถบปุ่มเดือนบนหน้า: ทั้งปี + 12 เดือน (มีจุดเขียวเดือนที่มีข้อมูล) */
+function utRenderMonthChips(){
+  const wrap=document.getElementById('ut-month-chips');if(!wrap)return;
+  const rows=utRows();
+  const has=Array.from({length:12},(_,m)=>rows.some(r=>(+String(r.date).slice(5,7))-1===m));
+  wrap.innerHTML=`<div class="floor-chip ${utViewMonth<0?'sel':''}" onclick="utSetMonth(-1)">ทั้งปี</div>`+
+    MONTHS_SHORT.map((nm,m)=>`<div class="floor-chip ${utViewMonth===m?'sel':''}" onclick="utSetMonth(${m})">${nm}${has[m]?'<span class="m-dot"></span>':''}</div>`).join('');
+}
+/* แถบปุ่มอาคาร */
+function utRenderBldChips(){
+  const wrap=document.getElementById('ut-bld-chips');if(!wrap)return;
+  wrap.innerHTML=`<div class="floor-chip ${utViewBld==='all'?'sel':''}" onclick="utSetBld('all')">🏢 ทุกอาคาร</div>`+
+    utBldKeys().map(b=>`<div class="floor-chip ${utViewBld===b?'sel':''}" onclick="utSetBld('${b}')">${bName(b)}</div>`).join('');
+}
+/* แถบปุ่มชนิดข้อมูลของกราฟ */
+function utRenderChartTypeChips(){
+  const wrap=document.getElementById('ut-chart-type');if(!wrap)return;
+  wrap.innerHTML=`<div class="floor-chip ${utChartType==='all'?'sel':''}" onclick="utSetChartType('all')">ทุกชนิด</div>`+
+    Object.keys(UTILITIES).map(ut=>`<div class="floor-chip ${utChartType===ut?'sel':''}" onclick="utSetChartType('${ut}')">${UTILITIES[ut].icon} ${UTILITIES[ut].short}</div>`).join('');
 }
 function renderUtility(){
-  const rows=utRows();
-  // KPI ต่อประเภท
+  utRenderBldChips();
+  utRenderMonthChips();
+  utRenderChartTypeChips();
+  const rows=utRowsM();
+  const y=utYearSel();
+  const periodLbl=(utViewMonth<0?'':MONTHS_SHORT[utViewMonth]+' ')+(y==='all'?'ทุกปี':('ปี '+(+y+543)))+(utViewBld!=='all'?(' · '+bName(utViewBld)):' · ทุกอาคาร');
+  utPeriodLbl=periodLbl;
+  // ตารางสรุปรายเดือนแสดงทั้งปีเสมอ จึงติดป้ายเฉพาะ ปี+อาคาร
+  setCtx('.ctx-ut',(y==='all'?'ทุกปี':('ปี '+(+y+543)))+(utViewBld!=='all'?(' · '+bName(utViewBld)):' · ทุกอาคาร'));
+  setCtx('.ctx-ut-rec',periodLbl);
+  // KPI ต่อประเภท (ตามช่วงที่เลือก)
   const kpi=document.getElementById('ut-kpi');
   if(kpi)kpi.innerHTML=Object.keys(UTILITIES).map(ut=>{
     const U=UTILITIES[ut];
@@ -3397,64 +3497,117 @@ function renderUtility(){
     const c=rs.reduce((a,r)=>a+utilCO2(r),0);
     return `<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:${U.bg}">${U.icon}</div>
       <span class="badge" style="background:${U.color}22;color:${U.color}">ประเภท ${U.scope}</span></div>
-      <div class="kpi-label">${U.name}</div>
+      <div class="kpi-label">${U.name} · ${periodLbl}</div>
       <div class="kpi-value" style="font-size:21px">${amt.toLocaleString(undefined,{maximumFractionDigits:2})} <span class="kpi-unit">${U.unit}</span></div>
       <div class="page-sub" style="font-size:12px;margin-top:4px">≈ ${fmtCO2(c)} · EF ${utilFactor(ut)} ${U.efUnit}</div></div>`;
   }).join('')+(function(){
     const tot=rows.reduce((a,r)=>a+utilCO2(r),0);
     return `<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:#dcfce7">🌍</div></div>
-      <div class="kpi-label">คาร์บอนรวมจากพลังงาน &amp; น้ำ</div>
+      <div class="kpi-label">คาร์บอนรวม · ${periodLbl}</div>
       <div class="kpi-value" style="font-size:21px">${fmtCO2(tot)}</div>
       <div class="page-sub" style="font-size:12px;margin-top:4px">= ${(tot/1000).toFixed(3)} tCO₂e</div></div>`;
   })();
-  // กราฟรายเดือน 3 ชุดข้อมูล
+  // กราฟ: ทั้งปี = รายเดือนซ้อนชั้น / เลือกเดือน = แยกรายมิเตอร์ของเดือนนั้น (กรองชนิด+อาคารตามปุ่ม)
   const cv=document.getElementById('ut-chart');
   if(cv){
     if(utChart)utChart.destroy();
     Chart.defaults.font.family="'Sarabun',sans-serif";
-    const y=utYearSel();
-    let labels,datasets;
-    if(y==='all'){
-      const years=[...new Set(udata.map(r=>String(r.date).slice(0,4)))].sort();
-      labels=years.map(v=>'ปี '+(+v+543));
-      datasets=Object.keys(UTILITIES).map(ut=>({label:UTILITIES[ut].short,
-        data:years.map(v=>+udata.filter(r=>r.ut===ut&&String(r.date).slice(0,4)===v).reduce((a,r)=>a+utilCO2(r),0).toFixed(2)),
-        backgroundColor:UTILITIES[ut].color,borderRadius:5}));
+    const title=document.getElementById('ut-chart-title');
+    const chartUts=utChartType==='all'?Object.keys(UTILITIES):[utChartType];
+    const typeLbl=utChartType==='all'?'':(' · '+UTILITIES[utChartType].short);
+    if(utViewMonth<0){
+      if(title)title.textContent='คาร์บอนรายเดือนจากพลังงาน & น้ำ (kgCO₂e) · '+periodLbl+typeLbl;
+      const yrRows=utRows();
+      const allRows=utViewBld==='all'?udata:udata.filter(r=>r.building===utViewBld);
+      let labels,datasets;
+      if(y==='all'){
+        const years=[...new Set(allRows.map(r=>String(r.date).slice(0,4)))].sort();
+        labels=years.map(v=>'ปี '+(+v+543));
+        datasets=chartUts.map(ut=>({label:UTILITIES[ut].short,
+          data:years.map(v=>+allRows.filter(r=>r.ut===ut&&String(r.date).slice(0,4)===v).reduce((a,r)=>a+utilCO2(r),0).toFixed(2)),
+          backgroundColor:UTILITIES[ut].color,borderRadius:5}));
+      }else{
+        labels=MONTHS_SHORT;
+        datasets=chartUts.map(ut=>({label:UTILITIES[ut].short,
+          data:MONTHS.map((_,mi)=>+yrRows.filter(r=>r.ut===ut&&(+String(r.date).slice(5,7))-1===mi).reduce((a,r)=>a+utilCO2(r),0).toFixed(2)),
+          backgroundColor:UTILITIES[ut].color,borderRadius:5}));
+      }
+      utChart=new Chart(cv,{type:'bar',data:{labels,datasets},
+        options:{responsive:true,plugins:{legend:{position:'bottom'},datalabels:{display:false}},
+          scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
     }else{
-      labels=MONTHS_SHORT;
-      datasets=Object.keys(UTILITIES).map(ut=>({label:UTILITIES[ut].short,
-        data:MONTHS.map((_,mi)=>+rows.filter(r=>r.ut===ut&&(+String(r.date).slice(5,7))-1===mi).reduce((a,r)=>a+utilCO2(r),0).toFixed(2)),
-        backgroundColor:UTILITIES[ut].color,borderRadius:5}));
+      // โหมดรายเดือน: แท่งแยกรายมิเตอร์ สีตามประเภท
+      if(title)title.textContent='คาร์บอนแยกรายมิเตอร์ (kgCO₂e) · '+periodLbl+typeLbl;
+      const items=[];
+      chartUts.forEach(ut=>{
+        const U=UTILITIES[ut];
+        Object.keys(U.meters).forEach(b=>{
+          if(utViewBld!=='all'&&b!==utViewBld)return;
+          U.meters[b].forEach(meter=>{
+            const c=rows.filter(r=>r.ut===ut&&r.building===b&&r.meter===meter).reduce((a,r)=>a+utilCO2(r),0);
+            if(c>0)items.push({lbl:U.icon+' '+bName(b)+' · '+meter,c:+c.toFixed(2),color:U.color});
+          });
+        });
+      });
+      utChart=new Chart(cv,{type:'bar',
+        data:{labels:items.map(i=>i.lbl),datasets:[{label:'kgCO₂e',data:items.map(i=>i.c),backgroundColor:items.map(i=>i.color),borderRadius:5}]},
+        options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{beginAtZero:true}}}});
     }
-    utChart=new Chart(cv,{type:'bar',data:{labels,datasets},
-      options:{responsive:true,plugins:{legend:{position:'bottom'},datalabels:{display:false}},
-        scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
   }
-  // การ์ดสรุปต่อมิเตอร์
+  renderUtilMonthTable();
+  // การ์ดสรุปต่อมิเตอร์ (ตามช่วงที่เลือก)
   const mc=document.getElementById('ut-meter-cards');
   if(mc)mc.innerHTML=Object.keys(UTILITIES).map(ut=>{
     const U=UTILITIES[ut];
-    const lines=Object.keys(U.meters).map(b=>U.meters[b].map(meter=>{
+    const lines=Object.keys(U.meters).filter(b=>utViewBld==='all'||b===utViewBld).map(b=>U.meters[b].map(meter=>{
       const rs=rows.filter(r=>r.ut===ut&&r.building===b&&r.meter===meter);
       const amt=rs.reduce((a,r)=>a+(r.amount||0),0);
       const c=rs.reduce((a,r)=>a+utilCO2(r),0);
       return `<tr><td>${bBadge(b)}</td><td>${meter}</td><td class="t-weight">${amt.toLocaleString(undefined,{maximumFractionDigits:2})} ${U.unit}</td><td class="t-weight">${c.toFixed(2)}</td></tr>`;
     }).join('')).join('');
-    return `<div class="card"><div class="card-head"><div class="card-title"><span class="ic" style="background:${U.bg}">${U.icon}</span>${U.name} <span class="badge" style="background:${U.color}22;color:${U.color}">ประเภท ${U.scope} · ${U.efUnit}</span></div></div>
+    return `<div class="card"><div class="card-head"><div class="card-title"><span class="ic" style="background:${U.bg}">${U.icon}</span>${U.name} <span class="badge" style="background:${U.color}22;color:${U.color}">ประเภท ${U.scope} · ${U.efUnit}</span><span class="ctx-badge">${periodLbl}</span></div></div>
       <div class="table-wrap"><table><thead><tr><th>อาคาร</th><th>มิเตอร์ / จุดวัด</th><th>ปริมาณรวม</th><th>kgCO₂e</th></tr></thead><tbody>${lines||'<tr><td colspan="4"><div class="empty">ยังไม่มีข้อมูล</div></td></tr>'}</tbody></table></div></div>`;
   }).join('');
   renderUtilTable();
 }
+/* ตารางสรุปรายเดือน (ทุกประเภท) — แตะแถวเพื่อกรองเดือน */
+function renderUtilMonthTable(){
+  const body=document.getElementById('ut-month-body'),foot=document.getElementById('ut-month-foot');
+  if(!body)return;
+  const rows=utRows();
+  const tot={fuel:0,elec:0,water:0,co2:0};
+  body.innerHTML=MONTHS.map((nm,m)=>{
+    const mr=rows.filter(r=>(+String(r.date).slice(5,7))-1===m);
+    const a={fuel:0,elec:0,water:0};let co2v=0;
+    mr.forEach(r=>{if(a[r.ut]!==undefined)a[r.ut]+=(r.amount||0);co2v+=utilCO2(r);});
+    tot.fuel+=a.fuel;tot.elec+=a.elec;tot.water+=a.water;tot.co2+=co2v;
+    const cur=(utViewMonth===m);
+    return `<tr onclick="utSetMonth(${cur?-1:m})" style="cursor:pointer${cur?';background:#f0fdfa;font-weight:700':''}">
+      <td>${cur?'▶ ':''}${nm}</td>
+      <td class="t-weight">${a.fuel?a.fuel.toLocaleString(undefined,{maximumFractionDigits:2}):'-'}</td>
+      <td class="t-weight">${a.elec?a.elec.toLocaleString(undefined,{maximumFractionDigits:2}):'-'}</td>
+      <td class="t-weight">${a.water?a.water.toLocaleString(undefined,{maximumFractionDigits:2}):'-'}</td>
+      <td class="t-weight">${co2v?co2v.toFixed(2):'-'}</td>
+      <td class="t-weight">${co2v?(co2v/1000).toFixed(3):'-'}</td></tr>`;
+  }).join('');
+  if(foot)foot.innerHTML=`<tr style="background:#f8fafc;font-weight:700">
+    <td>รวมทั้งปี</td>
+    <td class="t-weight">${tot.fuel.toLocaleString(undefined,{maximumFractionDigits:2})}</td>
+    <td class="t-weight">${tot.elec.toLocaleString(undefined,{maximumFractionDigits:2})}</td>
+    <td class="t-weight">${tot.water.toLocaleString(undefined,{maximumFractionDigits:2})}</td>
+    <td class="t-weight">${tot.co2.toFixed(2)}</td>
+    <td class="t-weight">${(tot.co2/1000).toFixed(3)}</td></tr>`;
+}
 function renderUtilTable(){
   const body=document.getElementById('ut-body');if(!body)return;
   const fl=(document.getElementById('ut-filter')||{}).value||'all';
-  let rows=utRows();
+  let rows=utRowsM();
   if(fl!=='all')rows=rows.filter(r=>r.ut===fl);
   rows=[...rows].sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.id).localeCompare(String(a.id)));
   const pages=Math.max(1,Math.ceil(rows.length/UT_PAGE_SIZE));
   if(utPage>pages)utPage=pages;
   const pageRows=rows.slice((utPage-1)*UT_PAGE_SIZE,utPage*UT_PAGE_SIZE);
-  if(!rows.length){body.innerHTML='<tr><td colspan="8"><div class="empty"><span class="ic">📭</span>ยังไม่มีข้อมูล กดปุ่ม "บันทึกข้อมูล" เพื่อเพิ่ม</div></td></tr>';document.getElementById('ut-pager').innerHTML='';return;}
+  if(!rows.length){body.innerHTML='<tr><td colspan="8"><div class="empty"><span class="ic">📭</span>ยังไม่มีข้อมูลในช่วงที่เลือก</div></td></tr>';document.getElementById('ut-pager').innerHTML='';return;}
   body.innerHTML=pageRows.map(r=>{
     const U=UTILITIES[r.ut]||{icon:'❓',short:r.ut,unit:'',efUnit:'',color:'#64748b'};
     const mlbl=(function(d){const p=String(d).split('-');return (p.length>=2&&MONTHS_SHORT[(+p[1])-1])?(MONTHS_SHORT[(+p[1])-1]+' '+((+p[0])+543)):fmt(d);})(r.date);
@@ -3466,7 +3619,10 @@ function renderUtilTable(){
       <td class="t-weight">${(r.amount||0).toLocaleString(undefined,{maximumFractionDigits:2})} ${U.unit}</td>
       <td>${utilFactor(r.ut)}</td>
       <td class="t-weight">${utilCO2(r).toFixed(2)}</td>
-      <td class="t-actions"><button class="icon-btn del" title="ลบ" onclick="delUtil('${r.id}')">🗑️</button></td></tr>`;
+      <td class="t-actions">
+        ${can('edit')?`<button class="icon-btn" title="แก้ไข" onclick="openUtilEdit('${r.id}')">✏️</button>`:''}
+        ${can('delete')?`<button class="icon-btn del" title="ลบ" onclick="delUtil('${r.id}')">🗑️</button>`:''}
+      </td></tr>`;
   }).join('');
   const pager=document.getElementById('ut-pager');
   pager.innerHTML=pages>1?Array.from({length:pages},(_,i)=>`<button class="pg-btn ${i+1===utPage?'active':''}" onclick="utPage=${i+1};renderUtilTable()">${i+1}</button>`).join(''):'';
@@ -3477,10 +3633,21 @@ function delUtil(id){
   udata=udata.filter(r=>r.id!==id);saveUtil_();gsPush('utilities','delete',{id});
   renderUtility();toast('ลบรายการแล้ว');
 }
-/* --- Modal บันทึก (รายเดือน) --- */
-let utSel={ut:'',bld:'',meter:''};
+
+/* --- Modal บันทึก (รายเดือน · กรอกทุกมิเตอร์ของอาคารครั้งเดียว) --- */
+let utSel={ut:'',bld:''};
 let utMonth=-1,utYear=0;
+let utEditId=null;   // โหมดแก้ไข: id ของรายการเดิม
 const EN_MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function utilHasData(ut,bld,y,m){ // มีข้อมูลของประเภท(+อาคาร)นี้ ในเดือน/ปีนั้นไหม
+  const ym=y+'-'+String(m+1).padStart(2,'0');
+  return udata.some(r=>r.ut===ut&&(!bld||r.building===bld)&&String(r.date).slice(0,7)===ym);
+}
+function utilExisting(ut,bld,meter,y,m){ // ยอดเดิมของมิเตอร์ในเดือนนั้น (ถ้ามี)
+  const ym=y+'-'+String(m+1).padStart(2,'0');
+  return udata.filter(r=>r.ut===ut&&r.building===bld&&r.meter===meter&&String(r.date).slice(0,7)===ym)
+    .reduce((a,r)=>a+(r.amount||0),0);
+}
 function utilRenderMonths(){
   const ysel=document.getElementById('ut-m-year');
   utYear=+ysel.value;
@@ -3488,84 +3655,129 @@ function utilRenderMonths(){
   if(utYear===cy&&utMonth>cm)utMonth=cm;   // กันเดือนอนาคตของปีปัจจุบัน
   document.getElementById('ut-m-months').innerHTML=MONTHS_SHORT.map((nm,i)=>{
     const fut=(utYear===cy&&i>cm);
-    return `<div class="floor-chip ${i===utMonth?'sel':''}" style="${fut?'opacity:.3;pointer-events:none':''}" onclick="utilPickMonth(${i})">${nm} (${EN_MONTHS_SHORT[i]})</div>`;
+    const has=utSel.ut?utilHasData(utSel.ut,utSel.bld,utYear,i):false;   // ● = มีข้อมูลแล้ว
+    return `<div class="floor-chip ${i===utMonth?'sel':''}" style="${fut?'opacity:.3;pointer-events:none':''}" onclick="utilPickMonth(${i})" title="${has?'เดือนนี้มีข้อมูลแล้ว':''}">${nm} (${EN_MONTHS_SHORT[i]})${has?'<span class="m-dot"></span>':''}</div>`;
   }).join('');
+  if(utSel.bld)utilRenderMeterList(utEditId?udata.find(x=>x.id===utEditId):undefined);   // เปลี่ยนเดือน → รีเฟรชรายการมิเตอร์
 }
 function utilPickMonth(i){utMonth=i;utilRenderMonths();}
 function openUtilEntry(presetUt){
   if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
-  utSel={ut:'',bld:'',meter:''};
+  utEditId=null;utSel={ut:'',bld:''};
+  document.getElementById('ut-m-title').textContent='บันทึกพลังงาน & น้ำ';
   const now=new Date();utYear=now.getFullYear();utMonth=now.getMonth();
-  // ดรอปดาวน์ปี พ.ศ.: ย้อนหลัง 5 ปีถึงปีปัจจุบัน
   let yopts='';for(let yy=now.getFullYear();yy>=now.getFullYear()-5;yy--)yopts+=`<option value="${yy}">${yy+543}</option>`;
   document.getElementById('ut-m-year').innerHTML=yopts;
-  utilRenderMonths();
-  document.getElementById('ut-m-amount').value='';
   document.getElementById('ut-m-note').value='';
   document.getElementById('ut-m-types').innerHTML=Object.keys(UTILITIES).map(ut=>
     `<div class="type-opt" data-ut="${ut}" onclick="utilPickType('${ut}')"><span class="ic">${UTILITIES[ut].icon}</span><span class="lbl">${UTILITIES[ut].short}</span></div>`).join('');
-  ['ut-m-bld-field','ut-m-meter-field','ut-m-amount-field'].forEach(id=>document.getElementById(id).style.display='none');
+  ['ut-m-bld-field','ut-m-meter-field'].forEach(id=>document.getElementById(id).style.display='none');
+  utilRenderMonths();
   openModal('modal-util');
   if(presetUt&&UTILITIES[presetUt])utilPickType(presetUt);
 }
 function utilPickType(ut){
-  utSel.ut=ut;utSel.bld='';utSel.meter='';
+  if(utEditId)return;   // โหมดแก้ไข ล็อคประเภท
+  utSel.ut=ut;utSel.bld='';
   document.querySelectorAll('#ut-m-types .type-opt').forEach(x=>x.classList.toggle('sel',x.dataset.ut===ut));
   const U=UTILITIES[ut];
   const ic=document.getElementById('ut-m-icon');ic.textContent=U.icon;ic.style.background=U.bg;ic.style.color=U.color;
   document.getElementById('ut-m-title').textContent='บันทึก'+U.name;
   document.getElementById('ut-m-unit').textContent=U.unit;
-  // อาคารเฉพาะที่มีมิเตอร์ของประเภทนี้
   const blds=Object.keys(U.meters);
   document.getElementById('ut-m-blds').innerHTML=blds.map(b=>`<div class="floor-chip" data-b="${b}" onclick="utilPickBld('${b}')">${bName(b)}</div>`).join('');
   document.getElementById('ut-m-bld-field').style.display='block';
   document.getElementById('ut-m-meter-field').style.display='none';
-  document.getElementById('ut-m-amount-field').style.display='none';
+  utilRenderMonths();   // อัปเดต ● ตามประเภท
   if(blds.length===1)utilPickBld(blds[0]);
 }
 function utilPickBld(b){
-  utSel.bld=b;utSel.meter='';
+  if(utEditId)return;   // โหมดแก้ไข ล็อคอาคาร
+  utSel.bld=b;
   document.querySelectorAll('#ut-m-blds .floor-chip').forEach(x=>x.classList.toggle('sel',x.dataset.b===b));
-  const meters=(UTILITIES[utSel.ut].meters[b]||[]);
-  document.getElementById('ut-m-meters').innerHTML=meters.map(m=>{const s=m.replace(/'/g,"\\'");
-    return `<div class="floor-chip" data-m="${m.replace(/"/g,'&quot;')}" onclick="utilPickMeter(this,'${s}')">${m}</div>`;}).join('');
-  document.getElementById('ut-m-meter-field').style.display='block';
-  document.getElementById('ut-m-amount-field').style.display='none';
-  if(meters.length===1){const chip=document.querySelector('#ut-m-meters .floor-chip');if(chip)utilPickMeter(chip,meters[0]);}
+  utilRenderMonths();   // อัปเดต ● ตามอาคาร
+  utilRenderMeterList();
 }
-function utilPickMeter(el,m){
-  document.querySelectorAll('#ut-m-meters .floor-chip').forEach(x=>x.classList.remove('sel'));
-  el.classList.add('sel');utSel.meter=m;
-  document.getElementById('ut-m-amount-field').style.display='block';
+/* รายการมิเตอร์ทั้งหมดของอาคาร — กรอกได้ทุกช่องในครั้งเดียว */
+function utilRenderMeterList(editRec){
+  const wrap=document.getElementById('ut-m-meter-list');
+  const U=UTILITIES[utSel.ut];if(!U||!utSel.bld){wrap.innerHTML='';return;}
+  const meters=editRec?[editRec.meter]:(U.meters[utSel.bld]||[]);
+  wrap.innerHTML=meters.map(m=>{
+    const ex=utilExisting(utSel.ut,utSel.bld,m,utYear,utMonth);
+    const val=editRec?editRec.amount:'';
+    return `<div class="um-row">
+      <span class="um-name">${m}${ex>0&&!editRec?`<span class="um-has">✓ เดือนนี้มีแล้ว ${ex.toLocaleString(undefined,{maximumFractionDigits:2})} ${U.unit}</span>`:''}</span>
+      <input type="number" step="0.01" min="0" inputmode="decimal" placeholder="0.00" value="${val}" data-meter="${m.replace(/"/g,'&quot;')}" oninput="utilCalcPreview()">
+    </div>`;
+  }).join('');
+  document.getElementById('ut-m-meter-field').style.display='block';
   utilCalcPreview();
+}
+function utilCollect(){ // อ่านค่าทุกช่องที่กรอก
+  const out=[];
+  document.querySelectorAll('#ut-m-meter-list input').forEach(inp=>{
+    const v=parseFloat(inp.value);
+    if(!isNaN(v)&&v>0)out.push({meter:inp.dataset.meter,amount:+v.toFixed(2)});
+  });
+  return out;
 }
 function utilCalcPreview(){
   const p=document.getElementById('ut-m-preview');if(!p||!utSel.ut)return;
-  const v=parseFloat(document.getElementById('ut-m-amount').value);
+  const items=utilCollect();
   const U=UTILITIES[utSel.ut];
-  p.textContent=(!isNaN(v)&&v>0)
-    ?('≈ '+(v*utilFactor(utSel.ut)).toFixed(2)+' kgCO₂e (EF '+utilFactor(utSel.ut)+' '+U.efUnit+')')
-    :'รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง';
+  if(!items.length){p.textContent='รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง · เว้นว่างมิเตอร์ที่ไม่บันทึก';return;}
+  const amt=items.reduce((a,i)=>a+i.amount,0);
+  p.textContent=items.length+' มิเตอร์ · รวม '+amt.toLocaleString(undefined,{maximumFractionDigits:2})+' '+U.unit+' ≈ '+(amt*utilFactor(utSel.ut)).toFixed(2)+' kgCO₂e';
 }
 function saveUtil(){
-  const w=parseFloat(document.getElementById('ut-m-amount').value);
   if(!utSel.ut){alert('กรุณาเลือกประเภทข้อมูล (น้ำมัน / ไฟฟ้า / น้ำประปา)');return;}
   if(utMonth<0||!utYear){alert('กรุณาเลือกเดือนที่บันทึก');return;}
   if(!utSel.bld){alert('กรุณาเลือกอาคาร');return;}
-  if(!utSel.meter){alert('กรุณาเลือกมิเตอร์ / จุดวัด');return;}
-  if(isNaN(w)||w<=0){alert('กรุณากรอกปริมาณให้ถูกต้อง');return;}
-  const date=utYear+'-'+String(utMonth+1).padStart(2,'0')+'-01';   // รายเดือน เก็บเป็นวันที่ 1 ของเดือน
-  // เตือนถ้ามิเตอร์นี้มีข้อมูลเดือนเดียวกันอยู่แล้ว
-  const dupe=udata.some(r=>r.ut===utSel.ut&&r.building===utSel.bld&&r.meter===utSel.meter&&String(r.date).slice(0,7)===date.slice(0,7));
-  if(dupe&&!confirm('มิเตอร์นี้มีข้อมูลเดือน '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' อยู่แล้ว\nต้องการบันทึกเพิ่มอีกรายการ?'))return;
-  const rec={id:uid(),ut:utSel.ut,date,building:utSel.bld,meter:utSel.meter,amount:+w.toFixed(2),
-    note:document.getElementById('ut-m-note').value.trim(),recorder:'ฝ่ายอาคาร',
-    createdBy:(USER&&USER.name)||'',createdAt:new Date().toISOString()};
-  udata.push(rec);saveUtil_();gsPush('utilities','add',rec);
+  const items=utilCollect();
+  if(!items.length){alert('กรุณากรอกปริมาณอย่างน้อย 1 มิเตอร์');return;}
+  const date=utYear+'-'+String(utMonth+1).padStart(2,'0')+'-01';
+  const note=document.getElementById('ut-m-note').value.trim();
+  const now=new Date().toISOString();
+  /* โหมดแก้ไข: อัปเดตรายการเดิมรายการเดียว */
+  if(utEditId){
+    const old=udata.find(r=>r.id===utEditId);
+    if(!old){alert('ไม่พบรายการเดิม');return;}
+    old.date=date;old.amount=items[0].amount;old.note=note;
+    old.updatedBy=(USER&&USER.name)||'';old.updatedAt=now;
+    saveUtil_();gsPush('utilities','update',old);
+    closeModal('modal-util');utEditId=null;
+    renderUtility();toast('แก้ไขรายการแล้ว · '+MONTHS_SHORT[utMonth]+' '+(utYear+543));
+    return;
+  }
+  /* โหมดบันทึกหลายมิเตอร์: เตือนรวมถ้ามีมิเตอร์ที่เดือนนี้มีข้อมูลแล้ว */
+  const dupes=items.filter(i=>utilExisting(utSel.ut,utSel.bld,i.meter,utYear,utMonth)>0).map(i=>i.meter);
+  if(dupes.length&&!confirm('มิเตอร์ต่อไปนี้มีข้อมูลเดือน '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' อยู่แล้ว:\n• '+dupes.join('\n• ')+'\n\nต้องการบันทึกเพิ่มอีกรายการ?'))return;
+  const recs=items.map(i=>({id:uid(),ut:utSel.ut,date,building:utSel.bld,meter:i.meter,amount:i.amount,
+    note,recorder:'ฝ่ายอาคาร',createdBy:(USER&&USER.name)||'',createdAt:now}));
+  recs.forEach(r=>{udata.push(r);gsPush('utilities','add',r);});
+  saveUtil_();
   closeModal('modal-util');
   const sel=document.getElementById('ut-year');if(sel)sel.innerHTML='';
   renderUtility();
-  toast('บันทึก '+UTILITIES[utSel.ut].short+' '+w.toFixed(2)+' '+UTILITIES[utSel.ut].unit+' · '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' · '+bName(utSel.bld)+' สำเร็จ');
+  const amt=items.reduce((a,i)=>a+i.amount,0);
+  toast('บันทึก '+UTILITIES[utSel.ut].short+' '+recs.length+' มิเตอร์ (รวม '+amt.toLocaleString(undefined,{maximumFractionDigits:2})+' '+UTILITIES[utSel.ut].unit+') · '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' · '+bName(utSel.bld));
+}
+/* แก้ไขรายการ (admin/ผู้มีสิทธิ์) — เปิด modal โหมดล็อคประเภท/อาคาร แก้เดือนและปริมาณได้ */
+function openUtilEdit(id){
+  if(!can('edit')){alert('คุณไม่มีสิทธิ์แก้ไขข้อมูล');return;}
+  const r=udata.find(x=>x.id===id);if(!r){alert('ไม่พบรายการ');return;}
+  openUtilEntry();   // เตรียมโครง modal ก่อน
+  utEditId=null;     // ปลดล็อคชั่วคราวเพื่อเลือกค่าให้ตรงรายการ
+  utilPickType(r.ut);
+  utilPickBld(r.building);
+  const p=String(r.date).split('-');utYear=+p[0];utMonth=(+p[1])-1;
+  document.getElementById('ut-m-year').value=String(utYear);
+  utEditId=id;       // จากนี้ล็อคประเภท/อาคาร
+  utilRenderMonths();
+  utilRenderMeterList(r);   // แสดงเฉพาะมิเตอร์ของรายการนี้ พร้อมค่าเดิม
+  document.getElementById('ut-m-note').value=r.note||'';
+  document.getElementById('ut-m-title').textContent='แก้ไข'+UTILITIES[r.ut].name+' — '+r.meter;
 }
 
 /* ===== ADMIN ===== */
