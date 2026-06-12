@@ -586,6 +586,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <button class="nav-tab" data-page="staff"><span class="ic">🧹</span>หมวดขยะสำนักงาน</button>
       <button class="nav-tab" data-page="ewastep"><span class="ic">💻</span>Ewast+ (AIS)</button>
       <button class="nav-tab" data-page="recycle"><span class="ic">🌿</span>ขยะรีไซเคิล</button>
+      <button class="nav-tab" data-page="utility"><span class="ic">⚡</span>พลังงาน &amp; น้ำ</button>
       <button class="nav-tab" data-page="esg"><span class="ic">🌍</span>ESG / คาร์บอน</button>
       <button class="nav-tab" data-page="admin"><span class="ic">⚙️</span>Admin</button>
     </div>
@@ -612,6 +613,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div id="alert-banner"></div>
 
   <div class="kpi-grid" id="kpi-grid"></div>
+  <div class="kpi-grid" id="dash-util-kpi"></div>
 
   <div class="card" id="compare-card">
     <div class="card-head">
@@ -628,9 +630,14 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="esg-hero" id="dash-esg" style="cursor:pointer" onclick="document.querySelector('.nav-tab[data-page=esg]').click()">
     <div class="esg-hero-grid">
       <div class="esg-hero-item">
-        <div class="esg-hero-label">🌍 Carbon Footprint รวม</div>
+        <div class="esg-hero-label">🧮 Setcarbon รวมทุกประเภท</div>
+        <div class="esg-hero-value" id="dash-esg-scope">–</div>
+        <div class="esg-hero-sub">ขยะ + น้ำมัน + ไฟฟ้า + ประปา · คลิกดูรายงาน ESG →</div>
+      </div>
+      <div class="esg-hero-item">
+        <div class="esg-hero-label">🌍 คาร์บอนจากขยะ</div>
         <div class="esg-hero-value" id="dash-esg-total">–</div>
-        <div class="esg-hero-sub">คลิกเพื่อดูรายงาน ESG ฉบับเต็ม →</div>
+        <div class="esg-hero-sub" id="dash-esg-total-sub">เฉพาะข้อมูลขยะทุกประเภท</div>
       </div>
       <div class="esg-hero-item">
         <div class="esg-hero-label">♻️ คาร์บอนที่หลีกเลี่ยงได้</div>
@@ -872,7 +879,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 <div class="page" id="page-ewastep">
   <div class="page-head">
     <div><div class="page-title"><span class="dot" style="background:var(--c-ewastep)"></span>ขยะอิเล็กทรอนิกส์ (โครงการ AIS Ewast+)</div>
-      <div class="page-sub">เลือกวันที่ย้อนหลังได้ · โครงการรับคืนซากอิเล็กทรอนิกส์</div></div>
+      <div class="page-sub">เลือกวันที่ย้อนหลังได้ · โครงการรับคืนซากอิเล็กทรอนิกส์ · บันทึกเป็นน้ำหนักรวมทั้งอาคาร (ไม่แยกชั้น)</div></div>
     <button class="btn btn-primary" onclick="openEntry('ewastep')"><span>➕</span>บันทึกข้อมูล</button>
   </div>
   <div class="kpi-grid" id="wp-kpi-ewastep"></div>
@@ -904,7 +911,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 <div class="page" id="page-recycle">
   <div class="page-head">
     <div><div class="page-title"><span class="dot" style="background:var(--c-recycle)"></span>ขยะรีไซเคิล</div>
-      <div class="page-sub">ข้อมูลจาก Vendor ภายนอก · บันทึกผ่าน QR Code ได้</div></div>
+      <div class="page-sub">ข้อมูลจาก Vendor ภายนอก · บันทึกผ่าน QR Code ได้ · บันทึกเป็นน้ำหนักรวมทั้งอาคาร (ไม่แยกชั้น)</div></div>
     <div style="display:flex;gap:10px">
       <button class="btn btn-primary" onclick="openEntry('recycle')"><span>➕</span>บันทึกข้อมูล</button>
     </div>
@@ -946,6 +953,41 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="pager" id="pager-recycle"></div></div>
 </div>
 
+<!-- ============ UTILITY (น้ำมัน / ไฟฟ้า / น้ำประปา) ============ -->
+<div class="page" id="page-utility">
+  <div class="page-head">
+    <div><div class="page-title"><span class="dot" style="background:#eab308"></span>พลังงาน &amp; น้ำ (Scope 1-3)</div>
+      <div class="page-sub">บันทึกการใช้น้ำมัน · ไฟฟ้า · น้ำประปา แยกตามมิเตอร์/จุดวัด เพื่อคำนวณคาร์บอนฟุตพริ้นท์</div></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <select class="filter-sel" id="ut-year" onchange="renderUtility()"></select>
+      <button class="btn btn-primary" onclick="openUtilEntry()"><span>➕</span>บันทึกข้อมูล</button>
+    </div>
+  </div>
+  <div class="kpi-grid" id="ut-kpi"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><span class="ic">📈</span>คาร์บอนรายเดือนจากพลังงาน &amp; น้ำ (kgCO₂e)</div></div>
+    <canvas id="ut-chart" height="100"></canvas>
+  </div>
+  <div class="grid-2" id="ut-meter-cards"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-title"><span class="ic">📋</span>รายการบันทึก</div>
+      <div class="tbl-tools">
+        <select class="filter-sel" id="ut-filter" onchange="renderUtilTable()">
+          <option value="all">ทุกประเภท</option>
+          <option value="fuel">⛽ น้ำมัน</option>
+          <option value="elec">⚡ ไฟฟ้า</option>
+          <option value="water">💧 น้ำประปา</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>เดือน</th><th>ประเภท</th><th>อาคาร</th><th>มิเตอร์ / จุดวัด</th><th>ปริมาณ</th><th>EF</th><th>kgCO₂e</th><th></th></tr></thead>
+      <tbody id="ut-body"></tbody>
+    </table></div>
+    <div class="pager" id="ut-pager"></div>
+  </div>
+</div>
+
 <!-- ============ ESG / CARBON ============ -->
 <div class="page" id="page-esg">
   <div class="page-head">
@@ -980,6 +1022,17 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
 
   <div class="kpi-grid" id="esg-kpi"></div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-title"><span class="ic">🧮</span>สรุปปริมาณคาร์บอนฟุตพริ้นท์ตามประเภท (Setcarbon) — tCO₂e</div></div>
+    <p class="page-sub" style="margin-bottom:14px">แบ่งประเภทข้อมูลตาม Setcarbon · คำนวณ kgCO₂e ÷ 1,000 = tCO₂e · ประเภท 1 = น้ำมัน · ประเภท 2 = ไฟฟ้า · ประเภท 3 = น้ำประปา + ขยะทั่วไป + เศษอาหาร + อันตราย + อิเล็กทรอนิกส์ · อื่นๆ = รีไซเคิล + Ewast+</p>
+    <div class="kpi-grid" id="esg-scope-kpi"></div>
+    <div class="table-wrap" style="margin-top:14px"><table>
+      <thead><tr><th>ประเภท (Setcarbon)</th><th>แหล่งข้อมูล</th><th>คาร์บอน (kgCO₂e)</th><th>คาร์บอน (tCO₂e)</th><th>สัดส่วน</th></tr></thead>
+      <tbody id="esg-scope-table"></tbody>
+      <tfoot id="esg-scope-foot"></tfoot>
+    </table></div>
+  </div>
 
   <div class="grid-2">
     <div class="card">
@@ -1092,10 +1145,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 
   <div class="card">
     <div class="card-head">
-      <div class="card-title"><span class="ic">🌍</span>ค่า Emission Factor (kgCO₂e/kg) — แก้ไขได้</div>
+      <div class="card-title"><span class="ic">🌍</span>ค่า Emission Factor — แบ่งตาม Setcarbon (ประเภท 1-3 และอื่นๆ) — แก้ไขได้</div>
       <button class="btn btn-ghost btn-sm" onclick="resetEF()"><span>↺</span>คืนค่าเริ่มต้น</button>
     </div>
-    <p class="page-sub" style="margin-bottom:14px">ค่าสัมประสิทธิ์การปล่อยก๊าซเรือนกระจกที่ใช้แปลงน้ำหนักขยะเป็นคาร์บอน (ใช้คำนวณในรายงาน ESG ทุกหน้า) แก้ไขค่าและระบุที่มาได้</p>
+    <p class="page-sub" style="margin-bottom:14px">ค่าสัมประสิทธิ์การปล่อยก๊าซเรือนกระจกที่ใช้คำนวณคาร์บอนทุกหน้า · ประเภท 1 = น้ำมัน (kgCO₂e/ลิตร) · ประเภท 2 = ไฟฟ้า (kgCO₂e/kWh) · ประเภท 3 = น้ำประปา (kgCO₂e/m³) + ขยะกำจัด (kgCO₂e/kg) · อื่นๆ = รีไซเคิล + Ewast+ · แก้ไขค่าและระบุที่มาได้</p>
     <div class="table-wrap"><table class="ef-table">
       <thead><tr><th>ประเภท / หมวดหมู่</th><th style="width:160px">EF (kgCO₂e/kg)</th><th>ที่มา / อ้างอิงรายการนี้</th></tr></thead>
       <tbody id="admin-ef-body"></tbody>
@@ -1227,11 +1280,12 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
           <div class="floor-grid" id="e-buildings"></div>
         </div>
         <div class="field" id="e-floor-field" style="display:none">
-          <label>ชั้น <span class="req">*</span></label>
+          <label>ชั้น <span class="req" id="e-floor-req">*</span> <span class="hint">(จำเป็นเฉพาะหมวดขยะสำนักงาน — Ewast+ และรีไซเคิลบันทึกเป็นยอดรวมทั้งอาคาร)</span></label>
           <div class="floor-grid" id="e-floors"></div>
         </div>
       </div>
       <div id="entry-step2" style="display:none">
+        <div class="e-datebar" id="entry-datebar" style="display:none"></div>
         <div class="e-ctx" id="entry-ctx"></div>
         <div id="e-types"></div>
       </div>
@@ -1242,13 +1296,15 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     </div>
     <div class="modal-foot" id="entry-foot2" style="display:none">
       <button class="btn btn-ghost" onclick="entryBack()">← กลับ</button>
-      <button class="btn btn-primary" onclick="entrySubmit()"><span>💾</span>บันทึกทั้งหมด (<span id="entry-kg">0</span> กก.)</button>
+      <button class="btn btn-ghost" id="entry-copy-btn" onclick="entryCopyPrev()" style="display:none">📋 คัดลอกวันก่อนหน้า</button>
+      <button class="btn btn-primary" id="entry-main-btn" onclick="entrySubmit()"><span>💾</span><span id="entry-main-lbl">บันทึกทั้งหมด</span> (<span id="entry-kg">0</span> กก.)</button>
     </div>
   </div>
 </div>
 
 <!-- ============ ENTRY THAI CALENDAR ============ -->
 <style>
+#modal-ecal{z-index:300}
 #modal-ecal .ecal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 #modal-ecal .ecal-head .ttl{font-weight:700;font-size:16px}
 #modal-ecal .ecal-head button{width:38px;height:38px;border:1px solid #e5e7eb;background:#fff;border-radius:10px;font-size:20px;cursor:pointer}
@@ -1261,6 +1317,13 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 #modal-ecal .ecal-day.today{outline:2px solid #f59e0b;outline-offset:-2px}
 #modal-ecal .ecal-day.sel{background:#0f766e;color:#fff}
 #modal-ecal .ecal-day:disabled{opacity:.3;cursor:default;background:transparent}
+/* แถบวันที่หลายวันใน step 2 */
+.e-datebar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;padding:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px}
+.e-datebar .db-chip{border:1.5px solid #cbd5e1;background:#fff;border-radius:999px;padding:5px 11px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;color:#475569;display:inline-flex;align-items:center;gap:4px}
+.e-datebar .db-chip.cur{border-color:#0f766e;background:#0f766e;color:#fff}
+.e-datebar .db-chip.done{border-color:#22c55e;color:#15803d;background:#f0fdf4}
+.e-datebar .db-chip.done.cur{background:#15803d;color:#fff}
+.e-datebar .db-sum{margin-left:auto;font-size:12px;font-weight:700;color:#0f766e;align-self:center}
 </style>
 <div class="overlay" id="modal-ecal">
   <div class="modal" style="max-width:360px">
@@ -1271,15 +1334,62 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div class="modal-body">
       <div class="ecal-head">
         <button type="button" id="ecal-prev" onclick="entryCalNav(-1)">‹</button>
-        <div class="ttl" id="ecal-title">—</div>
+        <div style="display:flex;gap:6px;flex:1;justify-content:center">
+          <select class="filter-sel" id="ecal-month" onchange="entryCalSet()" style="flex:1;max-width:170px"></select>
+          <select class="filter-sel" id="ecal-year" onchange="entryCalSet()" style="width:92px"></select>
+        </div>
         <button type="button" id="ecal-next" onclick="entryCalNav(1)">›</button>
       </div>
       <div class="ecal-dows"><span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span></div>
       <div class="ecal-grid" id="ecal-grid"></div>
+      <div id="ecal-selbar" style="display:none;margin-top:10px;font-size:12px;color:#0f766e;background:#f0fdfa;border:1px dashed #99f6e4;border-radius:9px;padding:8px 10px;line-height:1.5"></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-ecal')">ปิด</button>
-      <button class="btn btn-primary" onclick="entryCalToday()">วันนี้</button>
+      <button class="btn btn-ghost" onclick="entryCalToday()">วันนี้</button>
+      <button class="btn btn-primary" id="ecal-confirm" onclick="ecalConfirm()" style="display:none">ยืนยัน</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ UTILITY ENTRY MODAL ============ -->
+<div class="overlay" id="modal-util">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title"><span class="ic" id="ut-m-icon" style="background:#fef3c7;color:#b45309">⚡</span><span id="ut-m-title">บันทึกพลังงาน &amp; น้ำ</span></div>
+      <button class="icon-btn" onclick="closeModal('modal-util')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>ประเภทข้อมูล <span class="req">*</span></label>
+        <div class="type-select" id="ut-m-types"></div>
+      </div>
+      <div class="field">
+        <label>เดือนที่บันทึก <span class="req">*</span> <span class="hint">(ข้อมูลพลังงาน &amp; น้ำ บันทึกเป็นรายเดือน)</span></label>
+        <select class="filter-sel" id="ut-m-year" onchange="utilRenderMonths()" style="margin-bottom:8px"></select>
+        <div class="floor-grid" id="ut-m-months"></div>
+      </div>
+      <div class="field" id="ut-m-bld-field" style="display:none">
+        <label>อาคาร <span class="req">*</span></label>
+        <div class="floor-grid" id="ut-m-blds"></div>
+      </div>
+      <div class="field" id="ut-m-meter-field" style="display:none">
+        <label>มิเตอร์ / จุดวัด <span class="req">*</span></label>
+        <div class="floor-grid" id="ut-m-meters"></div>
+      </div>
+      <div class="field" id="ut-m-amount-field" style="display:none">
+        <label>ปริมาณ (<span id="ut-m-unit">หน่วย</span>) <span class="req">*</span></label>
+        <input type="number" class="input" id="ut-m-amount" placeholder="0.00" step="0.01" min="0" inputmode="decimal" oninput="utilCalcPreview()">
+        <div class="hint" id="ut-m-preview">รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง</div>
+      </div>
+      <div class="field">
+        <label>หมายเหตุ</label>
+        <input type="text" class="input" id="ut-m-note" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-util')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveUtil()"><span>💾</span>บันทึกข้อมูล</button>
     </div>
   </div>
 </div>
@@ -1364,7 +1474,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 <div class="overlay" id="modal-scan">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title"><span class="ic" style="background:var(--primary-light);color:var(--primary)">📲</span>หน้าบันทึกข้อมูล (จาก QR)</div>
+      <div class="modal-title"><span class="ic" style="background:var(--primary-light);color:var(--primary)">📲</span><span id="scan-title">บันทึกข้อมูล (จาก QR)</span></div>
       <button class="icon-btn" onclick="closeModal('modal-scan')">✕</button>
     </div>
     <div class="modal-body">
@@ -1474,8 +1584,37 @@ const RECYCLE_CATEGORIES={
 };
 function getCategory(mat){for(const c in RECYCLE_CATEGORIES){if(RECYCLE_CATEGORIES[c].items.includes(mat))return c;}return '-';}
 
+/* ===== ประเภทขยะที่บันทึกเป็นยอดรวมทั้งอาคาร (ไม่แยกชั้น) ===== */
+const NO_FLOOR_TYPES=['ewastep','recycle'];
+const WHOLE_BLD='ทั้งอาคาร';
+function isNoFloor(t){return NO_FLOOR_TYPES.includes(t);}
+
+/* ===== UTILITY (น้ำมัน / ไฟฟ้า / น้ำประปา) — มิเตอร์/จุดวัดตามอาคาร ===== */
+const UTILITIES={
+  fuel:{name:'การใช้น้ำมัน (Diesel)',short:'น้ำมัน',icon:'⛽',unit:'ลิตร',efUnit:'kgCO₂e/ลิตร',color:'#b45309',bg:'#fef3c7',scope:1,
+    meters:{ari:['Diesel (Generator)']}},
+  elec:{name:'การใช้ไฟฟ้า',short:'ไฟฟ้า',icon:'⚡',unit:'kWh',efUnit:'kgCO₂e/kWh',color:'#eab308',bg:'#fef9c3',scope:2,
+    meters:{ari:['สำนักงานชั้น 9-16','ไฟป้ายเงินติดล้อ','EV Charger ชั้น 4','Server Room ชั้น 9','Carpark ชั้น 4'],
+            ksl:['ชั้น 11','ชั้น 12','ชั้น 14','ชั้น 15'],
+            esv:['ชั้น 14']}},
+  water:{name:'การใช้น้ำประปา',short:'น้ำประปา',icon:'💧',unit:'m³',efUnit:'kgCO₂e/m³',color:'#0ea5e9',bg:'#e0f2fe',scope:3,
+    meters:{ari:['ชั้น 4 Carpark','ชั้น 12A Playground Pentry','ชั้น 15 MD Pentry'],
+            ksl:['ชั้น 11','ชั้น 12','ชั้น 14','ชั้น 15'],
+            esv:['ชั้น 14']}}
+};
+/* การแบ่งประเภทข้อมูลตาม Setcarbon */
+const SETCARBON_SCOPES=[
+  {id:'s1',name:'ประเภท 1',desc:'น้ำมัน (Diesel Generator)',icon:'⛽',color:'#b45309'},
+  {id:'s2',name:'ประเภท 2',desc:'ไฟฟ้า',icon:'⚡',color:'#eab308'},
+  {id:'s3',name:'ประเภท 3',desc:'น้ำประปา · ขยะทั่วไป · เศษอาหาร · อันตราย · อิเล็กทรอนิกส์',icon:'🌐',color:'#0ea5e9'},
+  {id:'other',name:'ประเภทอื่นๆ',desc:'ขยะรีไซเคิล · Ewast+',icon:'♻️',color:'#22c55e'}
+];
+
 /* ===== ESG / EMISSION FACTORS (kgCO2e per kg) ===== */
-const DEFAULT_EF={general:0.7933,food:0.7933,hazard:0.7933,ewaste:0.7933,ewastep:0.7933,recycle:0.0064};
+const DEFAULT_EF={general:0.7933,food:0.7933,hazard:0.7933,ewaste:0.7933,ewastep:0.7933,recycle:0.0064,
+  fuel:2.7078,   /* Diesel — kgCO₂e/ลิตร (อ้างอิง TGO, แก้ไขได้ในหน้า Admin) */
+  elec:0.4999,   /* ไฟฟ้า Grid ประเทศไทย — kgCO₂e/kWh (อ้างอิง TGO, แก้ไขได้) */
+  water:0.7948}; /* น้ำประปา — kgCO₂e/m³ (อ้างอิง TGO, แก้ไขได้) */
 const DEFAULT_CAT={'กระดาษ':0.0064,'อลูมิเนียม':0.0064,'พลาสติก':0.0064,'เหล็ก':0.0064};
 let EMISSION_FACTORS,CAT_FACTORS,EF_META;
 function loadEF(){
@@ -1499,6 +1638,32 @@ function co2(r){return r.weight*recordFactor(r);}
 function fmtCO2(v){ // แสดงผลอัตโนมัติ kg หรือ ตัน
   if(Math.abs(v)>=1000)return (v/1000).toFixed(2)+' tCO₂e';
   return v.toFixed(2)+' kgCO₂e';
+}
+function utilFactor(ut){return (EMISSION_FACTORS[ut]!==undefined?EMISSION_FACTORS[ut]:DEFAULT_EF[ut])||0;}
+function utilCO2(u){return (u.amount||0)*utilFactor(u.ut);}
+
+/* ===== UTILITY DATA LAYER (แยกจากข้อมูลขยะ) ===== */
+let udata=loadUtil();
+function loadUtil(){
+  try{const d=JSON.parse(localStorage.getItem('wms_udata'));if(d&&d.length)return d;}catch(e){}
+  var _su=null;try{_su=localStorage.getItem('wms_gs_url');}catch(e){}
+  return (_su!=='')?[]:useed();   // โหมด demo เท่านั้นที่มีข้อมูลตัวอย่าง
+}
+function saveUtil_(){localStorage.setItem('wms_udata',JSON.stringify(udata));}
+function useed(){
+  const r=[],y=new Date().getFullYear(),curM=new Date().getMonth();
+  const rnd=(a,b)=>+(Math.random()*(b-a)+a).toFixed(2);
+  for(let m=0;m<=curM;m++){
+    const ds=y+'-'+String(m+1).padStart(2,'0')+'-01';   // รายเดือน เก็บเป็นวันที่ 1
+    Object.keys(UTILITIES).forEach(ut=>{
+      const U=UTILITIES[ut];
+      Object.keys(U.meters).forEach(b=>U.meters[b].forEach(meter=>{
+        const amt=ut==='fuel'?rnd(40,120):ut==='elec'?rnd(800,9000):rnd(8,60);
+        r.push({id:uid(),ut,date:ds,building:b,meter,amount:amt,recorder:'ฝ่ายอาคาร'});
+      }));
+    });
+  }
+  localStorage.setItem('wms_udata',JSON.stringify(r));return r;
 }
 
 function materialOptionsHTML(){
@@ -1550,6 +1715,7 @@ async function gsPush(table,op,payload){
 function applyRemote(all){
   if(!all)return;
   if(Array.isArray(all.records)){data=all.records;localStorage.setItem('wms_data',JSON.stringify(data));}
+  if(Array.isArray(all.utilities)){udata=all.utilities;localStorage.setItem('wms_udata',JSON.stringify(udata));}
   if(all.buildings&&Object.keys(all.buildings).length){BUILDINGS=all.buildings;localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));}
   if(all.ef){if(all.ef.factors)EMISSION_FACTORS=Object.assign({},DEFAULT_EF,all.ef.factors);
     if(all.ef.cat)CAT_FACTORS=Object.assign({},DEFAULT_CAT,all.ef.cat);
@@ -1614,6 +1780,7 @@ document.querySelectorAll('.nav-tab').forEach(t=>t.onclick=()=>{
   if(t.dataset.page==='dashboard') renderDashboard();
   else if(t.dataset.page==='monthly') renderMonthly();
   else if(t.dataset.page==='esg') renderESG();
+  else if(t.dataset.page==='utility') renderUtility();
   else if(t.dataset.page==='admin') renderAdmin();
   else if(t.dataset.page==='staff') showStaff(staffCur);
   else {resetBldButtons(t.dataset.page);renderTable(t.dataset.page,'all');}
@@ -1623,7 +1790,7 @@ document.querySelectorAll('.nav-tab').forEach(t=>t.onclick=()=>{
 
 /* ===== MOBILE BOTTOM NAV ===== */
 const BOTTOM_PRIMARY=['dashboard','staff','recycle','esg'];
-const BOTTOM_SHORT={dashboard:'หน้าหลัก',monthly:'รายเดือน',staff:'สำนักงาน',ewastep:'Ewast+',recycle:'รีไซเคิล',esg:'ESG',admin:'ตั้งค่า'};
+const BOTTOM_SHORT={dashboard:'หน้าหลัก',monthly:'รายเดือน',staff:'สำนักงาน',ewastep:'Ewast+',recycle:'รีไซเคิล',utility:'พลังงาน',esg:'ESG',admin:'ตั้งค่า'};
 function tabMeta(){
   const m={};document.querySelectorAll('.nav-tab').forEach(t=>{
     const ic=t.querySelector('.ic');
@@ -1666,6 +1833,11 @@ function filtered(){
   if(dashMode==='month'){ const ym=dashYear+'-'+('0'+dashMonth).slice(-2); return data.filter(r=>r.date.slice(0,7)===ym); }
   return data;
 }
+function filteredUtil(){ // ใช้ตัวกรองช่วงเวลาเดียวกับข้อมูลขยะ
+  if(dashMode==='year') return udata.filter(r=>String(r.date).slice(0,4)===String(dashYear));
+  if(dashMode==='month'){ const ym=dashYear+'-'+('0'+dashMonth).slice(-2); return udata.filter(r=>String(r.date).slice(0,7)===ym); }
+  return udata;
+}
 
 function renderDashboard(){
   renderDashPeriodCtrl();
@@ -1689,9 +1861,35 @@ function renderDashboard(){
   // ESG snapshot (uses filtered period d)
   let dC=0,dAvoided=0,dW=0;
   d.forEach(r=>{dC+=co2(r);dW+=r.weight;if(r.type==='recycle')dAvoided+=r.weight*(baselineFactor()-recordFactor(r));});
+  // คาร์บอนจากพลังงาน & น้ำ (ช่วงเวลาเดียวกัน) → Setcarbon รวมทุกประเภท
+  const ud=filteredUtil();
+  const uAmt={fuel:0,elec:0,water:0},uCO2={fuel:0,elec:0,water:0};
+  ud.forEach(r=>{if(uAmt[r.ut]!==undefined){uAmt[r.ut]+=(r.amount||0);uCO2[r.ut]+=utilCO2(r);}});
+  const uTotal=uCO2.fuel+uCO2.elec+uCO2.water;
+  const scopeAll=dC+uTotal; // ขยะทุกประเภท + น้ำมัน + ไฟฟ้า + ประปา
+  const ds=document.getElementById('dash-esg-scope');if(ds)ds.textContent=(scopeAll/1000).toFixed(3)+' tCO₂e';
   const di=document.getElementById('dash-esg-total');if(di)di.textContent=fmtCO2(dC);
+  const dts=document.getElementById('dash-esg-total-sub');if(dts)dts.textContent='จากขยะรวม '+dW.toFixed(2)+' kg';
   const da=document.getElementById('dash-esg-avoided');if(da)da.textContent=fmtCO2(dAvoided);
   const dint=document.getElementById('dash-esg-intensity');if(dint)dint.textContent=(dW?dC/dW:0).toFixed(4);
+
+  // mini-KPI พลังงาน & น้ำ — คลิกไปหน้า "พลังงาน & น้ำ"
+  const uk=document.getElementById('dash-util-kpi');
+  if(uk){
+    const go="document.querySelector('.nav-tab[data-page=utility]').click()";
+    uk.innerHTML=Object.keys(UTILITIES).map(ut=>{
+      const U=UTILITIES[ut];
+      return `<div class="kpi" style="cursor:pointer" onclick="${go}"><div class="kpi-top"><div class="kpi-icon" style="background:${U.bg}">${U.icon}</div>
+        <span class="badge" style="background:${U.color}22;color:${U.color}">ประเภท ${U.scope}</span></div>
+        <div class="kpi-label">${U.name}</div>
+        <div class="kpi-value" style="font-size:20px">${uAmt[ut].toLocaleString(undefined,{maximumFractionDigits:2})} <span class="kpi-unit">${U.unit}</span></div>
+        <div class="page-sub" style="font-size:11px;margin-top:4px">≈ ${fmtCO2(uCO2[ut])}</div></div>`;
+    }).join('')+
+    `<div class="kpi" style="cursor:pointer" onclick="${go}"><div class="kpi-top"><div class="kpi-icon" style="background:#dcfce7">🧮</div></div>
+      <div class="kpi-label">คาร์บอนจากพลังงาน &amp; น้ำ</div>
+      <div class="kpi-value" style="font-size:20px">${(uTotal/1000).toFixed(3)} <span class="kpi-unit">tCO₂e</span></div>
+      <div class="page-sub" style="font-size:11px;margin-top:4px">คลิกเพื่อดู / บันทึกข้อมูล →</div></div>`;
+  }
 
   // recent
   const recent=[...d].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id)).slice(0,8);
@@ -2349,7 +2547,7 @@ function buildingOptionsHTML(){
 function openForm(type){
   if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
   editingId=null;
-  formType=type;selFloor=null;
+  formType=type;selFloor=isNoFloor(type)?WHOLE_BLD:null;
   const T=TYPES[type];
   document.getElementById('form-title').textContent='บันทึก '+T.name;
   const ic=document.getElementById('form-icon');ic.textContent=T.icon;ic.style.background=T.bg;ic.style.color=T.color;
@@ -2388,6 +2586,7 @@ function editRecord(id){
 function renderFormFloors(){
   const b=document.getElementById('f-building').value;
   const ff=document.getElementById('floor-field'),grid=document.getElementById('f-floors');
+  if(isNoFloor(formType)){selFloor=WHOLE_BLD;ff.style.display='none';grid.innerHTML='';return;}
   selFloor=null;
   if(!b){ff.style.display='none';return;}
   ff.style.display='block';
@@ -2419,6 +2618,7 @@ function saveRecord(){
 /* ===== ENTRY (flow แบบ Kiosk ในแอป: เลือกอาคาร/ชั้น → กรอกหลายชนิด → ส่ง) ===== */
 let entryDate='',entryBld='',entryFloor='',entryDraft=null,entryRecOpen=false,entryOpenGroup='office';
 const ENTRY_TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const ENTRY_EN_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 let entryCalView={y:0,m:0};
 function eG(id){return document.getElementById(id);}
 function entryYMD(k){const p=String(k).split('-').map(Number);return{y:p[0],m:p[1]-1,d:p[2]};}
@@ -2426,32 +2626,86 @@ function entryYMDKey(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(
 function entryThaiFull(k){if(!k)return '—';const o=entryYMD(k);return o.d+' '+ENTRY_TH_MONTHS[o.m]+' '+(o.y+543);}
 function entryTodayP(){const t=new Date();return{y:t.getFullYear(),m:t.getMonth(),d:t.getDate()};}
 function entryIsFuture(y,m,d){const t=entryTodayP();if(y!==t.y)return y>t.y;if(m!==t.m)return m>t.m;return d>t.d;}
-function entryDateDisplay(){const b=eG('e-date-btn');if(b)b.textContent=entryThaiFull(entryDate);}
+function entryDateDisplay(){const b=eG('e-date-btn');if(!b)return;
+  if(entryMulti()){const s=[...entryDates].sort();b.textContent='📅 '+s.length+' วัน: '+s.map(entryShortD).join(', ');}
+  else b.textContent=entryThaiFull(entryDate);}
+/* ===== เลือกหลายวัน (multi-date) — เฉพาะโหมดบันทึกขยะ ===== */
+const ENTRY_MAX_DATES=15;
+let entryDates=[],entryDateIdx=0,entryDraftByDate={},entryConfirmed={};
+function entryMulti(){return entryDates.length>1;}
+function entryShortD(key){const p=String(key).split('-');return (+p[2])+' '+MONTHS_SHORT[(+p[1])-1];}
 function entryOpenCal(){const o=entryYMD(entryDate);entryCalView={y:o.y,m:o.m};openModal('modal-ecal');entryRenderCal();}
 function entryCalNav(s){let y=entryCalView.y,m=entryCalView.m+s;if(m<0){m=11;y--;}if(m>11){m=0;y++;}const t=entryTodayP();if(y>t.y||(y===t.y&&m>t.m))return;entryCalView={y,m};entryRenderCal();}
+function entryCalSet(){ // เลือกจากดรอปดาวน์เดือน/ปี
+  let m=+eG('ecal-month').value,y=+eG('ecal-year').value;
+  const t=entryTodayP();
+  if(y===t.y&&m>t.m)m=t.m;   // กันเลือกเดือนอนาคตของปีปัจจุบัน
+  entryCalView={y,m};entryRenderCal();
+}
 function entryRenderCal(){
-  const y=entryCalView.y,m=entryCalView.m,t=entryTodayP(),sel=entryYMD(entryDate);
-  eG('ecal-title').textContent=ENTRY_TH_MONTHS[m]+' '+(y+543);
+  const y=entryCalView.y,m=entryCalView.m,t=entryTodayP();
+  // ดรอปดาวน์เดือน: ไทย (อังกฤษ) — ปิดเดือนอนาคตของปีปัจจุบัน
+  eG('ecal-month').innerHTML=ENTRY_TH_MONTHS.map((nm,i)=>
+    `<option value="${i}" ${i===m?'selected':''} ${(y===t.y&&i>t.m)?'disabled':''}>${nm} (${ENTRY_EN_MONTHS[i]})</option>`).join('');
+  // ดรอปดาวน์ปี พ.ศ.: ย้อนหลัง 5 ปีถึงปีปัจจุบัน
+  let yopts='';for(let yy=t.y;yy>=t.y-5;yy--)yopts+=`<option value="${yy}" ${yy===y?'selected':''}>${yy+543}</option>`;
+  eG('ecal-year').innerHTML=yopts;
   eG('ecal-next').disabled=(y>t.y||(y===t.y&&m>=t.m));
   const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let cells='';
   for(let i=0;i<first;i++)cells+='<div class="pad"></div>';
   for(let d=1;d<=days;d++){
-    const fut=entryIsFuture(y,m,d),isSel=(sel.y===y&&sel.m===m&&sel.d===d),isToday=(t.y===y&&t.m===m&&t.d===d);
+    const fut=entryIsFuture(y,m,d),key=entryYMDKey(y,m,d);
+    const isSel=entryDates.includes(key);
+    const isToday=(t.y===y&&t.m===m&&t.d===d);
     cells+=`<button type="button" class="ecal-day${isSel?' sel':''}${isToday?' today':''}" ${fut?'disabled':''} onclick="entryCalPick(${y},${m},${d})">${d}</button>`;
   }
   eG('ecal-grid').innerHTML=cells;
+  // แถบสรุป + ปุ่มยืนยัน — เลือกได้หลายวัน
+  const bar=eG('ecal-selbar'),cf=eG('ecal-confirm');
+  const sorted=[...entryDates].sort();
+  bar.style.display='block';
+  bar.innerHTML=sorted.length
+    ?('✅ เลือกแล้ว <b>'+sorted.length+' วัน</b> (สูงสุด '+ENTRY_MAX_DATES+'): '+sorted.map(entryShortD).join(', ')+'<br><span style="color:#64748b">แตะวันที่เพื่อเลือก/ยกเลิก เลือกข้ามเดือนได้</span>')
+    :'แตะวันที่เพื่อเลือก เลือกได้หลายวัน (สูงสุด '+ENTRY_MAX_DATES+' วัน)';
+  cf.style.display='inline-flex';
+  cf.disabled=!sorted.length;
+  cf.innerHTML='ยืนยัน'+(sorted.length?(' ('+sorted.length+' วัน)'):'');
 }
-function entryCalPick(y,m,d){if(entryIsFuture(y,m,d))return;entryDate=entryYMDKey(y,m,d);closeModal('modal-ecal');entryDateDisplay();if(eG('entry-step2')&&eG('entry-step2').style.display!=='none')eG('entry-ctx').textContent='🏢 '+bName(entryBld)+' · ชั้น '+entryFloor+' · '+entryThaiShort(entryDate);}
-function entryCalToday(){const t=entryTodayP();entryDate=entryYMDKey(t.y,t.m,t.d);closeModal('modal-ecal');entryDateDisplay();}
+function ecalConfirm(){
+  if(!entryDates.length){alert('กรุณาเลือกอย่างน้อย 1 วัน');return;}
+  entryDates.sort();entryDate=entryDates[0];
+  closeModal('modal-ecal');entryDateDisplay();
+}
+function entryCalPick(y,m,d){if(entryIsFuture(y,m,d))return;const key=entryYMDKey(y,m,d);
+  // แตะเพื่อเลือก/ยกเลิก ได้หลายวัน — ไม่ปิดปฏิทิน
+  const i=entryDates.indexOf(key);
+  if(i>=0)entryDates.splice(i,1);
+  else{
+    if(entryDates.length>=ENTRY_MAX_DATES){alert('เลือกได้สูงสุด '+ENTRY_MAX_DATES+' วันต่อรอบ');return;}
+    entryDates.push(key);
+  }
+  entryRenderCal();
+}
+function entryCalToday(){const t=entryTodayP();const key=entryYMDKey(t.y,t.m,t.d);closeModal('modal-ecal');
+  entryDates=[key];entryDate=key;entryDateDisplay();}
 function entryIsAdmin(){return !!(USER&&(USER.role==='admin'||(Array.isArray(USER.can)&&USER.can.indexOf('admin')>-1)));}
 function entryAllowedKeys(){return entryIsAdmin()?Object.keys(TYPES):STAFF_TYPES;}
 function entryClean(v){let s=String(v).replace(/[^\d.]/g,'');const i=s.indexOf('.');if(i>=0)s=s.slice(0,i+1)+s.slice(i+1).replace(/\./g,'');const n=parseFloat(s);return(isNaN(n)||n<0)?0:Math.round(n*100)/100;}
 function entryFmtKg(n){const v=Math.round((Number(n)||0)*100)/100;return v%1===0?v.toFixed(0):v.toFixed(2);}
 function entryThaiShort(key){const p=String(key).split('-');return p[2]+'/'+p[1]+'/'+(parseInt(p[0],10)+543);}
+let entryFocus='';
 function openEntry(focusType){
   if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
+  entryFocus=focusType||'';
+  // หัว popup บอกชัดว่ากำลังบันทึกอะไร
+  const _et=eG('entry-title');
+  if(_et)_et.textContent=focusType==='ewastep'?'บันทึกข้อมูล Ewast+ (AIS)'
+    :focusType==='recycle'?'บันทึกข้อมูลขยะรีไซเคิล'
+    :(focusType&&TYPES[focusType])?('บันทึกข้อมูล'+TYPES[focusType].name)
+    :'บันทึกข้อมูลขยะ (ทุกประเภท)';
   entryBld='';entryFloor='';entryRecOpen=(focusType==='recycle');entryOpenGroup=(focusType==='recycle'?'recycle':(focusType==='ewastep'?'ewastep':'office'));
   const today=new Date().toISOString().split('T')[0];entryDate=today;
+  entryDates=[today];entryDateIdx=0;entryDraftByDate={};entryConfirmed={};
   entryDateDisplay();
   entryRenderBuildings();
   eG('e-floor-field').style.display='none';eG('e-floors').innerHTML='';
@@ -2473,18 +2727,77 @@ function entryRenderFloors(){
   const b=entryBld;entryFloor='';
   const ff=eG('e-floor-field');
   if(!b||!BUILDINGS[b]){ff.style.display='none';eG('entry-next').disabled=true;return;}
+  if(isNoFloor(entryFocus)){ // Ewast+ / รีไซเคิล = ยอดรวมทั้งอาคาร ไม่ต้องเลือกชั้น
+    ff.style.display='none';eG('e-floors').innerHTML='';eG('entry-next').disabled=false;return;
+  }
   ff.style.display='block';
   eG('e-floors').innerHTML=(BUILDINGS[b].floors||[]).map(f=>`<div class="floor-chip" onclick="entryPickFloor(this,'${String(f).replace(/'/g,"\\'")}')">ชั้น ${f}</div>`).join('');
-  eG('entry-next').disabled=true;
+  eG('entry-next').disabled=false; // ชั้นเป็นทางเลือก — จำเป็นเฉพาะหมวดขยะสำนักงาน (ตรวจตอนบันทึก)
 }
 function entryPickFloor(el,f){document.querySelectorAll('#e-floors .floor-chip').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');entryFloor=f;eG('entry-next').disabled=false;}
+function entryNewDraft(){const d={recycle:{}};entryAllowedKeys().forEach(k=>{if(k!=='recycle')d[k]=0;});return d;}
 function entryGoTypes(){
-  if(!entryBld||!entryFloor){alert('กรุณาเลือกอาคารและชั้น');return;}
-  entryDraft={recycle:{}};entryAllowedKeys().forEach(k=>{if(k!=='recycle')entryDraft[k]=0;});
+  if(!entryBld){alert('กรุณาเลือกอาคาร');return;}
+  if(!entryDates.length){alert('กรุณาเลือกวันที่');return;}
+  entryDates.sort();
+  // เตรียม draft แยกรายวัน (เก็บค่าที่กรอกไว้ของแต่ละวัน)
+  const keep={};entryDates.forEach(k=>{keep[k]=entryDraftByDate[k]||entryNewDraft();});
+  entryDraftByDate=keep;
+  entryDateIdx=0;entryDate=entryDates[0];entryDraft=entryDraftByDate[entryDate];
   eG('entry-step1').style.display='none';eG('entry-step2').style.display='block';
   eG('entry-foot1').style.display='none';eG('entry-foot2').style.display='flex';
-  eG('entry-ctx').textContent='🏢 '+bName(entryBld)+' · ชั้น '+entryFloor+' · '+entryThaiShort(entryDate);
-  entryRenderTypes();
+  entryUpdCtx();entryRenderDatebar();entryRenderTypes();
+}
+function entryUpdCtx(){
+  eG('entry-ctx').textContent='🏢 '+bName(entryBld)+' · '+(entryFloor?('ชั้น '+entryFloor):'(Ewast+/รีไซเคิล = '+WHOLE_BLD+')')+' · '+entryThaiShort(entryDate);
+}
+/* แถบ chip วันที่ — แตะเพื่อสลับวัน / ✓ = ยืนยันแล้ว */
+function entryRenderDatebar(){
+  const bar=eG('entry-datebar');if(!bar)return;
+  if(!entryMulti()){bar.style.display='none';entryUpdFootBtn();return;}
+  bar.style.display='flex';
+  let total=0;entryDates.forEach(k=>{total+=entryDraftTotal(entryDraftByDate[k]);});
+  bar.innerHTML=entryDates.map((k,i)=>{
+    const done=!!entryConfirmed[k],cur=(i===entryDateIdx);
+    const kg=entryDraftTotal(entryDraftByDate[k]);
+    return `<button type="button" class="db-chip ${cur?'cur':''} ${done?'done':''}" onclick="entrySwitchDay(${i})">${done?'✓ ':''}${entryShortD(k)}${kg>0?(' · '+entryFmtKg(kg)):''}</button>`;
+  }).join('')+`<span class="db-sum">รวม ${entryFmtKg(total)} กก.</span>`;
+  entryUpdFootBtn();
+}
+function entryDraftTotal(d){if(!d)return 0;let s=0;entryAllowedKeys().forEach(k=>{if(k!=='recycle')s+=(d[k]||0);});Object.values(d.recycle||{}).forEach(w=>s+=(w||0));return s;}
+function entrySwitchDay(i){
+  if(i<0||i>=entryDates.length)return;
+  entryDateIdx=i;entryDate=entryDates[i];entryDraft=entryDraftByDate[entryDate];
+  entryUpdCtx();entryRenderDatebar();entryRenderTypes();
+}
+function entryCopyPrev(){
+  if(entryDateIdx<=0)return;
+  const prev=entryDraftByDate[entryDates[entryDateIdx-1]];
+  if(!prev||entryDraftTotal(prev)<=0){alert('วันก่อนหน้ายังไม่มีข้อมูลให้คัดลอก');return;}
+  if(entryDraftTotal(entryDraft)>0&&!confirm('วันนี้มีข้อมูลอยู่แล้ว ต้องการแทนที่ด้วยค่าของวันก่อนหน้า?'))return;
+  entryAllowedKeys().forEach(k=>{if(k!=='recycle')entryDraft[k]=prev[k]||0;});
+  entryDraft.recycle=Object.assign({},prev.recycle||{});
+  entryRenderDatebar();entryRenderTypes();
+  toast('คัดลอกค่าจาก '+entryShortD(entryDates[entryDateIdx-1])+' แล้ว');
+}
+/* ปุ่มหลักด้านล่าง: เดี่ยว=บันทึกทั้งหมด / หลายวัน=ยืนยันวันนี้→ถัดไป / วันสุดท้าย=เสร็จสิ้น */
+function entryUpdFootBtn(){
+  const btn=eG('entry-main-btn'),lbl=eG('entry-main-lbl'),cp=eG('entry-copy-btn');
+  if(!btn)return;
+  if(!entryMulti()){
+    lbl.textContent='บันทึกทั้งหมด';btn.onclick=entrySubmit;cp.style.display='none';return;
+  }
+  cp.style.display=(entryDateIdx>0)?'inline-flex':'none';
+  const remain=entryDates.filter((k,i)=>i!==entryDateIdx&&!entryConfirmed[k]).length;
+  lbl.textContent=remain>0?'ยืนยันวันนี้ → วันถัดไป':'ยืนยันและเสร็จสิ้นทุกวัน';
+  btn.onclick=entryConfirmDay;
+}
+function entryConfirmDay(){
+  const justDone=entryDate;
+  entryConfirmed[justDone]=true;
+  const next=entryDates.findIndex(k=>!entryConfirmed[k]);
+  if(next>=0){entrySwitchDay(next);toast('✓ ยืนยัน '+entryShortD(justDone)+' แล้ว — ต่อ '+entryShortD(entryDate));return;}
+  entrySubmitAll();   // ครบทุกวัน → ส่งครั้งเดียว
 }
 function entryBack(){eG('entry-step2').style.display='none';eG('entry-step1').style.display='block';eG('entry-foot2').style.display='none';eG('entry-foot1').style.display='flex';}
 function entryRecSubtotal(){let s=0;Object.values(entryDraft.recycle).forEach(w=>s+=(w||0));return s;}
@@ -2545,23 +2858,56 @@ function entryAdj(k,d){entryDraft[k]=Math.max(0,Math.round(((entryDraft[k]||0)+d
 function entrySetMat(m,v){entryDraft.recycle[m]=entryClean(v);entryUpdKg();}
 function entryAdjMat(m,d){entryDraft.recycle[m]=Math.max(0,Math.round(((entryDraft.recycle[m]||0)+d)*100)/100);entryRenderTypes();}
 function entryTotal(){let s=0;entryAllowedKeys().forEach(k=>{if(k!=='recycle')s+=(entryDraft[k]||0);});return s+entryRecSubtotal();}
-function entryUpdKg(){eG('entry-kg').textContent=entryFmtKg(entryTotal());}
-function entrySubmit(){
-  const recs=[],now=new Date().toISOString(),date=entryDate;
+function entryUpdKg(){eG('entry-kg').textContent=entryFmtKg(entryTotal());if(entryMulti())entryRenderDatebar();}
+/* สร้างเรคอร์ดจาก draft ของวันหนึ่ง (ใช้ทั้งโหมดเดี่ยวและหลายวัน) */
+function entryBuildRecs(date,draft,now){
+  const recs=[];
   entryAllowedKeys().forEach(k=>{
     if(k==='recycle')return;
-    if(entryDraft[k]>0){const r={id:uid(),type:k,date,building:entryBld,floor:entryFloor,weight:+entryDraft[k].toFixed(2),recorder:TYPES[k].recorder,createdBy:(USER&&USER.name)||'',createdAt:now};if(k==='ewastep')r.note='AIS Ewast+';recs.push(r);}
+    if(draft[k]>0){const fl=isNoFloor(k)?WHOLE_BLD:entryFloor;const r={id:uid(),type:k,date,building:entryBld,floor:fl,weight:+draft[k].toFixed(2),recorder:TYPES[k].recorder,createdBy:(USER&&USER.name)||'',createdAt:now};if(k==='ewastep')r.note='AIS Ewast+';recs.push(r);}
   });
-  if(entryAllowedKeys().includes('recycle'))Object.keys(entryDraft.recycle).forEach(m=>{
-    if(entryDraft.recycle[m]>0)recs.push({id:uid(),type:'recycle',date,building:entryBld,floor:entryFloor,weight:+entryDraft.recycle[m].toFixed(2),material:m,vendor:'Vendor ภายนอก',recorder:TYPES.recycle.recorder,createdBy:(USER&&USER.name)||'',createdAt:now});
+  if(entryAllowedKeys().includes('recycle'))Object.keys(draft.recycle||{}).forEach(m=>{
+    if(draft.recycle[m]>0)recs.push({id:uid(),type:'recycle',date,building:entryBld,floor:WHOLE_BLD,weight:+draft.recycle[m].toFixed(2),material:m,vendor:'Vendor ภายนอก',recorder:TYPES.recycle.recorder,createdBy:(USER&&USER.name)||'',createdAt:now});
   });
+  return recs;
+}
+function entryOfficeNeedsFloor(draft){return entryAllowedKeys().some(k=>!isNoFloor(k)&&k!=='recycle'&&draft[k]>0);}
+function entrySubmit(){ // โหมดวันเดียว (พฤติกรรมเดิม)
+  const now=new Date().toISOString();
+  if(entryOfficeNeedsFloor(entryDraft)&&!entryFloor){
+    alert('กรุณากลับไปเลือกชั้น — หมวดขยะสำนักงานต้องระบุชั้น\n(Ewast+ และขยะรีไซเคิลไม่ต้องเลือกชั้น)');
+    entryFocus='';entryRenderFloors();entryBack();return;
+  }
+  const recs=entryBuildRecs(entryDate,entryDraft,now);
   if(!recs.length){alert('กรุณากรอกน้ำหนักอย่างน้อย 1 ชนิด');return;}
   const totalKg=entryTotal();
   recs.forEach(r=>{data.push(r);gsPush('records','add',r);});
   save();
   closeModal('modal-entry');
   const a=document.querySelector('.nav-tab.active');if(a)a.click();else if(typeof renderDashboard==='function')renderDashboard();
-  toast('บันทึก '+recs.length+' รายการ ('+entryFmtKg(totalKg)+' กก.) · '+bName(entryBld)+' ชั้น '+entryFloor);
+  toast('บันทึก '+recs.length+' รายการ ('+entryFmtKg(totalKg)+' กก.) · '+bName(entryBld)+(entryFloor?(' ชั้น '+entryFloor):''));
+}
+function entrySubmitAll(){ // โหมดหลายวัน — สะสมแล้วส่งครั้งเดียว
+  const now=new Date().toISOString();
+  // ตรวจชั้น: ถ้ามีหมวดสำนักงานวันใดวันหนึ่ง ต้องเลือกชั้น
+  const needFloor=entryDates.some(k=>entryOfficeNeedsFloor(entryDraftByDate[k]));
+  if(needFloor&&!entryFloor){
+    alert('กรุณากลับไปเลือกชั้น — หมวดขยะสำนักงานต้องระบุชั้น\n(Ewast+ และขยะรีไซเคิลไม่ต้องเลือกชั้น)');
+    entryFocus='';entryRenderFloors();entryBack();return;
+  }
+  let recs=[],daysWithData=0,totalKg=0;
+  entryDates.forEach(k=>{
+    const d=entryDraftByDate[k],rs=entryBuildRecs(k,d,now);
+    if(rs.length){daysWithData++;totalKg+=entryDraftTotal(d);recs=recs.concat(rs);}
+  });
+  if(!recs.length){alert('ยังไม่มีน้ำหนักในวันใดเลย กรุณากรอกอย่างน้อย 1 วัน');return;}
+  const emptyDays=entryDates.length-daysWithData;
+  if(emptyDays>0&&!confirm('มี '+emptyDays+' วันที่ไม่ได้กรอกข้อมูล (จะถูกข้าม)\nยืนยันบันทึก '+daysWithData+' วัน รวม '+recs.length+' รายการ?'))return;
+  recs.forEach(r=>{data.push(r);gsPush('records','add',r);});
+  save();
+  closeModal('modal-entry');
+  const a=document.querySelector('.nav-tab.active');if(a)a.click();else if(typeof renderDashboard==='function')renderDashboard();
+  toast('✅ บันทึก '+daysWithData+' วัน · '+recs.length+' รายการ ('+entryFmtKg(totalKg)+' กก.) · '+bName(entryBld)+(entryFloor?(' ชั้น '+entryFloor):''));
 }
 
 /* ===== QR ===== */
@@ -2602,15 +2948,20 @@ function openScan(mode){
   openModal('modal-scan');
 }
 function pickScanType(el,t){document.querySelectorAll('#scan-types .type-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');scanType=t;
+  const st=document.getElementById('scan-title');
+  if(st&&TYPES[t])st.textContent='บันทึกข้อมูล'+TYPES[t].name+' (จาก QR)';
   const isRec=t==='recycle';
   document.getElementById('s-material-field').style.display=isRec?'block':'none';
   if(isRec&&!document.getElementById('s-material').options.length){
     document.getElementById('s-material').innerHTML=materialOptionsHTML();
   }
+  renderScanFloors(); // รีไซเคิล = ยอดรวมทั้งอาคาร ไม่ต้องเลือกชั้น
 }
+function scanNoFloor(){return isNoFloor(scanType);}
 function renderScanFloors(){
   const b=document.getElementById('s-building').value;
   const ff=document.getElementById('s-floor-field'),grid=document.getElementById('s-floors');scanFloor=null;
+  if(scanNoFloor()){scanFloor=WHOLE_BLD;ff.style.display='none';grid.innerHTML='';return;}
   if(!b){ff.style.display='none';return;}
   ff.style.display='block';
   grid.innerHTML=BUILDINGS[b].floors.map(f=>`<div class="floor-chip" onclick="pickScanFloor(this,'${f}')">ชั้น ${f}</div>`).join('');
@@ -2621,6 +2972,7 @@ function saveScan(){
   const b=document.getElementById('s-building').value;
   const w=parseFloat(document.getElementById('s-weight').value);
   if(!scanType){alert('กรุณาเลือกประเภทขยะ');return;}
+  if(scanNoFloor())scanFloor=WHOLE_BLD;
   if(!date||!b||!scanFloor||!w||w<=0){alert('กรุณากรอกข้อมูลให้ครบถ้วน');return;}
   let material='';
   if(scanType==='recycle'){material=document.getElementById('s-material').value;if(!material){alert('กรุณาเลือกประเภทวัสดุรีไซเคิล');return;}}
@@ -2796,6 +3148,46 @@ function renderESG(){
   document.getElementById('esg-avoided').textContent=fmtCO2(avoided);
   document.getElementById('esg-intensity').textContent=intensity.toFixed(4);
 
+  /* ===== สรุปตามประเภท Setcarbon (tCO2e) — รวมพลังงาน & น้ำ ===== */
+  let urows=year==='all'?udata:udata.filter(r=>String(r.date).slice(0,4)===year);
+  if(bf!=='all')urows=urows.filter(r=>r.building===bf);
+  const uC={fuel:0,elec:0,water:0};
+  urows.forEach(r=>{if(uC[r.ut]!==undefined)uC[r.ut]+=utilCO2(r);});
+  const scopeC={
+    s1:uC.fuel,
+    s2:uC.elec,
+    s3:uC.water+cByType.general+cByType.food+cByType.hazard+cByType.ewaste,
+    other:cByType.recycle+cByType.ewastep
+  };
+  const scopeSrc={
+    s1:'น้ำมัน '+uC.fuel.toFixed(2),
+    s2:'ไฟฟ้า '+uC.elec.toFixed(2),
+    s3:'น้ำประปา '+uC.water.toFixed(2)+' · ขยะกำจัด '+(cByType.general+cByType.food+cByType.hazard+cByType.ewaste).toFixed(2),
+    other:'รีไซเคิล '+cByType.recycle.toFixed(2)+' · Ewast+ '+cByType.ewastep.toFixed(2)
+  };
+  const scopeTotal=scopeC.s1+scopeC.s2+scopeC.s3+scopeC.other;
+  const sk=document.getElementById('esg-scope-kpi');
+  if(sk)sk.innerHTML=SETCARBON_SCOPES.map(s=>`
+    <div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:${s.color}22">${s.icon}</div></div>
+      <div class="kpi-label">${s.name}</div>
+      <div class="kpi-value" style="font-size:21px">${(scopeC[s.id]/1000).toFixed(3)} <span class="kpi-unit">tCO₂e</span></div>
+      <div class="page-sub" style="font-size:11px;margin-top:4px">${s.desc}</div></div>`).join('');
+  const st=document.getElementById('esg-scope-table');
+  if(st)st.innerHTML=SETCARBON_SCOPES.map(s=>{
+    const pct=scopeTotal?(scopeC[s.id]/scopeTotal*100).toFixed(1):0;
+    return `<tr>
+      <td><span class="badge" style="background:${s.color}22;color:${s.color}">${s.icon} ${s.name}</span></td>
+      <td style="font-size:13px">${scopeSrc[s.id]} kgCO₂e</td>
+      <td class="t-weight">${scopeC[s.id].toFixed(2)}</td>
+      <td class="t-weight">${(scopeC[s.id]/1000).toFixed(3)}</td>
+      <td>${pct}%</td></tr>`;
+  }).join('');
+  const sf=document.getElementById('esg-scope-foot');
+  if(sf)sf.innerHTML=`<tr style="background:#f0fdf4;font-weight:700">
+      <td>รวมประเภท 1-3</td><td>—</td><td>${(scopeC.s1+scopeC.s2+scopeC.s3).toFixed(2)}</td><td>${((scopeC.s1+scopeC.s2+scopeC.s3)/1000).toFixed(3)}</td><td>${scopeTotal?((scopeC.s1+scopeC.s2+scopeC.s3)/scopeTotal*100).toFixed(1):0}%</td></tr>
+    <tr style="background:#f8fafc;font-weight:700">
+      <td>รวมทั้งหมด (รวมอื่นๆ)</td><td>—</td><td>${scopeTotal.toFixed(2)}</td><td>${(scopeTotal/1000).toFixed(3)}</td><td>100%</td></tr>`;
+
   // KPI per category group
   const recCats={'กระดาษ':0,'อลูมิเนียม':0,'พลาสติก':0,'เหล็ก':0};
   rows.filter(r=>r.type==='recycle').forEach(r=>{const c=getCategory(r.material||'');if(recCats[c]!==undefined)recCats[c]+=co2(r);});
@@ -2865,12 +3257,28 @@ document.getElementById('esg-year').onchange=renderESG;
 function exportESGCSV(){
   const year=document.getElementById('esg-year').value;
   const rows=year==='all'?data:data.filter(r=>r.date.slice(0,4)===year);
-  const out=[['ประเภทขยะ','น้ำหนัก_kg','EmissionFactor_kgCO2e_per_kg','คาร์บอน_kgCO2e']];
+  const urows=year==='all'?udata:udata.filter(r=>String(r.date).slice(0,4)===year);
+  const out=[['หมวด','รายการ','ปริมาณ','หน่วย','EmissionFactor','คาร์บอน_kgCO2e','คาร์บอน_tCO2e']];
+  const cT={};
   Object.keys(TYPES).forEach(t=>{
     const w=rows.filter(r=>r.type===t).reduce((a,r)=>a+r.weight,0);
     const c=rows.filter(r=>r.type===t).reduce((a,r)=>a+co2(r),0);
-    out.push([TYPES[t].name,w.toFixed(2),EMISSION_FACTORS[t].toFixed(4),c.toFixed(2)]);
+    cT[t]=c;
+    out.push(['ขยะ',TYPES[t].name,w.toFixed(2),'kg',EMISSION_FACTORS[t].toFixed(4),c.toFixed(2),(c/1000).toFixed(4)]);
   });
+  const uC={fuel:0,elec:0,water:0};
+  Object.keys(UTILITIES).forEach(ut=>{
+    const amt=urows.filter(r=>r.ut===ut).reduce((a,r)=>a+(r.amount||0),0);
+    const c=urows.filter(r=>r.ut===ut).reduce((a,r)=>a+utilCO2(r),0);
+    uC[ut]=c;
+    out.push(['พลังงาน/น้ำ',UTILITIES[ut].name,amt.toFixed(2),UTILITIES[ut].unit,utilFactor(ut),c.toFixed(2),(c/1000).toFixed(4)]);
+  });
+  const s1=uC.fuel,s2=uC.elec,s3=uC.water+cT.general+cT.food+cT.hazard+cT.ewaste,oth=cT.recycle+cT.ewastep;
+  out.push(['Setcarbon','ประเภท 1 (น้ำมัน)','','','',s1.toFixed(2),(s1/1000).toFixed(4)]);
+  out.push(['Setcarbon','ประเภท 2 (ไฟฟ้า)','','','',s2.toFixed(2),(s2/1000).toFixed(4)]);
+  out.push(['Setcarbon','ประเภท 3 (ประปา+ขยะกำจัด)','','','',s3.toFixed(2),(s3/1000).toFixed(4)]);
+  out.push(['Setcarbon','ประเภทอื่นๆ (รีไซเคิล+Ewast+)','','','',oth.toFixed(2),(oth/1000).toFixed(4)]);
+  out.push(['Setcarbon','รวมทั้งหมด','','','',(s1+s2+s3+oth).toFixed(2),((s1+s2+s3+oth)/1000).toFixed(4)]);
   const csv='\uFEFF'+out.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);a.download='esg-carbon-'+year+'.csv';a.click();toast('Export ESG สำเร็จ');
@@ -2961,6 +3369,205 @@ function kioskLogout(){
   document.getElementById('kiosk-login-err').textContent='';
 }
 
+/* ===== UTILITY PAGE (น้ำมัน / ไฟฟ้า / น้ำประปา) ===== */
+let utChart=null,utPage=1;
+const UT_PAGE_SIZE=12;
+function utYearSel(){
+  const sel=document.getElementById('ut-year');if(!sel)return 'all';
+  if(!sel.options.length){
+    const years=[...new Set(udata.map(r=>String(r.date).slice(0,4)))].sort().reverse();
+    if(!years.length)years.push(String(new Date().getFullYear()));
+    sel.innerHTML='<option value="all">ทุกปี</option>'+years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
+    sel.value=years[0];
+  }
+  return sel.value;
+}
+function utRows(){
+  const y=utYearSel();
+  return y==='all'?udata:udata.filter(r=>String(r.date).slice(0,4)===y);
+}
+function renderUtility(){
+  const rows=utRows();
+  // KPI ต่อประเภท
+  const kpi=document.getElementById('ut-kpi');
+  if(kpi)kpi.innerHTML=Object.keys(UTILITIES).map(ut=>{
+    const U=UTILITIES[ut];
+    const rs=rows.filter(r=>r.ut===ut);
+    const amt=rs.reduce((a,r)=>a+(r.amount||0),0);
+    const c=rs.reduce((a,r)=>a+utilCO2(r),0);
+    return `<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:${U.bg}">${U.icon}</div>
+      <span class="badge" style="background:${U.color}22;color:${U.color}">ประเภท ${U.scope}</span></div>
+      <div class="kpi-label">${U.name}</div>
+      <div class="kpi-value" style="font-size:21px">${amt.toLocaleString(undefined,{maximumFractionDigits:2})} <span class="kpi-unit">${U.unit}</span></div>
+      <div class="page-sub" style="font-size:12px;margin-top:4px">≈ ${fmtCO2(c)} · EF ${utilFactor(ut)} ${U.efUnit}</div></div>`;
+  }).join('')+(function(){
+    const tot=rows.reduce((a,r)=>a+utilCO2(r),0);
+    return `<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:#dcfce7">🌍</div></div>
+      <div class="kpi-label">คาร์บอนรวมจากพลังงาน &amp; น้ำ</div>
+      <div class="kpi-value" style="font-size:21px">${fmtCO2(tot)}</div>
+      <div class="page-sub" style="font-size:12px;margin-top:4px">= ${(tot/1000).toFixed(3)} tCO₂e</div></div>`;
+  })();
+  // กราฟรายเดือน 3 ชุดข้อมูล
+  const cv=document.getElementById('ut-chart');
+  if(cv){
+    if(utChart)utChart.destroy();
+    Chart.defaults.font.family="'Sarabun',sans-serif";
+    const y=utYearSel();
+    let labels,datasets;
+    if(y==='all'){
+      const years=[...new Set(udata.map(r=>String(r.date).slice(0,4)))].sort();
+      labels=years.map(v=>'ปี '+(+v+543));
+      datasets=Object.keys(UTILITIES).map(ut=>({label:UTILITIES[ut].short,
+        data:years.map(v=>+udata.filter(r=>r.ut===ut&&String(r.date).slice(0,4)===v).reduce((a,r)=>a+utilCO2(r),0).toFixed(2)),
+        backgroundColor:UTILITIES[ut].color,borderRadius:5}));
+    }else{
+      labels=MONTHS_SHORT;
+      datasets=Object.keys(UTILITIES).map(ut=>({label:UTILITIES[ut].short,
+        data:MONTHS.map((_,mi)=>+rows.filter(r=>r.ut===ut&&(+String(r.date).slice(5,7))-1===mi).reduce((a,r)=>a+utilCO2(r),0).toFixed(2)),
+        backgroundColor:UTILITIES[ut].color,borderRadius:5}));
+    }
+    utChart=new Chart(cv,{type:'bar',data:{labels,datasets},
+      options:{responsive:true,plugins:{legend:{position:'bottom'},datalabels:{display:false}},
+        scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
+  }
+  // การ์ดสรุปต่อมิเตอร์
+  const mc=document.getElementById('ut-meter-cards');
+  if(mc)mc.innerHTML=Object.keys(UTILITIES).map(ut=>{
+    const U=UTILITIES[ut];
+    const lines=Object.keys(U.meters).map(b=>U.meters[b].map(meter=>{
+      const rs=rows.filter(r=>r.ut===ut&&r.building===b&&r.meter===meter);
+      const amt=rs.reduce((a,r)=>a+(r.amount||0),0);
+      const c=rs.reduce((a,r)=>a+utilCO2(r),0);
+      return `<tr><td>${bBadge(b)}</td><td>${meter}</td><td class="t-weight">${amt.toLocaleString(undefined,{maximumFractionDigits:2})} ${U.unit}</td><td class="t-weight">${c.toFixed(2)}</td></tr>`;
+    }).join('')).join('');
+    return `<div class="card"><div class="card-head"><div class="card-title"><span class="ic" style="background:${U.bg}">${U.icon}</span>${U.name} <span class="badge" style="background:${U.color}22;color:${U.color}">ประเภท ${U.scope} · ${U.efUnit}</span></div></div>
+      <div class="table-wrap"><table><thead><tr><th>อาคาร</th><th>มิเตอร์ / จุดวัด</th><th>ปริมาณรวม</th><th>kgCO₂e</th></tr></thead><tbody>${lines||'<tr><td colspan="4"><div class="empty">ยังไม่มีข้อมูล</div></td></tr>'}</tbody></table></div></div>`;
+  }).join('');
+  renderUtilTable();
+}
+function renderUtilTable(){
+  const body=document.getElementById('ut-body');if(!body)return;
+  const fl=(document.getElementById('ut-filter')||{}).value||'all';
+  let rows=utRows();
+  if(fl!=='all')rows=rows.filter(r=>r.ut===fl);
+  rows=[...rows].sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.id).localeCompare(String(a.id)));
+  const pages=Math.max(1,Math.ceil(rows.length/UT_PAGE_SIZE));
+  if(utPage>pages)utPage=pages;
+  const pageRows=rows.slice((utPage-1)*UT_PAGE_SIZE,utPage*UT_PAGE_SIZE);
+  if(!rows.length){body.innerHTML='<tr><td colspan="8"><div class="empty"><span class="ic">📭</span>ยังไม่มีข้อมูล กดปุ่ม "บันทึกข้อมูล" เพื่อเพิ่ม</div></td></tr>';document.getElementById('ut-pager').innerHTML='';return;}
+  body.innerHTML=pageRows.map(r=>{
+    const U=UTILITIES[r.ut]||{icon:'❓',short:r.ut,unit:'',efUnit:'',color:'#64748b'};
+    const mlbl=(function(d){const p=String(d).split('-');return (p.length>=2&&MONTHS_SHORT[(+p[1])-1])?(MONTHS_SHORT[(+p[1])-1]+' '+((+p[0])+543)):fmt(d);})(r.date);
+    return `<tr>
+      <td>${mlbl}</td>
+      <td><span class="badge" style="background:${U.color}22;color:${U.color}">${U.icon} ${U.short}</span></td>
+      <td>${bBadge(r.building)}</td>
+      <td>${r.meter||'-'}</td>
+      <td class="t-weight">${(r.amount||0).toLocaleString(undefined,{maximumFractionDigits:2})} ${U.unit}</td>
+      <td>${utilFactor(r.ut)}</td>
+      <td class="t-weight">${utilCO2(r).toFixed(2)}</td>
+      <td class="t-actions"><button class="icon-btn del" title="ลบ" onclick="delUtil('${r.id}')">🗑️</button></td></tr>`;
+  }).join('');
+  const pager=document.getElementById('ut-pager');
+  pager.innerHTML=pages>1?Array.from({length:pages},(_,i)=>`<button class="pg-btn ${i+1===utPage?'active':''}" onclick="utPage=${i+1};renderUtilTable()">${i+1}</button>`).join(''):'';
+}
+function delUtil(id){
+  if(!can('delete')){alert('คุณไม่มีสิทธิ์ลบข้อมูล');return;}
+  if(!confirm('ลบรายการนี้?'))return;
+  udata=udata.filter(r=>r.id!==id);saveUtil_();gsPush('utilities','delete',{id});
+  renderUtility();toast('ลบรายการแล้ว');
+}
+/* --- Modal บันทึก (รายเดือน) --- */
+let utSel={ut:'',bld:'',meter:''};
+let utMonth=-1,utYear=0;
+const EN_MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function utilRenderMonths(){
+  const ysel=document.getElementById('ut-m-year');
+  utYear=+ysel.value;
+  const now=new Date(),cy=now.getFullYear(),cm=now.getMonth();
+  if(utYear===cy&&utMonth>cm)utMonth=cm;   // กันเดือนอนาคตของปีปัจจุบัน
+  document.getElementById('ut-m-months').innerHTML=MONTHS_SHORT.map((nm,i)=>{
+    const fut=(utYear===cy&&i>cm);
+    return `<div class="floor-chip ${i===utMonth?'sel':''}" style="${fut?'opacity:.3;pointer-events:none':''}" onclick="utilPickMonth(${i})">${nm} (${EN_MONTHS_SHORT[i]})</div>`;
+  }).join('');
+}
+function utilPickMonth(i){utMonth=i;utilRenderMonths();}
+function openUtilEntry(presetUt){
+  if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
+  utSel={ut:'',bld:'',meter:''};
+  const now=new Date();utYear=now.getFullYear();utMonth=now.getMonth();
+  // ดรอปดาวน์ปี พ.ศ.: ย้อนหลัง 5 ปีถึงปีปัจจุบัน
+  let yopts='';for(let yy=now.getFullYear();yy>=now.getFullYear()-5;yy--)yopts+=`<option value="${yy}">${yy+543}</option>`;
+  document.getElementById('ut-m-year').innerHTML=yopts;
+  utilRenderMonths();
+  document.getElementById('ut-m-amount').value='';
+  document.getElementById('ut-m-note').value='';
+  document.getElementById('ut-m-types').innerHTML=Object.keys(UTILITIES).map(ut=>
+    `<div class="type-opt" data-ut="${ut}" onclick="utilPickType('${ut}')"><span class="ic">${UTILITIES[ut].icon}</span><span class="lbl">${UTILITIES[ut].short}</span></div>`).join('');
+  ['ut-m-bld-field','ut-m-meter-field','ut-m-amount-field'].forEach(id=>document.getElementById(id).style.display='none');
+  openModal('modal-util');
+  if(presetUt&&UTILITIES[presetUt])utilPickType(presetUt);
+}
+function utilPickType(ut){
+  utSel.ut=ut;utSel.bld='';utSel.meter='';
+  document.querySelectorAll('#ut-m-types .type-opt').forEach(x=>x.classList.toggle('sel',x.dataset.ut===ut));
+  const U=UTILITIES[ut];
+  const ic=document.getElementById('ut-m-icon');ic.textContent=U.icon;ic.style.background=U.bg;ic.style.color=U.color;
+  document.getElementById('ut-m-title').textContent='บันทึก'+U.name;
+  document.getElementById('ut-m-unit').textContent=U.unit;
+  // อาคารเฉพาะที่มีมิเตอร์ของประเภทนี้
+  const blds=Object.keys(U.meters);
+  document.getElementById('ut-m-blds').innerHTML=blds.map(b=>`<div class="floor-chip" data-b="${b}" onclick="utilPickBld('${b}')">${bName(b)}</div>`).join('');
+  document.getElementById('ut-m-bld-field').style.display='block';
+  document.getElementById('ut-m-meter-field').style.display='none';
+  document.getElementById('ut-m-amount-field').style.display='none';
+  if(blds.length===1)utilPickBld(blds[0]);
+}
+function utilPickBld(b){
+  utSel.bld=b;utSel.meter='';
+  document.querySelectorAll('#ut-m-blds .floor-chip').forEach(x=>x.classList.toggle('sel',x.dataset.b===b));
+  const meters=(UTILITIES[utSel.ut].meters[b]||[]);
+  document.getElementById('ut-m-meters').innerHTML=meters.map(m=>{const s=m.replace(/'/g,"\\'");
+    return `<div class="floor-chip" data-m="${m.replace(/"/g,'&quot;')}" onclick="utilPickMeter(this,'${s}')">${m}</div>`;}).join('');
+  document.getElementById('ut-m-meter-field').style.display='block';
+  document.getElementById('ut-m-amount-field').style.display='none';
+  if(meters.length===1){const chip=document.querySelector('#ut-m-meters .floor-chip');if(chip)utilPickMeter(chip,meters[0]);}
+}
+function utilPickMeter(el,m){
+  document.querySelectorAll('#ut-m-meters .floor-chip').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');utSel.meter=m;
+  document.getElementById('ut-m-amount-field').style.display='block';
+  utilCalcPreview();
+}
+function utilCalcPreview(){
+  const p=document.getElementById('ut-m-preview');if(!p||!utSel.ut)return;
+  const v=parseFloat(document.getElementById('ut-m-amount').value);
+  const U=UTILITIES[utSel.ut];
+  p.textContent=(!isNaN(v)&&v>0)
+    ?('≈ '+(v*utilFactor(utSel.ut)).toFixed(2)+' kgCO₂e (EF '+utilFactor(utSel.ut)+' '+U.efUnit+')')
+    :'รับเฉพาะตัวเลข ทศนิยม 2 ตำแหน่ง';
+}
+function saveUtil(){
+  const w=parseFloat(document.getElementById('ut-m-amount').value);
+  if(!utSel.ut){alert('กรุณาเลือกประเภทข้อมูล (น้ำมัน / ไฟฟ้า / น้ำประปา)');return;}
+  if(utMonth<0||!utYear){alert('กรุณาเลือกเดือนที่บันทึก');return;}
+  if(!utSel.bld){alert('กรุณาเลือกอาคาร');return;}
+  if(!utSel.meter){alert('กรุณาเลือกมิเตอร์ / จุดวัด');return;}
+  if(isNaN(w)||w<=0){alert('กรุณากรอกปริมาณให้ถูกต้อง');return;}
+  const date=utYear+'-'+String(utMonth+1).padStart(2,'0')+'-01';   // รายเดือน เก็บเป็นวันที่ 1 ของเดือน
+  // เตือนถ้ามิเตอร์นี้มีข้อมูลเดือนเดียวกันอยู่แล้ว
+  const dupe=udata.some(r=>r.ut===utSel.ut&&r.building===utSel.bld&&r.meter===utSel.meter&&String(r.date).slice(0,7)===date.slice(0,7));
+  if(dupe&&!confirm('มิเตอร์นี้มีข้อมูลเดือน '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' อยู่แล้ว\nต้องการบันทึกเพิ่มอีกรายการ?'))return;
+  const rec={id:uid(),ut:utSel.ut,date,building:utSel.bld,meter:utSel.meter,amount:+w.toFixed(2),
+    note:document.getElementById('ut-m-note').value.trim(),recorder:'ฝ่ายอาคาร',
+    createdBy:(USER&&USER.name)||'',createdAt:new Date().toISOString()};
+  udata.push(rec);saveUtil_();gsPush('utilities','add',rec);
+  closeModal('modal-util');
+  const sel=document.getElementById('ut-year');if(sel)sel.innerHTML='';
+  renderUtility();
+  toast('บันทึก '+UTILITIES[utSel.ut].short+' '+w.toFixed(2)+' '+UTILITIES[utSel.ut].unit+' · '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' · '+bName(utSel.bld)+' สำเร็จ');
+}
+
 /* ===== ADMIN ===== */
 function renderAdmin(){
   document.getElementById('set-org').value=SETTINGS.org;
@@ -2980,17 +3587,30 @@ function renderAdmin(){
   }).join('');
   const ef=document.getElementById('admin-ef-body');
   if(ef){
-    const rows=[];
-    Object.keys(TYPES).filter(t=>t!=='recycle').forEach(t=>rows.push(['type:'+t,TYPES[t].icon+' '+TYPES[t].name,EMISSION_FACTORS[t]]));
-    Object.keys(RECYCLE_CATEGORIES).forEach(c=>rows.push(['cat:'+c,RECYCLE_CATEGORIES[c].icon+' รีไซเคิล: '+c,CAT_FACTORS[c]]));
-    ef.innerHTML=rows.map(([key,n,f])=>{
-      const src=(EF_META.sources&&EF_META.sources[key])||'';
-      return `<tr>
-        <td>${n}</td>
-        <td><input class="input ef-input" data-k="${key}" type="number" step="0.0001" min="0" value="${f}" style="padding:8px 10px"></td>
-        <td><input class="input ef-src" data-k="${key}" placeholder="ที่มาของค่านี้ (ถ้ามี)" value="${src.replace(/"/g,'&quot;')}" style="padding:8px 10px"></td>
-      </tr>`;
-    }).join('');
+    /* จัดกลุ่มตาม Setcarbon: ประเภท 1-3 และอื่นๆ */
+    const groups=[
+      {head:'⛽ ประเภท 1 — น้ำมัน',color:'#b45309',rows:[['type:fuel','⛽ น้ำมัน Diesel (Generator)',utilFactor('fuel'),UTILITIES.fuel.efUnit]]},
+      {head:'⚡ ประเภท 2 — ไฟฟ้า',color:'#a16207',rows:[['type:elec','⚡ ไฟฟ้า (Grid ประเทศไทย)',utilFactor('elec'),UTILITIES.elec.efUnit]]},
+      {head:'🌐 ประเภท 3 — น้ำประปา และขยะกำจัด',color:'#0369a1',rows:[
+        ['type:water','💧 น้ำประปา',utilFactor('water'),UTILITIES.water.efUnit],
+        ['type:general',TYPES.general.icon+' '+TYPES.general.name,EMISSION_FACTORS.general,'kgCO₂e/kg'],
+        ['type:food',TYPES.food.icon+' '+TYPES.food.name,EMISSION_FACTORS.food,'kgCO₂e/kg'],
+        ['type:hazard',TYPES.hazard.icon+' '+TYPES.hazard.name,EMISSION_FACTORS.hazard,'kgCO₂e/kg'],
+        ['type:ewaste',TYPES.ewaste.icon+' '+TYPES.ewaste.name,EMISSION_FACTORS.ewaste,'kgCO₂e/kg']]},
+      {head:'♻️ ประเภทอื่นๆ — รีไซเคิล และ Ewast+',color:'#15803d',rows:
+        [['type:ewastep',TYPES.ewastep.icon+' '+TYPES.ewastep.name,EMISSION_FACTORS.ewastep,'kgCO₂e/kg']]
+        .concat(Object.keys(RECYCLE_CATEGORIES).map(c=>['cat:'+c,RECYCLE_CATEGORIES[c].icon+' รีไซเคิล: '+c,CAT_FACTORS[c],'kgCO₂e/kg']))}
+    ];
+    ef.innerHTML=groups.map(g=>
+      `<tr style="background:${g.color}10"><td colspan="3" style="font-weight:700;color:${g.color};font-size:13px">${g.head}</td></tr>`+
+      g.rows.map(([key,n,f,unit])=>{
+        const src=(EF_META.sources&&EF_META.sources[key])||'';
+        return `<tr>
+          <td>${n} <span class="page-sub" style="font-size:11px">(${unit})</span></td>
+          <td><input class="input ef-input" data-k="${key}" type="number" step="0.0001" min="0" value="${f}" style="padding:8px 10px"></td>
+          <td><input class="input ef-src" data-k="${key}" placeholder="ที่มาของค่านี้ (ถ้ามี)" value="${src.replace(/"/g,'&quot;')}" style="padding:8px 10px"></td>
+        </tr>`;
+      }).join('')).join('');
   }
   document.getElementById('ef-baseline').value=EF_META.baseline;
   document.getElementById('ef-reference').value=EF_META.reference||'';
