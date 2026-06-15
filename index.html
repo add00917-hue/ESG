@@ -2,11 +2,31 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>ระบบการจัดการขยะทั่วไป และ ขยะรีไซเคิล | Waste Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+/* Chart.js — กันกราฟ re-render รัวๆ ตอนเลื่อนบนมือถือ (แถบเบราว์เซอร์ซ่อน/โผล่ทำ viewport สูงเปลี่ยน) */
+(function(){
+  if(!window.Chart)return;
+  try{
+    Chart.defaults.responsive=true;
+    Chart.defaults.maintainAspectRatio=false;       // ใช้ความสูงคงที่ของกล่อง .chart-box → ตัด ResizeObserver feedback loop
+    Chart.defaults.resizeDelay=200;                 // หน่วงการ resize 200ms กัน thrash
+    var isMobile=window.matchMedia&&window.matchMedia('(max-width:768px)').matches;
+    if(isMobile){
+      Chart.defaults.animation=false;               // ปิดแอนิเมชันกราฟบนมือถือ ลดภาระเฟรม
+      Chart.defaults.animations={};
+      if(window.devicePixelRatio>2)Chart.defaults.devicePixelRatio=2;  // จำกัด DPR ลดขนาด buffer
+    }
+  }catch(e){}
+})();
+</script>
 <style>
 :root{
   --primary:#0f766e;        /* teal */
@@ -29,15 +49,15 @@
   --radius:16px;
   --radius-sm:10px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   font-family:'Sarabun','Segoe UI',system-ui,sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
 }
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
 
 /* ===== TOP NAV ===== */
 .topbar{
@@ -152,16 +172,36 @@ body{
 .kpi-unit{font-size:14px;color:var(--text-muted);font-weight:400}
 
 /* ===== CARDS ===== */
-.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:20px}
-.card-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px}
-.card-title{font-size:16px;font-weight:600;display:flex;align-items:center;gap:9px}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:20px;min-width:0;overflow-wrap:break-word}
+.card-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px;min-width:0}
+.card-title{font-size:16px;font-weight:600;display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-width:0}
+.card-title>.ic{flex-shrink:0}
 .card-title .ic{font-size:20px;color:var(--primary)}
 .grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
 @media(max-width:900px){.grid-2{grid-template-columns:1fr}}
+.card canvas{max-width:100%!important;height:auto}
+.chart-box{position:relative;width:100%}
+.chart-box>canvas{display:block}
+.typebd,.typebd-row{min-width:0}
 
 /* ===== TABLE ===== */
-.table-wrap{overflow-x:auto;border-radius:var(--radius-sm)}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm);-webkit-overflow-scrolling:touch;
+  background:linear-gradient(90deg,var(--surface) 30%,transparent),linear-gradient(90deg,transparent,var(--surface) 70%) 100% 0,
+    radial-gradient(farthest-side at 0 50%,rgba(15,23,42,.12),transparent),radial-gradient(farthest-side at 100% 50%,rgba(15,23,42,.12),transparent) 100% 0;
+  background-repeat:no-repeat;background-size:40px 100%,40px 100%,14px 100%,14px 100%;background-attachment:local,local,scroll,scroll}
 table{width:100%;border-collapse:collapse;font-size:14px}
+@media (max-width:768px){
+  table{font-size:13px}
+  table th,table td{padding:8px 8px !important;white-space:nowrap}
+  /* คอลัมน์แรก (ชื่ออาคาร/เดือน) ค้างซ้ายเวลาเลื่อน เพื่อไม่หลงแถว */
+  table thead th:first-child,table tbody td:first-child,table tfoot td:first-child{
+    position:sticky;left:0;background:var(--surface);z-index:2;box-shadow:1px 0 0 var(--border)}
+  table thead th:first-child{z-index:3}
+}
+@media (max-width:400px){
+  table{font-size:12px}
+  table th,table td{padding:7px 6px !important}
+}
 thead th{
   background:#f8fafc;color:var(--text-muted);font-weight:600;font-size:12px;
   text-transform:uppercase;letter-spacing:.4px;padding:13px 16px;text-align:left;
@@ -309,7 +349,9 @@ tbody tr:last-child td{border-bottom:none}
 .cmp-chg.up{background:#dcfce7;color:#16a34a}
 .cmp-chg.down{background:#fee2e2;color:#dc2626}
 .cmp-chg.flat{background:#f1f5f9;color:#64748b}
-.cmpx-toggle{display:inline-flex;gap:6px;margin-right:4px}
+.cmpx-toggle{display:inline-flex;gap:4px;margin-right:4px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:4px}
+.cmpx-toggle .btn-ghost{border:none!important;box-shadow:none!important;background:transparent;color:var(--text-muted)}
+.cmpx-toggle .btn-primary{background:var(--primary)!important;color:#fff!important;box-shadow:0 2px 8px rgba(15,118,110,.3)!important;border:none!important}
 .cmpx-vs{font-size:13px;color:var(--text-muted);align-self:center;padding:0 2px}
 .cmpx-overall{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:stretch}
 @media(max-width:700px){.cmpx-overall{grid-template-columns:1fr}}
@@ -354,25 +396,68 @@ tbody tr:last-child td{border-bottom:none}
 .typebd-bar>i{display:block;height:100%;border-radius:5px;transition:width .4s}
 .typebd-total{display:flex;justify-content:space-between;border-top:1.5px solid var(--border);padding-top:12px;margin-top:3px;font-size:15px}
 .dash-plabel{display:inline-block;font-size:13px;font-weight:700;color:var(--primary);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 15px;margin-bottom:16px}
+@media(max-width:768px){
+  /* หัว Dashboard: ปุ่มโหมด+Export อยู่แถวเดียว กระชับ ไม่เปลือง 3 บรรทัด */
+  .dash-filters{width:100%;justify-content:space-between;gap:8px}
+  .dash-filters .cmpx-toggle{flex:1;display:flex;gap:4px}
+  .dash-filters .cmpx-toggle .btn-sm{flex:1;padding:8px 6px;font-size:12px;justify-content:center}
+  .dash-filters>.btn-sm{flex-shrink:0;padding:8px 12px}
+  .dash-filters .filter-sel{flex:1;min-width:120px}
+  /* ป้าย "ข้อมูลทั้งหมด" ซ้ำกับปุ่มโหมดที่เลือกอยู่แล้ว — ซ่อนบนมือถือเพื่อประหยัดพื้นที่ */
+  #dash-period-label{display:none}
+}
 .rsum-top{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border-radius:12px;padding:12px 16px;margin-bottom:16px}
 .rsum-rate{font-size:27px;font-weight:800;color:#22c55e;line-height:1}
 .rsum-rate-lb{font-size:11.5px;color:var(--text-muted);margin-top:4px}
 .rsum-tot{text-align:right;font-size:12.5px;color:var(--text-muted);line-height:1.6}
 .rsum-tot b{color:var(--text);font-size:15px}
 .rsum-cat{margin-bottom:15px}
-.rsum-cat-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.rsum-cat-head{display:flex;align-items:center;gap:9px;margin-bottom:7px;min-width:0}
 .rsum-ic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.rsum-cat-name{font-weight:700;font-size:14px}
-.rsum-cat-val{margin-left:auto;font-size:12.5px;color:var(--text-muted);white-space:nowrap}
+.rsum-cat-name{font-weight:700;font-size:14px;flex-shrink:0}
+.rsum-cat-val{margin-left:auto;font-size:12.5px;color:var(--text-muted);white-space:nowrap;text-align:right;flex-shrink:0}
 .rsum-bar{height:7px;border-radius:5px;background:var(--bg);overflow:hidden;margin-bottom:7px}
 .rsum-bar>i{display:block;height:100%;border-radius:5px;transition:width .4s}
 .rsum-items{display:flex;flex-direction:column;gap:4px;padding-left:39px}
-.rsum-item{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);gap:10px}
-.rsum-item span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.rsum-item{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);gap:10px;min-width:0}
+.rsum-item span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.rsum-item span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums;flex-shrink:0}
 .cmp-rows{margin-top:14px;font-size:13px;color:var(--text-muted)}
 .cmp-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border)}
 .cmp-row:last-child{border-bottom:none}
 .cmp-row b{color:var(--text);font-variant-numeric:tabular-nums}
+
+/* ===== RECYCLE DONUT (modern / dimensional) ===== */
+.rcard{position:relative;background:radial-gradient(120% 140% at 78% 8%,#1b2742 0%,#141d33 42%,#0e1525 100%);border:1px solid rgba(255,255,255,.07);color:#e8edf7;overflow:hidden}
+.rcard::before{content:"";position:absolute;inset:0;background:radial-gradient(45% 55% at 50% 50%,rgba(124,216,89,.10),transparent 70%);pointer-events:none}
+.rc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;position:relative;z-index:1}
+.rc-title{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700;color:#f3f6fc}
+.rc-title .ic{filter:drop-shadow(0 2px 6px rgba(34,197,94,.4))}
+.rc-period{font-size:11px;color:#9fb0cc;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:3px 10px;border-radius:20px;white-space:nowrap}
+.rc-arrow{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#cfe3ff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:.2s;flex-shrink:0}
+.rc-arrow:hover{background:rgba(124,216,89,.18);border-color:rgba(124,216,89,.5);color:#bdf0a0;transform:translateX(2px)}
+.rc-grid{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;position:relative;z-index:1;margin-top:6px}
+.rc-stats{display:flex;flex-direction:column;gap:16px}
+.rc-stat-v{font-size:21px;font-weight:800;line-height:1;color:#fff;letter-spacing:.3px}
+.rc-stat-v small{font-size:12px;font-weight:700;color:#aab8d4;margin-left:2px}
+.rc-stat-l{font-size:11px;color:#8fa1c0;margin-top:5px;line-height:1.3}
+.rc-donut{position:relative;width:200px;height:200px;margin:0 auto;filter:drop-shadow(0 14px 26px rgba(0,0,0,.45))}
+.rc-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.rc-center .cv{font-size:26px;font-weight:800;color:#fff;line-height:1}
+.rc-center .cl{font-size:11px;color:#9fb0cc;margin-top:4px;letter-spacing:.5px}
+.rc-legend{display:flex;flex-direction:column;gap:13px;min-width:124px}
+.rc-leg{display:flex;align-items:flex-start;gap:9px;line-height:1.25}
+.rc-leg .bar{width:3px;align-self:stretch;border-radius:3px;flex-shrink:0;min-height:30px;box-shadow:0 0 8px currentColor}
+.rc-leg .nm{font-size:12px;color:#b9c6e0;font-weight:600}
+.rc-leg .vv{font-size:13px;color:#fff;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+.rc-empty{padding:30px 16px;text-align:center;color:#8fa1c0;position:relative;z-index:1}
+@media(max-width:560px){
+  .rc-grid{grid-template-columns:1fr;justify-items:center;gap:18px}
+  .rc-stats{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:18px 26px;order:2}
+  .rc-donut{order:1}
+  .rc-legend{order:3;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .rc-stat{text-align:center}
+}
 
 /* ===== ESG ===== */
 .esg-hero{
@@ -488,12 +573,16 @@ tbody tr:last-child td{border-bottom:none}
   .bottom-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:300;
     background:var(--surface);border-top:1px solid var(--border);
     box-shadow:0 -4px 24px rgba(15,23,42,.12);
-    padding:6px 4px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:2px}
+    padding:6px 2px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:1px}
   .container{padding-bottom:104px}
   .toast{bottom:calc(98px + env(safe-area-inset-bottom));z-index:190;max-width:90vw}
 }
-.bn-item{flex:1;min-width:0;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:8px 2px 5px;cursor:pointer;color:var(--text-muted);font-family:inherit;border-radius:14px;transition:.2s;position:relative}
+@media (max-width:360px){
+  .bn-ic{font-size:19px}
+  .bn-lb{font-size:9px}
+}
+.bn-item{flex:1 1 0;min-width:0;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 1px 5px;cursor:pointer;color:var(--text-muted);font-family:inherit;border-radius:14px;transition:.2s;position:relative}
 .bn-ic{font-size:21px;line-height:1;transition:transform .25s cubic-bezier(.34,1.6,.64,1)}
 .bn-lb{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .bn-item.active{color:var(--primary)}
@@ -504,7 +593,7 @@ tbody tr:last-child td{border-bottom:none}
 .bottom-sheet.open{display:block;position:fixed;inset:0;z-index:350;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);animation:fade .2s}
 .bs-panel{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:24px 24px 0 0;
   padding:8px 16px calc(24px + env(safe-area-inset-bottom));transform:translateY(100%);
-  transition:transform .32s cubic-bezier(.34,1.45,.64,1);max-height:80vh;overflow-y:auto}
+  transition:transform .32s cubic-bezier(.34,1.45,.64,1);max-height:85dvh;overflow-y:auto}
 .bottom-sheet.open .bs-panel{transform:translateY(0)}
 .bs-handle{width:42px;height:4px;background:var(--border);border-radius:3px;margin:8px auto 10px}
 .bs-title{font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:0 6px 10px}
@@ -512,7 +601,106 @@ tbody tr:last-child td{border-bottom:none}
   font-family:inherit;font-size:15px;font-weight:600;color:var(--text);cursor:pointer;border-radius:14px;transition:.15s}
 .bs-item:hover,.bs-item.active{background:var(--bg)}
 .bs-item.active{color:var(--primary)}
+.bs-tag{font-size:10px;font-weight:700;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 9px}
 .bs-ic{font-size:22px}
+
+/* ============================================================
+   MOBILE UX PACK — touch targets, bottom-sheet modals, card tables,
+   no-zoom inputs, hover guards, reduced-motion
+   ============================================================ */
+
+/* (3) กัน iOS ซูมเองตอนโฟกัสช่องกรอก: ฟอนต์ฟอร์มขั้นต่ำ 16px บนมือถือ/แท็บเล็ต */
+@media (max-width:768px){
+  input,select,textarea,.input,.select,.tbl-search,.filter-sel{font-size:16px}
+  #modal-entry .e-kg input{font-size:16px}
+}
+
+/* (4) ขนาดพื้นที่แตะ ≥ ~44px บนทัชสกรีน */
+@media (max-width:768px){
+  .icon-btn{width:42px;height:42px;font-size:17px}
+  .pg-btn{min-width:42px;height:42px;font-size:14px}
+  .login-close{width:42px;height:42px;font-size:16px}
+  #modal-entry .e-kg button{height:44px;width:40px;font-size:20px}
+  #modal-entry .e-kg input{height:44px}
+  .floor-chip{padding:13px 6px}
+}
+
+/* (7) กัน scroll ลามไปพื้นหลังในกล่องที่เลื่อนได้ */
+.modal,.bs-panel,.table-wrap{overscroll-behavior:contain}
+
+/* (5) โมดอลกลายเป็น bottom-sheet เลื่อนขึ้นจากล่างบนจอเล็ก — ฟีล native */
+@media (max-width:600px){
+  .overlay{align-items:flex-end;padding:0}
+  .overlay.open{animation:fade .2s}
+  .modal,#modal-entry .modal,#modal-form .modal{
+    max-width:100%;width:100%;max-height:92dvh;
+    border-radius:22px 22px 0 0;
+    animation:sheetUp .34s cubic-bezier(.34,1.4,.64,1);
+  }
+  .modal-head{border-radius:22px 22px 0 0}
+  .modal-body{padding:18px 16px}
+  .modal-foot{padding:0 16px calc(16px + env(safe-area-inset-bottom))}
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* (9) ตารางบันทึก → การ์ดซ้อนบนมือถือ (อ่านง่าย ไม่ต้องเลื่อนแนวนอน) */
+@media (max-width:600px){
+  table.rec-table{font-size:14px}
+  table.rec-table thead{display:none}
+  table.rec-table,table.rec-table tbody,table.rec-table tr,table.rec-table td{display:block;width:100%}
+  table.rec-table tr{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:4px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+  table.rec-table tbody td:first-child{position:static;box-shadow:none}
+  table.rec-table td{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:10px 0 !important;border-bottom:1px solid var(--border);
+    white-space:normal !important;text-align:right}
+  table.rec-table td:last-child{border-bottom:none}
+  table.rec-table td::before{
+    content:attr(data-label);font-size:12px;font-weight:600;color:var(--text-muted);
+    text-align:left;flex:0 0 auto;white-space:nowrap}
+  table.rec-table td[data-label=""]::before{content:none}
+  table.rec-table td[data-label=""]{justify-content:flex-end}
+  table.rec-table .t-actions{gap:8px}
+  table.rec-table td[colspan]{display:block;text-align:center}
+  table.rec-table td[colspan]::before{content:none}
+  table.rec-table td[colspan] .empty{padding:24px 0}
+}
+
+/* (8) กัน :hover ค้างบนทัช + ให้ feedback ตอนแตะแทน */
+@media (hover:none){
+  .kpi:hover{transform:none;box-shadow:var(--shadow)}
+  .btn-primary:hover,.btn-accent:hover,.home-btn:hover,.role-opt:hover{transform:none}
+  .btn:active{transform:scale(.97)}
+  .kpi:active,.role-opt:active,.kiosk-bld-opt:active,.floor-chip:active{transform:scale(.98)}
+  .icon-btn:active,.pg-btn:active{transform:scale(.92)}
+}
+
+/* (10) เคารพ prefers-reduced-motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;scroll-behavior:auto !important}
+}
+
+/* ============================================================
+   MOBILE PERFORMANCE — กันอาการค้าง/กระตุกตอนเลื่อนบนมือถือ
+   ============================================================ */
+@media (max-width:768px){
+  /* (2) backdrop-filter เต็มจอ = รีเพนต์หนักมากบนมือถือ → ใช้ฉากทึบแทน blur */
+  .overlay{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(15,23,42,.62)}
+  .bottom-sheet.open{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(15,23,42,.55)}
+  .esg-badge,.brand-logo{backdrop-filter:none;-webkit-backdrop-filter:none}
+  /* (4) ปุ่มบอทลอยตลอดเวลา = กิน compositor → หยุดบนมือถือ */
+  #esgbot .bot-fab{animation:none}
+}
+@media (max-width:600px){
+  /* (3) scroll-shadow ของ table-wrap รีเพนต์ทุกเฟรม — บนมือถือตารางบันทึกเป็นการ์ดอยู่แล้ว ไม่ต้องใช้ */
+  .table-wrap{background:none !important}
+  /* sticky คอลัมน์แรก + เงา = รีเพนต์ตอนเลื่อน เฉพาะตารางที่ยังเลื่อนแนวนอน (สรุป) ให้คงไว้แต่ตัดเงาออก */
+  table tbody td:first-child,table thead th:first-child,table tfoot td:first-child{box-shadow:none}
+}
 
 @media print{
   .topbar,.nav-tabs,.bottom-nav,.bottom-sheet,.btn,.tbl-tools,.pager,.bld-filter,.icon-btn,.t-actions,#dash-period,.topbar-tools{display:none !important}
@@ -559,7 +747,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <div class="field"><label class="form-label">รหัสผ่าน</label><input class="input" id="login-pass" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" onkeydown="if(event.key==='Enter')loginSubmit()"></div>
     </div>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="loginSubmit()"><span>🔓</span>เข้าสู่ระบบ</button>
-    <p style="margin-top:14px;font-size:12px">ระบบเดโม · ยังไม่ได้กำหนดสิทธิ์ (เข้าใช้งานได้ทุกฟังก์ชัน)</p>
+    <p style="margin-top:14px;font-size:12px;line-height:1.7;color:var(--text-muted)">ระบบการจัดการขยะทั่วไป และ ขยะรีไซเคิล<br><span style="opacity:.85">Management of General Waste and Recyclable Waste</span><br><b style="color:var(--primary)">by: GNR3</b> General service 3 (OPS-BSCS)</p>
   </div>
 </div>
 
@@ -602,9 +790,9 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <div class="page-title"><span class="dot" style="background:var(--primary)"></span>ภาพรวมระบบ</div>
       <div class="page-sub">สรุปข้อมูลปริมาณขยะทุกประเภท แยกตามอาคารและชั้น</div>
     </div>
-    <div class="filters">
+    <div class="filters dash-filters">
       <div id="dash-period-ctrl" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"></div>
-      <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><span>⬇️</span>Export CSV</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><span>⬇️</span>Export Excel</button>
     </div>
   </div>
 
@@ -623,7 +811,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div id="cmp-overall"></div>
     <div class="grid-2" style="margin-top:16px">
       <div class="table-wrap" id="compare-body"></div>
-      <div><canvas id="chart-compare" height="200"></canvas></div>
+      <div><div class="chart-box" style="height:200px"><canvas id="chart-compare"></canvas></div></div>
     </div>
   </div>
 
@@ -658,7 +846,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
         <div class="card-title"><span class="ic">📈</span>แนวโน้มปริมาณขยะ (รายสัปดาห์)</div>
         <div class="filters" id="trend-ctrl"></div>
       </div>
-      <canvas id="chart-trend" height="150"></canvas>
+      <div class="chart-box" style="height:150px"><canvas id="chart-trend"></canvas></div>
     </div>
     <div class="card">
       <div class="card-head"><div class="card-title"><span class="ic">📊</span>สัดส่วนตามประเภท<span class="ctx-badge ctx-dash"></span></div></div>
@@ -669,11 +857,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="grid-2">
     <div class="card">
       <div class="card-head"><div class="card-title"><span class="ic">🏢</span>ปริมาณขยะตามอาคาร (แยกทุกประเภท)<span class="ctx-badge ctx-dash"></span></div></div>
-      <canvas id="chart-building" height="150"></canvas>
+      <div class="chart-box" style="height:150px"><canvas id="chart-building"></canvas></div>
       <div class="table-wrap" id="building-table" style="margin-top:14px"></div>
     </div>
-    <div class="card">
-      <div class="card-head"><div class="card-title"><span class="ic">🌿</span>สรุปขยะรีไซเคิล (แยกหมวด)<span class="ctx-badge ctx-dash"></span></div></div>
+    <div class="card rcard">
       <div id="recycle-summary"></div>
     </div>
   </div>
@@ -683,7 +870,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       <div class="card-title"><span class="ic">📉</span>แนวโน้มปริมาณขยะรายเดือน<span class="ctx-badge ctx-dash"></span></div>
       <div class="filters" id="heat-ctrl"></div>
     </div>
-    <canvas id="chart-heat-line" height="110"></canvas>
+    <div class="chart-box" style="height:110px"><canvas id="chart-heat-line"></canvas></div>
     <div class="page-sub" style="margin-top:10px" id="heat-note"></div>
   </div>
 
@@ -720,7 +907,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณขยะรายเดือน (kg)<span class="ctx-badge ctx-m"></span></div></div>
     <div class="mtype-btns" id="m-type-btns"></div>
     <div id="m-chart-caption" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="chart-monthly" height="110"></canvas>
+    <div class="chart-box" style="height:110px"><canvas id="chart-monthly"></canvas></div>
   </div>
 
   <div class="card">
@@ -748,10 +935,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="wp-kpi-food"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="recycle"></span><span class="ctx-badge ctx-wp" data-t="ewastep"></span><span class="ctx-badge ctx-wp" data-t="ewaste"></span><span class="ctx-badge ctx-wp" data-t="hazard"></span><span class="ctx-badge ctx-wp" data-t="general"></span><span class="ctx-badge ctx-wp" data-t="food"></span></div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="food"></span></div>
       <select class="filter-sel" id="wp-year-food" onchange="renderWastePage('food')"></select></div>
     <div id="wp-cap-food" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="wp-chart-food" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="wp-chart-food"></canvas></div>
   </div>
   <div class="card"><div class="filters" style="margin-bottom:16px">
     <div class="bld-filter" id="bf-food"></div>
@@ -765,7 +952,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       </select>
     </div>
   </div>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="rec-table">
     <thead><tr><th>วันที่</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>ผู้บันทึก</th><th></th></tr></thead>
     <tbody id="body-food"></tbody>
   </table></div>
@@ -782,10 +969,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="wp-kpi-general"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="general"></span></div>
       <select class="filter-sel" id="wp-year-general" onchange="renderWastePage('general')"></select></div>
     <div id="wp-cap-general" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="wp-chart-general" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="wp-chart-general"></canvas></div>
   </div>
   <div class="card"><div class="filters" style="margin-bottom:16px">
     <div class="bld-filter" id="bf-general"></div>
@@ -799,7 +986,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       </select>
     </div>
   </div>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="rec-table">
     <thead><tr><th>วันที่</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>ผู้บันทึก</th><th></th></tr></thead>
     <tbody id="body-general"></tbody>
   </table></div>
@@ -816,10 +1003,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="wp-kpi-hazard"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="hazard"></span></div>
       <select class="filter-sel" id="wp-year-hazard" onchange="renderWastePage('hazard')"></select></div>
     <div id="wp-cap-hazard" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="wp-chart-hazard" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="wp-chart-hazard"></canvas></div>
   </div>
   <div class="card"><div class="filters" style="margin-bottom:16px">
     <div class="bld-filter" id="bf-hazard"></div>
@@ -833,7 +1020,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       </select>
     </div>
   </div>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="rec-table">
     <thead><tr><th>วันที่</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>ผู้บันทึก</th><th></th></tr></thead>
     <tbody id="body-hazard"></tbody>
   </table></div>
@@ -850,10 +1037,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="wp-kpi-ewaste"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="ewaste"></span></div>
       <select class="filter-sel" id="wp-year-ewaste" onchange="renderWastePage('ewaste')"></select></div>
     <div id="wp-cap-ewaste" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="wp-chart-ewaste" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="wp-chart-ewaste"></canvas></div>
   </div>
   <div class="card"><div class="filters" style="margin-bottom:16px">
     <div class="bld-filter" id="bf-ewaste"></div>
@@ -867,7 +1054,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       </select>
     </div>
   </div>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="rec-table">
     <thead><tr><th>วันที่</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>ผู้บันทึก</th><th></th></tr></thead>
     <tbody id="body-ewaste"></tbody>
   </table></div>
@@ -884,10 +1071,10 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="wp-kpi-ewastep"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="ewastep"></span></div>
       <select class="filter-sel" id="wp-year-ewastep" onchange="renderWastePage('ewastep')"></select></div>
     <div id="wp-cap-ewastep" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="wp-chart-ewastep" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="wp-chart-ewastep"></canvas></div>
   </div>
   <div class="card"><div class="filters" style="margin-bottom:16px">
     <div class="bld-filter" id="bf-ewastep"></div>
@@ -901,7 +1088,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       </select>
     </div>
   </div>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="rec-table">
     <thead><tr><th>วันที่รับ</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>หมายเหตุ</th><th></th></tr></thead>
     <tbody id="body-ewastep"></tbody>
   </table></div>
@@ -918,21 +1105,23 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   </div>
   <div class="kpi-grid" id="cat-kpi"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📦</span>สรุปแยกตามประเภทวัสดุรีไซเคิล<span class="ctx-badge ctx-wp" data-t="recycle"></span></div></div>
-    <div class="grid-2">
-      <canvas id="chart-material" height="160"></canvas>
-      <div class="table-wrap"><table>
-        <thead><tr><th>ประเภทวัสดุ</th><th>น้ำหนักรวม (kg)</th><th>สัดส่วน</th></tr></thead>
-        <tbody id="material-summary"></tbody>
-      </table></div>
+    <div class="card-head">
+      <div class="card-title"><span class="ic">📦</span>สรุปแยกตามประเภทวัสดุรีไซเคิล (รายเดือน)<span class="ctx-badge ctx-wp" data-t="recycle"></span></div>
+      <select class="filter-sel" id="rmat-year" onchange="renderMaterialSummary(curFilter['recycle']||'all')"></select>
     </div>
+    <div class="table-wrap"><table>
+      <thead><tr id="rmat-thead"></tr></thead>
+      <tbody id="rmat-tbody"></tbody>
+      <tfoot id="rmat-tfoot"></tfoot>
+    </table></div>
+    <div class="mtype-btns" id="rmat-btns" style="margin-top:16px;margin-bottom:0"></div>
   </div>
   <div class="kpi-grid" id="wp-kpi-recycle"></div>
   <div class="card">
-    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)</div>
+    <div class="card-head"><div class="card-title"><span class="ic">📊</span>ปริมาณรายเดือน (kg)<span class="ctx-badge ctx-wp" data-t="recycle"></span></div>
       <select class="filter-sel" id="wp-year-recycle" onchange="renderWastePage('recycle')"></select></div>
     <div id="wp-cap-recycle" class="page-sub" style="margin-bottom:12px;font-weight:600"></div>
-    <canvas id="wp-chart-recycle" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="wp-chart-recycle"></canvas></div>
   </div>
   <div class="card"><div class="filters" style="margin-bottom:16px">
     <div class="bld-filter" id="bf-recycle"></div>
@@ -946,7 +1135,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
       </select>
     </div>
   </div>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="rec-table">
     <thead><tr><th>วันที่</th><th>อาคาร</th><th>ชั้น</th><th>หมวดหมู่</th><th>ประเภทวัสดุ</th><th>น้ำหนัก (kg)</th><th>Vendor</th><th></th></tr></thead>
     <tbody id="body-recycle"></tbody>
   </table></div>
@@ -970,7 +1159,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="kpi-grid" id="ut-kpi"></div>
   <div class="card">
     <div class="card-head"><div class="card-title"><span class="ic">📈</span><span id="ut-chart-title">คาร์บอนรายเดือนจากพลังงาน &amp; น้ำ (kgCO₂e)</span></div></div>
-    <canvas id="ut-chart" height="100"></canvas>
+    <div class="chart-box" style="height:100px"><canvas id="ut-chart"></canvas></div>
     <div id="ut-chart-type" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px"></div>
   </div>
   <div class="card">
@@ -1051,11 +1240,11 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
   <div class="grid-2">
     <div class="card">
       <div class="card-head"><div class="card-title"><span class="ic">📈</span>คาร์บอนรายเดือน (kgCO₂e)<span class="ctx-badge ctx-esg"></span></div></div>
-      <canvas id="esg-chart-month" height="120"></canvas>
+      <div class="chart-box" style="height:120px"><canvas id="esg-chart-month"></canvas></div>
     </div>
     <div class="card">
       <div class="card-head"><div class="card-title"><span class="ic">🥧</span>สัดส่วนคาร์บอนตามประเภท<span class="ctx-badge ctx-esg"></span></div></div>
-      <canvas id="esg-chart-pie" height="120"></canvas>
+      <div class="chart-box" style="height:120px"><canvas id="esg-chart-pie"></canvas></div>
     </div>
   </div>
 
@@ -1186,7 +1375,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 
 </div><!-- /container -->
 
-<footer>ระบบการจัดการขยะทั่วไป และ ขยะรีไซเคิล · ข้อมูลถูกบันทึกในเครื่องของคุณ (Local Storage)</footer>
+<footer>Management of General Waste and Recyclable Waste v3.1 • OPS BSCS_GNR3 • © 2026</footer>
 
 <!-- ============ INPUT MODAL ============ -->
 <div class="overlay" id="modal-form">
@@ -1348,7 +1537,7 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 .floor-chip .m-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-left:5px;vertical-align:middle}
 .floor-chip.sel .m-dot{background:#bbf7d0}
 /* ป้ายบริบทบนหัวการ์ด: บอกช่วงเวลา/อาคารที่กำลังดู */
-.ctx-badge{font-size:11px;font-weight:700;color:#0f766e;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle;white-space:nowrap;display:inline-block}
+.ctx-badge{font-size:11px;font-weight:700;color:#0f766e;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:3px 10px;white-space:nowrap;display:inline-block;flex-shrink:0}
 .ctx-badge:empty{display:none}
 </style>
 <div class="overlay" id="modal-ecal">
@@ -1412,6 +1601,22 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-util')">ยกเลิก</button>
       <button class="btn btn-primary" onclick="saveUtil()"><span>💾</span>บันทึกข้อมูล</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PHOTO VIEWER ============ -->
+<!-- ============ ต้องเข้าสู่ระบบ (Admin gate) ============ -->
+<div class="overlay" id="modal-authgate">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-body" style="text-align:center;padding:32px 28px 8px">
+      <div style="width:76px;height:76px;border-radius:22px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#0f766e,#14b8a6);box-shadow:0 10px 28px rgba(15,118,110,.35)">🔐</div>
+      <div style="font-weight:800;font-size:19px;margin-bottom:8px" id="authgate-title">ต้องเข้าสู่ระบบ</div>
+      <div class="page-sub" style="font-size:14px;line-height:1.6" id="authgate-msg">หน้าตั้งค่าระบบเปิดให้เฉพาะผู้ดูแล (admin) ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน</div>
+    </div>
+    <div class="modal-foot" style="border-top:none;padding-top:8px;gap:10px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('modal-authgate')">ยกเลิก</button>
+      <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="closeModal('modal-authgate');openLogin()"><span>🔐</span>เข้าสู่ระบบ</button>
     </div>
   </div>
 </div>
@@ -1604,7 +1809,21 @@ const ROLES={
   viewer:{name:'ผู้บริหาร (ดูอย่างเดียว)',icon:'👀',can:['view']}
 };
 let USER=JSON.parse(localStorage.getItem('wms_user')||'null');
-function can(action){return true;/* ยังไม่กำหนดสิทธิ์ — เปิดทุกฟังก์ชัน */}
+function isLoggedIn(){return !!(USER&&USER.name);}
+/* สิทธิ์ผูกกับการเข้าสู่ระบบ:
+   - ไม่ล็อกอิน = ดูอย่างเดียว (view) ทำได้ทุกอย่างที่เป็นการอ่านข้อมูล
+   - ล็อกอิน = บันทึก/แก้ไข/ลบ ได้ตาม role (admin ทำได้ทุกอย่าง, staff บันทึก/แก้ได้, viewer ดูอย่างเดียว)
+   - ถ้ามี USER.can (array) จากชีต Users ให้ยึดตามนั้นก่อน */
+function can(action){
+  if(!isLoggedIn())return false;                    // ยังไม่ล็อกอิน = แก้ไขอะไรไม่ได้
+  const role=(USER.role||'staff').toLowerCase();
+  if(Array.isArray(USER.can)&&USER.can.length)return USER.can.includes(action);
+  if(role==='admin')return true;                    // admin ทำได้ทุกอย่าง
+  if(role==='viewer'||role==='guest')return false;  // ผู้ชม = ดูอย่างเดียว
+  // staff (ค่าเริ่มต้น) = บันทึก/แก้ไขได้ แต่ลบและตั้งค่าระบบไม่ได้
+  return (action==='record'||action==='edit');
+}
+function isAdmin(){return isLoggedIn()&&((USER.role||'').toLowerCase()==='admin');}
 
 const TYPES={
   general:{name:'ขยะทั่วไป',icon:'🗑️',color:'#3b82f6',bg:'#dbeafe',cls:'b-general',recorder:'แม่บ้านอาคาร'},
@@ -1685,7 +1904,7 @@ function utilCO2(u){return (u.amount||0)*utilFactor(u.ut);}
 /* ===== UTILITY DATA LAYER (แยกจากข้อมูลขยะ) ===== */
 let udata=loadUtil();
 function loadUtil(){
-  try{const d=JSON.parse(localStorage.getItem('wms_udata'));if(d&&d.length)return d;}catch(e){}
+  try{const d=JSON.parse(localStorage.getItem('wms_udata'));if(d&&d.length)return normRecs(d);}catch(e){}
   var _su=null;try{_su=localStorage.getItem('wms_gs_url');}catch(e){}
   return (_su!=='')?[]:useed();   // โหมด demo เท่านั้นที่มีข้อมูลตัวอย่าง
 }
@@ -1720,10 +1939,29 @@ let trendMonth=null,trendWeek='all',trendCmp='none';
 let heatDim='type',heatBld='all';
 let dashMode='all',dashYear=null,dashMonth=null;
 
+/* ===== ตัวกันพลาด: บังคับวันที่ record ให้เป็น YYYY-MM-DD (ค.ศ.)
+   รองรับทั้ง Date object/ISO ที่ timezone เพี้ยน และวันที่ที่กรอกเป็น พ.ศ. (ปี>2400 → ลบ 543) ===== */
+function normDate(d){
+  if(d==null||d==='')return d;
+  var s=String(d), y, m, dd;
+  if(s.indexOf('T')>=0){                                       // ISO มีเวลา → ใช้วันที่ตามโซนเวลาเครื่อง
+    var dt=new Date(s);
+    if(!isNaN(dt.getTime())){ y=dt.getFullYear(); m=dt.getMonth()+1; dd=dt.getDate(); }
+  }
+  if(y===undefined){                                           // YYYY-MM-DD หรือ YYYY/MM/DD
+    var mt=s.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    if(mt){ y=+mt[1]; m=+mt[2]; dd=+mt[3]; }
+  }
+  if(y===undefined) return s.slice(0,10);                      // แปลงไม่ได้ คืนค่าเดิม
+  if(y>2400) y-=543;                                           // พ.ศ. → ค.ศ.
+  return y+'-'+('0'+m).slice(-2)+'-'+('0'+dd).slice(-2);
+}
+function normRecs(arr){return Array.isArray(arr)?arr.map(function(r){if(r&&r.date!=null)r.date=normDate(r.date);return r;}):arr;}
+
 function load(){
   try{
     if(localStorage.getItem('wms_ver')!=='5'){localStorage.removeItem('wms_data');localStorage.setItem('wms_ver','5');}
-    const d=JSON.parse(localStorage.getItem('wms_data'));if(d&&d.length)return d;
+    const d=JSON.parse(localStorage.getItem('wms_data'));if(d&&d.length)return normRecs(d);
   }catch(e){}
   var _su=null;try{_su=localStorage.getItem('wms_gs_url');}catch(e){}
   return (_su!=='')?[]:seed();   // _su==='' = ตัดการเชื่อมต่อ ⇒ ใช้ demo; อื่นๆ (null/มี URL) = โหมดเชื่อมต่อ ⇒ รอข้อมูลจริง
@@ -1754,8 +1992,8 @@ async function gsPush(table,op,payload){
 }
 function applyRemote(all){
   if(!all)return;
-  if(Array.isArray(all.records)){data=all.records;localStorage.setItem('wms_data',JSON.stringify(data));}
-  if(Array.isArray(all.utilities)){udata=all.utilities;localStorage.setItem('wms_udata',JSON.stringify(udata));}
+  if(Array.isArray(all.records)){data=normRecs(all.records);localStorage.setItem('wms_data',JSON.stringify(data));}
+  if(Array.isArray(all.utilities)){udata=normRecs(all.utilities);localStorage.setItem('wms_udata',JSON.stringify(udata));}
   if(all.buildings&&Object.keys(all.buildings).length){BUILDINGS=all.buildings;localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));}
   if(all.ef){if(all.ef.factors)EMISSION_FACTORS=Object.assign({},DEFAULT_EF,all.ef.factors);
     if(all.ef.cat)CAT_FACTORS=Object.assign({},DEFAULT_CAT,all.ef.cat);
@@ -1816,6 +2054,14 @@ document.querySelectorAll('.nav-tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   t.classList.add('active');
+  if(t.dataset.page==='admin'&&!isAdmin()){
+    showAuthGate('หน้าตั้งค่าระบบ การจัดการอาคาร ค่า Emission Factor และการเชื่อมต่อ เปิดให้แก้ไขเฉพาะผู้ดูแล (admin) ที่เข้าสู่ระบบแล้ว','เข้าหน้าตั้งค่า (Admin)');
+    const dash=document.querySelector('.nav-tab[data-page="dashboard"]');
+    if(dash){document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+      dash.classList.add('active');document.getElementById('page-dashboard').classList.add('active');renderDashboard();syncBottomNav();}
+    return;
+  }
   document.getElementById('page-'+t.dataset.page).classList.add('active');
   if(t.dataset.page==='dashboard') renderDashboard();
   else if(t.dataset.page==='monthly') renderMonthly();
@@ -1829,7 +2075,7 @@ document.querySelectorAll('.nav-tab').forEach(t=>t.onclick=()=>{
 });
 
 /* ===== MOBILE BOTTOM NAV ===== */
-const BOTTOM_PRIMARY=['dashboard','staff','recycle','esg'];
+const BOTTOM_PRIMARY=['dashboard','staff','recycle','utility'];   // 4 ปุ่มหลัก + ☰ เมนู (หน้าอื่นอยู่ในเมนูครบ)
 const BOTTOM_SHORT={dashboard:'หน้าหลัก',monthly:'รายเดือน',staff:'สำนักงาน',ewastep:'Ewast+',recycle:'รีไซเคิล',utility:'พลังงาน',esg:'ESG',admin:'ตั้งค่า'};
 function tabMeta(){
   const m={};document.querySelectorAll('.nav-tab').forEach(t=>{
@@ -1847,9 +2093,10 @@ function buildBottomNav(){
   bar.innerHTML=BOTTOM_PRIMARY.filter(p=>m[p]).map(p=>
     `<button class="bn-item" data-page="${p}" onclick="bottomGo('${p}')"><span class="bn-ic">${m[p].icon}</span><span class="bn-lb">${BOTTOM_SHORT[p]||m[p].label}</span></button>`).join('')
     +`<button class="bn-item" id="bn-more" onclick="toggleSheet()"><span class="bn-ic">☰</span><span class="bn-lb">เมนู</span></button>`;
+  // เมนูป๊อปอัพ: แสดงครบทุกหน้า (ทั้งที่อยู่และไม่อยู่ในแถบหลัก)
   const list=document.getElementById('bottom-sheet-list');
   if(list)list.innerHTML=Object.keys(m).map(p=>
-    `<button class="bs-item" data-page="${p}" onclick="bottomGo('${p}')"><span class="bs-ic">${m[p].icon}</span>${m[p].label}</button>`).join('');
+    `<button class="bs-item" data-page="${p}" onclick="bottomGo('${p}')"><span class="bs-ic">${m[p].icon}</span><span style="flex:1;text-align:left">${m[p].label}</span>${BOTTOM_PRIMARY.includes(p)?'<span class="bs-tag">แถบล่าง</span>':''}</button>`).join('');
   syncBottomNav();
 }
 function syncBottomNav(){
@@ -2274,36 +2521,86 @@ function renderDashPeriodCtrl(){
   el.innerHTML=h;
 }
 
-/* ===== สรุปขยะรีไซเคิล แยกทุกหมวด + จำนวน ===== */
+/* ===== สรุปขยะรีไซเคิล (โดนัทมีมิติ + สถิติ + legend) ===== */
+function _rcLighten(hex,amt){
+  hex=String(hex).replace('#','');
+  if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');
+  let r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  r=Math.min(255,Math.round(r+(255-r)*amt));g=Math.min(255,Math.round(g+(255-g)*amt));b=Math.min(255,Math.round(b+(255-b)*amt));
+  return 'rgb('+r+','+g+','+b+')';
+}
+function goRecycle(){const t=document.querySelector('.nav-tab[data-page="recycle"]');if(t)t.click();}
 function renderRecycleSummary(d){
   const el=document.getElementById('recycle-summary'); if(!el)return;
   const recs=d.filter(r=>r.type==='recycle');
   const cats=Object.keys(RECYCLE_CATEGORIES);
-  const agg={}; cats.forEach(c=>agg[c]={w:0,n:0,items:{}});
-  let totW=0,totN=0;
-  recs.forEach(r=>{ let c=getCategory(r.material||''); if(!agg[c])agg[c]={w:0,n:0,items:{}};
+  const agg={}; cats.forEach(c=>agg[c]={w:0,n:0});
+  let totW=0,totN=0; const mats={};
+  recs.forEach(r=>{ let c=getCategory(r.material||''); if(!agg[c])agg[c]={w:0,n:0};
     agg[c].w+=r.weight; agg[c].n+=1; totW+=r.weight; totN+=1;
-    const m=r.material||'(ไม่ระบุวัสดุ)'; agg[c].items[m]=agg[c].items[m]||{w:0,n:0}; agg[c].items[m].w+=r.weight; agg[c].items[m].n+=1; });
-  if(!totN){ el.innerHTML='<div style="padding:24px;text-align:center;color:var(--text-muted)">📭 ยังไม่มีข้อมูลขยะรีไซเคิลในช่วงนี้</div>'; return; }
-  const allW=d.reduce((a,r)=>a+r.weight,0); const rate=allW?totW/allW*100:0; const target=SETTINGS.recycleTarget||30;
-  let h=`<div class="rsum-top">
-      <div><div class="rsum-rate">${rate.toFixed(1)}%</div><div class="rsum-rate-lb">อัตรารีไซเคิล (เป้า ${target}%)</div></div>
-      <div class="rsum-tot"><div>น้ำหนักรวม <b>${totW.toFixed(1)} kg</b></div><div>${totN} รายการ</div></div>
-    </div>`;
-  cats.forEach(c=>{
-    const C=RECYCLE_CATEGORIES[c], a=agg[c]; const pct=totW?a.w/totW*100:0;
-    h+=`<div class="rsum-cat">
-      <div class="rsum-cat-head">
-        <span class="rsum-ic" style="background:${C.color}22;color:${C.color}">${C.icon}</span>
-        <span class="rsum-cat-name">${c}</span>
-        <span class="rsum-cat-val">${a.w.toFixed(1)} kg · ${a.n} รายการ</span>
+    if(r.material)mats[r.material]=true; });
+
+  const periodLbl=(typeof dashPeriodLabel==='function')?dashPeriodLabel():'';
+  const headHTML=`<div class="rc-head">
+      <div class="rc-title"><span class="ic">🌿</span>สรุปขยะรีไซเคิล (แยกวัสดุ)</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        ${periodLbl?`<span class="rc-period">${periodLbl}</span>`:''}
+        <button class="rc-arrow" onclick="goRecycle()" title="ไปหน้าขยะรีไซเคิล">→</button>
       </div>
-      <div class="rsum-bar"><i style="width:${pct.toFixed(1)}%;background:${C.color}"></i></div>`;
-    const items=Object.keys(a.items).filter(m=>a.items[m].w>0).sort((x,y)=>a.items[y].w-a.items[x].w);
-    if(items.length) h+='<div class="rsum-items">'+items.map(m=>`<div class="rsum-item"><span>${m}</span><span>${a.items[m].w.toFixed(1)} kg · ${a.items[m].n}</span></div>`).join('')+'</div>';
-    h+='</div>';
+    </div>`;
+
+  if(!totN){
+    if(window._recycleChart){try{window._recycleChart.destroy()}catch(e){}window._recycleChart=null;}
+    el.innerHTML=headHTML+'<div class="rc-empty">📭 ยังไม่มีข้อมูลขยะรีไซเคิลในช่วงนี้</div>';
+    return;
+  }
+
+  const allW=d.reduce((a,r)=>a+r.weight,0); const rate=allW?totW/allW*100:0;
+  let avoided=0; recs.forEach(r=>{avoided+=r.weight*(baselineFactor()-recordFactor(r));});
+  const matCount=Object.keys(mats).length;
+  const sorted=cats.slice().sort((a,b)=>agg[b].w-agg[a].w);
+
+  const stats=[
+    {v:rate.toFixed(1),u:'%',l:'อัตรารีไซเคิล'},
+    {v:totN,u:'',l:'รายการบันทึก'},
+    {v:matCount,u:'',l:'ชนิดวัสดุ'},
+    {v:avoided.toFixed(1),u:' kg',l:'CO₂ ที่ลดได้'}
+  ];
+  const statsHTML='<div class="rc-stats">'+stats.map(s=>
+    `<div class="rc-stat"><div class="rc-stat-v">${s.v}<small>${s.u}</small></div><div class="rc-stat-l">${s.l}</div></div>`).join('')+'</div>';
+
+  const legendHTML='<div class="rc-legend">'+sorted.map(c=>{
+    const C=RECYCLE_CATEGORIES[c];
+    return `<div class="rc-leg"><span class="bar" style="background:${C.color};color:${C.color}"></span>
+      <div><div class="nm">${C.icon} ${c}</div><div class="vv">${agg[c].w.toFixed(1)} kg</div></div></div>`;
+  }).join('')+'</div>';
+
+  const totLbl=totW>=1000?(totW/1000).toFixed(2)+'<small style="font-size:14px"> t</small>':totW.toFixed(1)+'<small style="font-size:14px"> kg</small>';
+  el.innerHTML=headHTML+`<div class="rc-grid">
+    ${statsHTML}
+    <div class="rc-donut"><canvas id="recycle-donut"></canvas>
+      <div class="rc-center"><div class="cv">${totLbl}</div><div class="cl">รวมรีไซเคิล</div></div>
+    </div>
+    ${legendHTML}
+  </div>`;
+
+  // ===== donut (gradient + spacing + rounded = มีมิติ) =====
+  if(window._recycleChart){try{window._recycleChart.destroy()}catch(e){}}
+  Chart.defaults.font.family="'Sarabun',sans-serif";
+  const grad=base=>(ctx=>{const ch=ctx.chart,a=ch.chartArea;if(!a)return base;
+    const g=ch.ctx.createLinearGradient(0,a.top,0,a.bottom);
+    g.addColorStop(0,_rcLighten(base,.35));g.addColorStop(1,base);return g;});
+  window._recycleChart=new Chart(document.getElementById('recycle-donut'),{
+    type:'doughnut',
+    data:{labels:sorted,datasets:[{
+      data:sorted.map(c=>+agg[c].w.toFixed(2)),
+      backgroundColor:sorted.map(c=>grad(RECYCLE_CATEGORIES[c].color)),
+      borderColor:'rgba(14,21,37,.85)',borderWidth:2,borderRadius:7,spacing:3,hoverOffset:9
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'70%',
+      plugins:{legend:{display:false},datalabels:{display:false},
+        tooltip:{callbacks:{label:c=>' '+c.label+': '+c.parsed.toFixed(1)+' kg ('+(totW?c.parsed/totW*100:0).toFixed(1)+'%)'}}}}
   });
-  el.innerHTML=h;
 }
 
 /* ===== TABLES ===== */
@@ -2407,21 +2704,22 @@ function renderTable(type,bfilter){
       const cat=getCategory(r.material||'');
       const cc=RECYCLE_CATEGORIES[cat]?RECYCLE_CATEGORIES[cat].color:'#64748b';
       const ci=RECYCLE_CATEGORIES[cat]?RECYCLE_CATEGORIES[cat].icon:'';
-      matCell=`<td><span class="badge" style="background:${cc}22;color:${cc}">${ci} ${cat}</span></td><td>${r.material||'-'}</td>`;
+      matCell=`<td data-label="หมวดหมู่"><span class="badge" style="background:${cc}22;color:${cc}">${ci} ${cat}</span></td><td data-label="ประเภทวัสดุ">${r.material||'-'}</td>`;
     }
     const actions=(can('edit')||can('delete')||r.photo)?`<div class="t-actions">
         ${r.photo?`<button class="icon-btn" title="ดูรูปถ่ายประกอบ" onclick="openPhoto('${String(r.photo).replace(/'/g,'')}','${fmt(r.date)} · ${bName(r.building)} ชั้น ${String(r.floor).replace(/'/g,'')}')">📷</button>`:''}
         ${can('edit')?`<button class="icon-btn" title="แก้ไข" onclick="editRecord('${r.id}')">✏️</button>`:''}
         ${can('delete')?`<button class="icon-btn del" title="ลบ" onclick="delRecord('${r.id}','${type}')">🗑️</button>`:''}
       </div>`:'<span class="page-sub" style="font-size:12px">—</span>';
+    const lastLabel=type==='recycle'?'Vendor':type==='ewastep'?'หมายเหตุ':'ผู้บันทึก';
     return `<tr>
-      <td>${fmt(r.date)}</td>
-      <td>${bBadge(r.building)}</td>
-      <td>ชั้น ${r.floor}</td>
+      <td data-label="วันที่">${fmt(r.date)}</td>
+      <td data-label="อาคาร">${bBadge(r.building)}</td>
+      <td data-label="ชั้น">ชั้น ${r.floor}</td>
       ${matCell}
-      <td class="t-weight">${r.weight.toFixed(2)}</td>
-      <td>${last}</td>
-      <td>${actions}</td>
+      <td class="t-weight" data-label="น้ำหนัก (kg)">${r.weight.toFixed(2)}</td>
+      <td data-label="${lastLabel}">${last}</td>
+      <td data-label="">${actions}</td>
     </tr>`;}).join('');
 
   // pager
@@ -2476,11 +2774,11 @@ const wasteCharts={};
 function renderWastePage(type){
   const ysel=document.getElementById('wp-year-'+type);
   if(!ysel)return;
-  if(!ysel.options.length){
-    const years=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse();
-    if(!years.length)years.push(String(new Date().getFullYear()));
-    ysel.innerHTML=years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
-  }
+  const years=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse();
+  if(!years.length)years.push(String(new Date().getFullYear()));
+  const prevSel=ysel.value;
+  ysel.innerHTML=years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
+  ysel.value=years.includes(prevSel)?prevSel:years[0];   // คงปีที่เลือก ถ้ายังมีข้อมูล
   const year=ysel.value;
   const bfilter=curFilter[type]||'all';
   setCtx('.ctx-wp[data-t="'+type+'"]','ปี '+(+year+543)+' · '+(bfilter==='all'?'ทุกอาคาร':bName(bfilter)));
@@ -2542,43 +2840,96 @@ function renderWastePage(type){
 }
 
 let materialChart=null;
+function setRmatView(v){ window._rmatView=v; renderMaterialSummary(curFilter['recycle']||'all'); }
+function buildRmatButtons(view){
+  const wrap=document.getElementById('rmat-btns'); if(!wrap)return;
+  const opts=[['all','📊','ทั้งหมด (รวมหมวด)','#0f766e'],
+    ...Object.keys(RECYCLE_CATEGORIES).map(c=>[c,RECYCLE_CATEGORIES[c].icon,c,RECYCLE_CATEGORIES[c].color])];
+  wrap.innerHTML=opts.map(([k,ic,nm,col])=>{
+    const active=k===view;
+    return `<button class="mtype-btn${active?' active':''}" style="${active?`background:${col};border-color:transparent;`:''}" onclick="setRmatView('${k}')">
+      <span class="d" style="background:${active?'#fff':col}"></span>${ic} ${nm}</button>`;
+  }).join('');
+}
 function renderMaterialSummary(bfilter){
   bfilter=bfilter||'all';
-  let rows=data.filter(r=>r.type==='recycle');
-  if(bfilter!=='all')rows=rows.filter(r=>r.building===bfilter);
-  const tot={};RECYCLE_ITEMS.forEach(m=>tot[m]=0);
-  rows.forEach(r=>{if(r.material&&tot[r.material]!==undefined)tot[r.material]+=r.weight;});
-  const grand=Object.values(tot).reduce((a,b)=>a+b,0)||1;
+  const cats=Object.keys(RECYCLE_CATEGORIES);
+  if(window._rmatView===undefined)window._rmatView='all';
+  const view=(window._rmatView==='all'||RECYCLE_CATEGORIES[window._rmatView])?window._rmatView:'all';
 
-  // category KPIs
-  const catTot={};Object.keys(RECYCLE_CATEGORIES).forEach(c=>catTot[c]=0);
-  rows.forEach(r=>{const c=getCategory(r.material||'');if(catTot[c]!==undefined)catTot[c]+=r.weight;});
+  // ----- ตัวเลือกปี (พ.ศ.) -----
+  const ysel=document.getElementById('rmat-year');
+  let year='';
+  if(ysel){
+    const years=[...new Set(data.filter(r=>r.type==='recycle').map(r=>String(r.date).slice(0,4)))].sort().reverse();
+    if(!years.length)years.push(String(new Date().getFullYear()));
+    const prev=ysel.value;
+    ysel.innerHTML=years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
+    ysel.value=years.includes(prev)?prev:years[0];
+    year=ysel.value;
+  }
+
+  // ----- ข้อมูลรีไซเคิลตามปี + อาคาร -----
+  let rows=data.filter(r=>r.type==='recycle');
+  if(year)rows=rows.filter(r=>String(r.date).slice(0,4)===year);
+  if(bfilter!=='all')rows=rows.filter(r=>r.building===bfilter);
+
+  // ----- การ์ด KPI หมวดวัสดุ (รวมทุกหมวดเสมอ ตามปี/อาคาร) -----
+  const catTotals=cats.map(c=>0);
+  rows.forEach(r=>{const c=getCategory(r.material||'');const i=cats.indexOf(c);if(i>=0)catTotals[i]+=r.weight;});
+  const catYearTotal=catTotals.reduce((a,b)=>a+b,0);
   const ck=document.getElementById('cat-kpi');
-  if(ck)ck.innerHTML=Object.keys(RECYCLE_CATEGORIES).map(c=>{
-    const C=RECYCLE_CATEGORIES[c];const pct=(catTot[c]/grand*100).toFixed(1);
+  if(ck)ck.innerHTML=cats.map((c,i)=>{
+    const C=RECYCLE_CATEGORIES[c];const pct=(catYearTotal?catTotals[i]/catYearTotal*100:0).toFixed(1);
     return `<div class="kpi recycle" style="--c-recycle:${C.color}"><div class="kpi-top">
       <div class="kpi-icon" style="background:${C.color}22;color:${C.color}">${C.icon}</div>
       <div class="kpi-trend up" style="background:${C.color}22;color:${C.color}">${pct}%</div></div>
       <div class="kpi-label">${c}</div>
-      <div class="kpi-value">${catTot[c].toFixed(2)} <span class="kpi-unit">kg</span></div></div>`;
+      <div class="kpi-value">${catTotals[i].toFixed(2)} <span class="kpi-unit">kg</span></div></div>`;
   }).join('');
 
-  const sorted=RECYCLE_ITEMS.map(m=>({m,v:tot[m]})).sort((a,b)=>b.v-a.v);
-  document.getElementById('material-summary').innerHTML=sorted.map(x=>
-    `<tr><td>${x.m}</td><td class="t-weight">${x.v.toFixed(2)}</td><td>${(x.v/grand*100).toFixed(1)}%</td></tr>`).join('');
-  const palette=['#22c55e','#16a34a','#3b82f6','#0ea5e9','#f59e0b','#f97316','#a855f7','#ec4899','#ef4444','#14b8a6','#84cc16','#eab308','#06b6d4','#8b5cf6','#64748b'];
-  if(materialChart)materialChart.destroy();
-  Chart.defaults.font.family="'Sarabun',sans-serif";
-  materialChart=new Chart(document.getElementById('chart-material'),{type:'doughnut',
-    data:{labels:RECYCLE_ITEMS,datasets:[{data:RECYCLE_ITEMS.map(m=>+tot[m].toFixed(2)),
-      backgroundColor:palette,borderWidth:2,borderColor:'#fff'}]},
-    options:{responsive:true,plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>c.label+': '+c.parsed.toFixed(2)+' kg'}}}}});
+  // ----- คอลัมน์ตาราง: รวมหมวด หรือ รายการย่อยของหมวดที่เลือก -----
+  let cols,colLabel,colKey;
+  if(view==='all'){
+    cols=cats;
+    colLabel=c=>`${RECYCLE_CATEGORIES[c].icon} ${c} (kg)`;
+    colKey=r=>getCategory(r.material||'');
+  }else{
+    cols=RECYCLE_CATEGORIES[view].items.slice();
+    colLabel=m=>`${m} (kg)`;
+    colKey=r=>r.material||'';
+  }
+
+  // ----- เมทริกซ์ เดือน × คอลัมน์ -----
+  const matrix=MONTHS.map((_,mi)=>{
+    const o={};cols.forEach(c=>o[c]=0);o._total=0;
+    rows.forEach(r=>{ if((+String(r.date).slice(5,7))-1===mi){ const k=colKey(r); if(o[k]!==undefined){o[k]+=r.weight;o._total+=r.weight;} } });
+    return o;
+  });
+  const yearTotal=matrix.reduce((a,m)=>a+m._total,0);
+  const colTotals=cols.map(c=>matrix.reduce((a,m)=>a+m[c],0));
+
+  // ----- ส่วนหัวบอกมุมมองปัจจุบัน -----
+  const cap=(view==='all')?'':`<tr><td colspan="${cols.length+2}" style="background:${RECYCLE_CATEGORIES[view].color}14;color:${RECYCLE_CATEGORIES[view].color};font-weight:700">${RECYCLE_CATEGORIES[view].icon} รายการย่อยหมวด “${view}”</td></tr>`;
+
+  // ----- ตาราง -----
+  const thead=document.getElementById('rmat-thead');
+  if(thead)thead.innerHTML=`<th>เดือน</th>`+cols.map(c=>`<th>${colLabel(c)}</th>`).join('')+`<th>รวม (kg)</th>`;
+  const tbody=document.getElementById('rmat-tbody');
+  if(tbody)tbody.innerHTML=cap+matrix.map((m,i)=>{
+    const cells=cols.map(c=>`<td>${m[c].toFixed(2)}</td>`).join('');
+    return `<tr><td><strong>${MONTHS[i]}</strong></td>${cells}<td class="t-weight">${m._total.toFixed(2)}</td></tr>`;
+  }).join('');
+  const tfoot=document.getElementById('rmat-tfoot');
+  if(tfoot)tfoot.innerHTML=`<tr style="background:#f8fafc;font-weight:700">
+    <td>รวมทั้งปี</td>${colTotals.map(c=>`<td>${c.toFixed(2)}</td>`).join('')}<td class="t-weight">${yearTotal.toFixed(2)}</td></tr>`;
+
+  buildRmatButtons(view);
 }
 
 let lastDeleted=null;
 function delRecord(id,type){
-  if(!can('delete')){alert('คุณไม่มีสิทธิ์ลบข้อมูล');return;}
+  if(!can('delete')){showAuthGate('การลบข้อมูลทำได้เฉพาะผู้ดูแล (admin) ที่เข้าสู่ระบบแล้ว','ต้องเข้าสู่ระบบ');return;}
   if(!confirm('ต้องการลบรายการนี้?'))return;
   const idx=data.findIndex(r=>r.id===id);if(idx<0)return;
   lastDeleted={rec:data[idx],type};
@@ -2600,7 +2951,7 @@ function buildingOptionsHTML(){
 
 /* ===== FORM MODAL ===== */
 function openForm(type){
-  if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
+  if(!can('record')){showAuthGate('การบันทึกข้อมูลทำได้เฉพาะผู้ใช้ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน','ต้องเข้าสู่ระบบ');return;}
   editingId=null;
   formType=type;selFloor=isNoFloor(type)?WHOLE_BLD:null;
   const T=TYPES[type];
@@ -2623,7 +2974,7 @@ function openForm(type){
   openModal('modal-form');
 }
 function editRecord(id){
-  if(!can('edit')){alert('คุณไม่มีสิทธิ์แก้ไขข้อมูล');return;}
+  if(!can('edit')){showAuthGate('การแก้ไขข้อมูลทำได้เฉพาะผู้ใช้ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน','ต้องเข้าสู่ระบบ');return;}
   const r=data.find(x=>x.id===id);if(!r)return;
   openForm(r.type);
   editingId=id;
@@ -2750,7 +3101,7 @@ function entryFmtKg(n){const v=Math.round((Number(n)||0)*100)/100;return v%1===0
 function entryThaiShort(key){const p=String(key).split('-');return p[2]+'/'+p[1]+'/'+(parseInt(p[0],10)+543);}
 let entryFocus='';
 function openEntry(focusType){
-  if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
+  if(!can('record')){showAuthGate('การบันทึกข้อมูลทำได้เฉพาะผู้ใช้ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน','ต้องเข้าสู่ระบบ');return;}
   entryFocus=focusType||'';
   // หัว popup บอกชัดว่ากำลังบันทึกอะไร
   const _et=eG('entry-title');
@@ -3050,7 +3401,9 @@ function initYearOptions(){
   const years=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse();
   if(!years.length)years.push(String(new Date().getFullYear()));
   const sel=document.getElementById('m-year');
+  const prevSel=sel.value;
   sel.innerHTML=years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
+  sel.value=years.includes(prevSel)?prevSel:years[0];
 }
 
 function buildMonthlyButtons(){
@@ -3168,22 +3521,20 @@ function exportMonthlyCSV(){
   MONTHS.forEach((mn,mi)=>{
     const vals=typeKeys.map(t=>yearData.filter(r=>r.type===t&&(+r.date.slice(5,7))-1===mi).reduce((a,r)=>a+r.weight,0));
     const tot=vals.reduce((a,b)=>a+b,0);
-    rows.push([mn,...vals.map(v=>v.toFixed(2)),tot.toFixed(2)]);
+    rows.push([mn,...vals.map(v=>+v.toFixed(2)),+tot.toFixed(2)]);
   });
-  const csv='\uFEFF'+rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='monthly-summary-'+year+'.csv';a.click();toast('Export สำเร็จ');
+  exportXLSX(rows,'monthly-summary-'+year+'.xlsx','สรุปรายเดือน '+(+year+543));toast('Export Excel สำเร็จ');
 }
 
 /* ===== ESG / CARBON ===== */
 let esgCharts={};
 function renderESG(){
   const ysel=document.getElementById('esg-year');
-  if(!ysel.options.length){
-    const years=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse();
-    if(!years.length)years.push(String(new Date().getFullYear()));
-    ysel.innerHTML='<option value="all">ทุกปี</option>'+years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
-  }
+  const years=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse();
+  if(!years.length)years.push(String(new Date().getFullYear()));
+  const prevSel=ysel.value||'all';
+  ysel.innerHTML='<option value="all">ทุกปี</option>'+years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
+  ysel.value=(prevSel==='all'||years.includes(prevSel))?prevSel:'all';
   const year=ysel.value;
   renderBldFilter('esg');
   const bf=curFilter['esg']||'all';
@@ -3336,9 +3687,7 @@ function exportESGCSV(){
   out.push(['Setcarbon','ประเภท 3 (ประปา+ขยะกำจัด)','','','',s3.toFixed(2),(s3/1000).toFixed(4)]);
   out.push(['Setcarbon','ประเภทอื่นๆ (รีไซเคิล+Ewast+)','','','',oth.toFixed(2),(oth/1000).toFixed(4)]);
   out.push(['Setcarbon','รวมทั้งหมด','','','',(s1+s2+s3+oth).toFixed(2),((s1+s2+s3+oth)/1000).toFixed(4)]);
-  const csv='\uFEFF'+out.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='esg-carbon-'+year+'.csv';a.click();toast('Export ESG สำเร็จ');
+  exportXLSX(out,'esg-carbon-'+year+'.xlsx','ESG Carbon');toast('Export ESG (Excel) สำเร็จ');
 }
 
 /* ===== KIOSK (หน้าบันทึกแยกจาก QR อาคาร) ===== */
@@ -3437,11 +3786,13 @@ function utSetBld(b){utViewBld=b;utPage=1;renderUtility();}
 function utSetChartType(t){utChartType=t;renderUtility();}
 function utYearSel(){
   const sel=document.getElementById('ut-year');if(!sel)return 'all';
-  if(!sel.options.length){
-    const years=[...new Set(udata.map(r=>String(r.date).slice(0,4)))].sort().reverse();
-    if(!years.length)years.push(String(new Date().getFullYear()));
-    sel.innerHTML='<option value="all">ทุกปี</option>'+years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
-    sel.value=years[0];
+  const years=[...new Set(udata.map(r=>String(r.date).slice(0,4)))].sort().reverse();
+  if(!years.length)years.push(String(new Date().getFullYear()));
+  const prevSel=sel.value;
+  const want='<option value="all">ทุกปี</option>'+years.map(y=>`<option value="${y}">ปี ${+y+543}</option>`).join('');
+  if(sel.getAttribute('data-opts')!==want){   // รีเฟรชเฉพาะเมื่อรายการปีเปลี่ยน (กันรีเซ็ตค่าระหว่างใช้งาน)
+    sel.innerHTML=want;sel.setAttribute('data-opts',want);
+    sel.value=(prevSel&&(prevSel==='all'||years.includes(prevSel)))?prevSel:years[0];
   }
   return sel.value;
 }
@@ -3628,7 +3979,7 @@ function renderUtilTable(){
   pager.innerHTML=pages>1?Array.from({length:pages},(_,i)=>`<button class="pg-btn ${i+1===utPage?'active':''}" onclick="utPage=${i+1};renderUtilTable()">${i+1}</button>`).join(''):'';
 }
 function delUtil(id){
-  if(!can('delete')){alert('คุณไม่มีสิทธิ์ลบข้อมูล');return;}
+  if(!can('delete')){showAuthGate('การลบข้อมูลทำได้เฉพาะผู้ดูแล (admin) ที่เข้าสู่ระบบแล้ว','ต้องเข้าสู่ระบบ');return;}
   if(!confirm('ลบรายการนี้?'))return;
   udata=udata.filter(r=>r.id!==id);saveUtil_();gsPush('utilities','delete',{id});
   renderUtility();toast('ลบรายการแล้ว');
@@ -3662,7 +4013,7 @@ function utilRenderMonths(){
 }
 function utilPickMonth(i){utMonth=i;utilRenderMonths();}
 function openUtilEntry(presetUt){
-  if(!can('record')){alert('คุณไม่มีสิทธิ์บันทึกข้อมูล');return;}
+  if(!can('record')){showAuthGate('การบันทึกข้อมูลทำได้เฉพาะผู้ใช้ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน','ต้องเข้าสู่ระบบ');return;}
   utEditId=null;utSel={ut:'',bld:''};
   document.getElementById('ut-m-title').textContent='บันทึกพลังงาน & น้ำ';
   const now=new Date();utYear=now.getFullYear();utMonth=now.getMonth();
@@ -3758,14 +4109,13 @@ function saveUtil(){
   recs.forEach(r=>{udata.push(r);gsPush('utilities','add',r);});
   saveUtil_();
   closeModal('modal-util');
-  const sel=document.getElementById('ut-year');if(sel)sel.innerHTML='';
   renderUtility();
   const amt=items.reduce((a,i)=>a+i.amount,0);
   toast('บันทึก '+UTILITIES[utSel.ut].short+' '+recs.length+' มิเตอร์ (รวม '+amt.toLocaleString(undefined,{maximumFractionDigits:2})+' '+UTILITIES[utSel.ut].unit+') · '+MONTHS_SHORT[utMonth]+' '+(utYear+543)+' · '+bName(utSel.bld));
 }
 /* แก้ไขรายการ (admin/ผู้มีสิทธิ์) — เปิด modal โหมดล็อคประเภท/อาคาร แก้เดือนและปริมาณได้ */
 function openUtilEdit(id){
-  if(!can('edit')){alert('คุณไม่มีสิทธิ์แก้ไขข้อมูล');return;}
+  if(!can('edit')){showAuthGate('การแก้ไขข้อมูลทำได้เฉพาะผู้ใช้ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน','ต้องเข้าสู่ระบบ');return;}
   const r=udata.find(x=>x.id===id);if(!r){alert('ไม่พบรายการ');return;}
   openUtilEntry();   // เตรียมโครง modal ก่อน
   utEditId=null;     // ปลดล็อคชั่วคราวเพื่อเลือกค่าให้ตรงรายการ
@@ -3782,6 +4132,23 @@ function openUtilEdit(id){
 
 /* ===== ADMIN ===== */
 function renderAdmin(){
+  if(!isAdmin()){
+    const p=document.getElementById('page-admin');
+    if(p)p.querySelector('.page-head')&&(function(){
+      const c=document.getElementById('admin-locked');
+      if(!c){const d=document.createElement('div');d.id='admin-locked';d.className='card';
+        d.style.cssText='text-align:center;padding:48px 24px';
+        d.innerHTML='<div style="font-size:48px;margin-bottom:12px">🔐</div><div style="font-weight:700;font-size:18px;margin-bottom:6px">ต้องเข้าสู่ระบบด้วยบัญชีผู้ดูแล</div><div class="page-sub">หน้าตั้งค่าระบบ การจัดการอาคาร ค่า Emission Factor และการเชื่อมต่อ เปิดให้แก้ไขเฉพาะผู้ดูแล (admin) ที่เข้าสู่ระบบแล้ว</div><button class="btn btn-primary" style="margin-top:18px" onclick="openLogin()">🔐 เข้าสู่ระบบ</button>';
+        p.appendChild(d);}
+      // ซ่อนการ์ดตั้งค่าจริงทั้งหมด เหลือเฉพาะกล่องล็อก
+      p.querySelectorAll('.card:not(#admin-locked)').forEach(el=>el.style.display='none');
+      document.getElementById('admin-locked').style.display='';
+    })();
+    return;
+  }
+  // มีสิทธิ์: เอากล่องล็อกออก แสดงการ์ดตั้งค่าตามปกติ
+  const lk=document.getElementById('admin-locked');if(lk)lk.style.display='none';
+  const p0=document.getElementById('page-admin');if(p0)p0.querySelectorAll('.card:not(#admin-locked)').forEach(el=>el.style.display='');
   document.getElementById('set-org').value=SETTINGS.org;
   document.getElementById('set-sub').value=SETTINGS.sub;
   document.getElementById('set-target').value=SETTINGS.recycleTarget;
@@ -4000,13 +4367,23 @@ function userChipClick(){
   }else openLogin();
 }
 function logout(){USER=null;localStorage.removeItem('wms_user');applyGating();}
-function applyGating(){
+function applyGating(skipRerender){
   const chip=document.getElementById('user-chip');
   if(USER&&USER.name){chip.innerHTML=`👤 ${USER.name} <span style="opacity:.7">⏻</span>`;}
   else{chip.innerHTML=`🔐 เข้าสู่ระบบ`;}
-  // เปิดทุกฟังก์ชันไว้ก่อน (ยังไม่กำหนดสิทธิ์)
-  document.querySelectorAll('.nav-tab[data-page="admin"]').forEach(t=>t.style.display='');
-  document.querySelectorAll('[onclick^="openForm"],[onclick^="openQR"]').forEach(b=>{b.style.display='';});
+  // แท็บ Admin + เมนู Admin: แสดงเฉพาะผู้ดูแลระบบที่ล็อกอิน
+  document.querySelectorAll('.nav-tab[data-page="admin"],.bn-item[data-page="admin"],.bs-item[data-page="admin"]').forEach(t=>t.style.display=isAdmin()?'':'none');
+  // ปุ่มบันทึก/เพิ่ม/QR: แสดงเฉพาะผู้ที่มีสิทธิ์บันทึก (ล็อกอินแล้ว)
+  document.querySelectorAll('[onclick^="openEntry"],[onclick^="openUtilEntry"],[onclick^="openForm"],[onclick^="openScan"],[onclick^="openQR"]').forEach(b=>{b.style.display=can('record')?'':'none';});
+  if(skipRerender)return;
+  // ถ้าอยู่หน้า Admin แต่ไม่มีสิทธิ์ ให้เด้งกลับหน้าหลัก
+  const adminPage=document.getElementById('page-admin');
+  if(adminPage&&adminPage.classList.contains('active')&&!isAdmin()){
+    const dash=document.querySelector('.nav-tab[data-page="dashboard"]');if(dash)dash.click();
+  }else{
+    // รีเฟรชหน้าปัจจุบันเพื่อให้ปุ่มแก้ไข/ลบในตารางอัปเดตตามสิทธิ์
+    const active=document.querySelector('.nav-tab.active');if(active)active.click();
+  }
 }
 
 /* ===== ADMIN: BRANDING / BUILDINGS / GOALS ===== */
@@ -4041,19 +4418,74 @@ function editBuildingFloors(key){
 }
 
 /* ===== EXPORT ===== */
+/* ════════ ส่งออก Excel (.xlsx) — ตัวเขียนจิ๋ว ไม่พึ่งไลบรารี (global) ════════ */
+function _xlsxCRC(buf){let c,t=_xlsxCRC.t;if(!t){t=_xlsxCRC.t=[];for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}let crc=0^(-1);for(let i=0;i<buf.length;i++)crc=(crc>>>8)^t[(crc^buf[i])&0xFF];return (crc^(-1))>>>0;}
+function _xlsxSB(s){return new TextEncoder().encode(s);}
+function _xlsxCol(n){let s='';n++;while(n>0){let m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26);}return s;}
+function _xlsxEsc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function _xlsxSheet(rows){
+  let x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';
+  rows.forEach((row,ri)=>{x+='<row r="'+(ri+1)+'">';row.forEach((cell,ci)=>{const ref=_xlsxCol(ci)+(ri+1);
+    if(typeof cell==='number'&&isFinite(cell))x+='<c r="'+ref+'"><v>'+cell+'</v></c>';
+    else x+='<c r="'+ref+'" t="inlineStr"><is><t xml:space="preserve">'+_xlsxEsc(cell==null?'':cell)+'</t></is></c>';});x+='</row>';});
+  return x+'</sheetData></worksheet>';
+}
+function buildXLSX(rows,sheetName){
+  sheetName=(sheetName||'Sheet1').slice(0,31).replace(/[\\\/\?\*\[\]:]/g,'_');
+  const files=[
+    ['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>'],
+    ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="'+_xlsxEsc(sheetName)+'" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+    ['xl/_rels/workbook.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>'],
+    ['xl/worksheets/sheet1.xml',_xlsxSheet(rows)]
+  ];
+  const enc=[],central=[];let offset=0;
+  const u16=n=>[n&0xFF,(n>>8)&0xFF],u32=n=>[n&0xFF,(n>>8)&0xFF,(n>>16)&0xFF,(n>>24)&0xFF];
+  const push=(a,b)=>{for(let i=0;i<b.length;i++)a.push(b[i]);};
+  files.forEach(([name,content])=>{
+    const nameB=_xlsxSB(name),dataB=_xlsxSB(content),crc=_xlsxCRC(dataB);
+    const lh=[];push(lh,u32(0x04034b50));push(lh,u16(20));push(lh,u16(0));push(lh,u16(0));push(lh,u16(0));push(lh,u16(0));
+    push(lh,u32(crc));push(lh,u32(dataB.length));push(lh,u32(dataB.length));push(lh,u16(nameB.length));push(lh,u16(0));
+    push(enc,lh);push(enc,nameB);push(enc,dataB);
+    const ch=[];push(ch,u32(0x02014b50));push(ch,u16(20));push(ch,u16(20));push(ch,u16(0));push(ch,u16(0));push(ch,u16(0));push(ch,u16(0));
+    push(ch,u32(crc));push(ch,u32(dataB.length));push(ch,u32(dataB.length));push(ch,u16(nameB.length));push(ch,u16(0));push(ch,u16(0));push(ch,u16(0));push(ch,u16(0));push(ch,u32(0));push(ch,u32(offset));
+    push(ch,nameB);central.push(ch);offset+=lh.length+nameB.length+dataB.length;
+  });
+  const cdStart=offset;let cdLen=0;central.forEach(c=>{push(enc,c);cdLen+=c.length;});
+  const eo=[];push(eo,u32(0x06054b50));push(eo,u16(0));push(eo,u16(0));push(eo,u16(files.length));push(eo,u16(files.length));push(eo,u32(cdLen));push(eo,u32(cdStart));push(eo,u16(0));
+  push(enc,eo);return new Uint8Array(enc);
+}
+/* ส่งออกเป็นไฟล์ Excel: rows = array ของ array (แถวแรกเป็นหัวคอลัมน์), แปลงตัวเลขอัตโนมัติ */
+function exportXLSX(rows,filename,sheetName){
+  const norm=rows.map(r=>r.map(c=>{
+    if(typeof c==='number')return c;
+    const s=String(c==null?'':c);
+    // แปลงสตริงตัวเลขล้วนเป็นตัวเลข (ให้ Excel คำนวณได้) แต่คงรหัส/วันที่ที่มีอักขระอื่นไว้
+    if(/^-?\d+(\.\d+)?$/.test(s)&&s!=='')return parseFloat(s);
+    return s;
+  }));
+  const blob=new Blob([buildXLSX(norm,sheetName||'Sheet1')],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+}
+
 function exportCSV(){
   const rows=[['วันที่','ประเภท','อาคาร','ชั้น','น้ำหนัก_kg','ผู้บันทึก','หมวดหมู่รีไซเคิล','ประเภทวัสดุ','หมายเหตุ']];
   data.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(r=>
-    rows.push([r.date,TYPES[r.type].name,bName(r.building),r.floor,r.weight.toFixed(2),r.recorder,r.material?getCategory(r.material):'',r.material||'',r.vendor||r.note||'']));
-  const csv='\uFEFF'+rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='waste-data.csv';a.click();toast('Export CSV สำเร็จ');
+    rows.push([r.date,TYPES[r.type].name,bName(r.building),r.floor,+r.weight.toFixed(2),r.recorder,r.material?getCategory(r.material):'',r.material||'',r.vendor||r.note||'']));
+  exportXLSX(rows,'waste-data.xlsx','ข้อมูลขยะ');toast('Export Excel สำเร็จ');
 }
 
 /* ===== HELPERS ===== */
 function fmt(d){const[y,m,dd]=d.split('-');return dd+'/'+m+'/'+y;}
 function fmtShort(d){const[y,m,dd]=d.split('-');return dd+'/'+m;}
 function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+function showAuthGate(msg,title){
+  const t=document.getElementById('authgate-title'),m=document.getElementById('authgate-msg');
+  if(t)t.textContent=title||'ต้องเข้าสู่ระบบ';
+  if(m)m.textContent=msg||'หน้านี้เปิดให้เฉพาะผู้ดูแล (admin) ที่เข้าสู่ระบบแล้ว กรุณาเข้าสู่ระบบเพื่อใช้งาน';
+  openModal('modal-authgate');
+}
 function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
 document.querySelectorAll('.overlay').forEach(o=>o.onclick=e=>{if(e.target===o){o.classList.remove('open');document.body.style.overflow='';}});
 function toast(msg,action){
@@ -4072,7 +4504,7 @@ function toast(msg,action){
   applyBranding();
   setConnStatus('local');
   document.getElementById('login').style.display='none';
-  applyGating();
+  applyGating(true);
   buildStaffTabs();
   setupHeaderFilters();
   buildBottomNav();
@@ -4096,7 +4528,6 @@ function toast(msg,action){
            กดปุ่มไปหน้าต่างๆ แล้วบอทสรุปข้อมูลหน้านั้นให้อัตโนมัติ
 ════════════════════════════════════════════════════════════════ -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
 #esgbot, #esgbot * { box-sizing:border-box; }
 #esgbot { image-rendering:pixelated; }
@@ -4127,7 +4558,7 @@ function toast(msg,action){
 #esgbot .bot-win{
   position:fixed; right:20px; bottom:96px; z-index:99999;
   width:340px; max-width:calc(100vw - 32px);
-  height:480px; max-height:calc(100vh - 130px);
+  height:480px; max-height:calc(100dvh - 130px);
   background:#10241a; border:3px solid #2e9d4f;
   border-radius:16px; overflow:hidden;
   display:none; flex-direction:column;
@@ -4227,10 +4658,15 @@ function toast(msg,action){
 }
 #esgbot .bot-listening-bar.show{ display:block; animation:botBlink 1.2s infinite; }
 
-/* responsive — มือถือ */
+/* responsive — มือถือ: ย้ายปุ่มบอทไปมุมซ้ายล่าง + ยกขึ้นเหนือแถบเมนู (bottom-nav) ไม่ให้ทับปุ่ม "เมนู" ที่อยู่ขวา */
+@media (max-width:768px){
+  #esgbot .bot-fab{ left:16px; right:auto; bottom:calc(82px + env(safe-area-inset-bottom)); }
+  #esgbot .bot-win{ left:12px; right:12px; bottom:calc(150px + env(safe-area-inset-bottom)); }
+  #esgbot .bot-notif{ right:auto; left:-6px; }
+}
 @media (max-width:520px){
-  #esgbot .bot-fab{ width:56px; height:56px; right:16px; bottom:16px; }
-  #esgbot .bot-win{ right:12px; left:12px; bottom:84px; width:auto; max-width:none; height:70vh; max-height:calc(100svh - 110px); }
+  #esgbot .bot-fab{ width:56px; height:56px; left:14px; right:auto; bottom:calc(80px + env(safe-area-inset-bottom)); }
+  #esgbot .bot-win{ left:12px; right:12px; bottom:calc(148px + env(safe-area-inset-bottom)); width:auto; max-width:none; height:62vh; max-height:calc(100svh - 240px); }
 }
 </style>
 
@@ -4345,7 +4781,7 @@ function toast(msg,action){
      a:'ระบบมี <b>QR Code / โหมด Kiosk</b> ให้แม่บ้านหรือจุดรับขยะสแกนบันทึกสะดวก เปิดได้จากเมนูในแต่ละหน้าครับ'},
     {kw:['export','csv','ส่งออก','excel','ดาวน์โหลดไฟล์'],
      a:'ส่งออกข้อมูลเป็นไฟล์ <b>CSV</b> (เปิดใน Excel ได้) กดปุ่มด้านล่างเลยครับ 👇',
-     acts:[['fn:exportCSV','⬇️ Export CSV']]},
+     acts:[['fn:exportCSV','⬇️ Export Excel']]},
     {kw:['google sheet','sheets','เชื่อมต่อ','sync','ซิงค์','apps script','ฐานข้อมูล','ออนไลน์'],
      a:'ค่าเริ่มต้นข้อมูลเก็บใน<b>เครื่องนี้</b> (Local Storage) เชื่อม <b>Google Sheets</b> ผ่าน Apps Script เพื่อให้ทุกเครื่องเห็นข้อมูลร่วมกันได้ ตั้งค่าที่หน้า Admin',
      acts:[['page:admin','⚙️ ไปหน้า Admin']]},
@@ -4655,7 +5091,7 @@ function toast(msg,action){
         '• 🏢 เอ่ยชื่ออาคาร (เช่น "Ari Hills", "KSL") ผมจะกดเข้าไปดูอาคารนั้นให้เอง<br>'+
         '• 📥 ส่งออก Excel/CSV ตามเงื่อนไข เช่น "ตรวจสอบขยะทั่วไป อาคาร KSL เดือนมกราคม 2569 เป็น excel"<br>'+
         '• 🧭 พาไปแท็บต่างๆ แล้วสรุปข้อมูลหน้านั้นให้<br>'+
-        '• 📝 เปิดฟอร์มบันทึก, ⬇️ Export CSV, 🌗 สลับธีม',
+        '• 📝 เปิดฟอร์มบันทึก, ⬇️ Export Excel, 🌗 สลับธีม',
         acts:[['data:overall','📊 สรุปภาพรวม'],['data:carbon','🌍 คาร์บอน'],['data:building','🏢 ตามอาคาร']]};
 
     if(/กี่ประเภท|กี่ชนิด|กี่แบบ|ประเภทขยะ|แยกขยะ/.test(q)){
