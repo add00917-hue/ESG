@@ -1107,6 +1107,35 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     </div>
   </div>
   <div class="kpi-grid" id="cat-kpi"></div>
+  <div class="card" id="rcal-card">
+    <div class="card-head">
+      <div class="card-title"><span class="ic">🗓️</span>ปฏิทินการบันทึก<span class="ctx-badge" id="rcal-ctx"></span></div>
+    </div>
+    <div class="page-sub" style="margin:-6px 0 14px">เลือกเดือนเพื่อดูว่ามีวันไหนบันทึกข้อมูลบ้าง · แตะวันที่ → ดูจำนวนอาคาร · แตะอาคาร → ดูรายการที่บันทึก</div>
+    <div class="rcal-wrap">
+      <div class="rcal-cal">
+        <div class="rcal-head">
+          <div class="rcal-title" id="rcal-title">—</div>
+          <div class="rcal-ctrls">
+            <button class="rcal-nav" id="rcal-prev" onclick="recCalNav(-1)">‹</button>
+            <select class="filter-sel rcal-msel" id="rcal-month" onchange="recCalSet()"></select>
+            <select class="filter-sel rcal-ysel" id="rcal-year" onchange="recCalSet()"></select>
+            <button class="rcal-nav" id="rcal-next" onclick="recCalNav(1)">›</button>
+            <button class="rcal-today" onclick="recCalToday()">วันนี้</button>
+          </div>
+        </div>
+        <div class="rcal-dows"><span class="we">อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span class="we">ส</span></div>
+        <div class="rcal-grid" id="rcal-grid"></div>
+        <div class="rcal-legend">
+          <span><i style="background:#dcfce7"></i>มีการบันทึก</span>
+          <span><i style="background:var(--c-recycle)"></i>วันที่เลือก</span>
+          <span><i style="background:#fff;outline:2px solid #f59e0b;outline-offset:-2px"></i>วันนี้</span>
+          <span><i style="background:#0ea5e9"></i>= จำนวนอาคาร</span>
+        </div>
+      </div>
+      <div class="rcal-side" id="rcal-side"></div>
+    </div>
+  </div>
   <div class="card">
     <div class="card-head">
       <div class="card-title"><span class="ic">📦</span>สรุปแยกตามประเภทวัสดุรีไซเคิล (รายเดือน)<span class="ctx-badge ctx-wp" data-t="recycle"></span></div>
@@ -1542,6 +1571,62 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 /* ป้ายบริบทบนหัวการ์ด: บอกช่วงเวลา/อาคารที่กำลังดู */
 .ctx-badge{font-size:11px;font-weight:700;color:#0f766e;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:3px 10px;white-space:nowrap;display:inline-block;flex-shrink:0}
 .ctx-badge:empty{display:none}
+
+/* ===== ปฏิทินการบันทึก (หน้ารีไซเคิล) ===== */
+.rcal-wrap{display:grid;grid-template-columns:minmax(0,392px) minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:860px){.rcal-wrap{grid-template-columns:1fr;gap:16px}}
+.rcal-cal{min-width:0;max-width:392px}
+@media(max-width:860px){.rcal-cal{margin:0 auto}}
+.rcal-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.rcal-title{font-weight:800;font-size:15px;color:var(--text);width:100%}
+.rcal-ctrls{display:flex;align-items:center;gap:6px;width:100%}
+.rcal-ctrls .filter-sel{padding:7px 8px;font-size:12px;min-width:0}
+.rcal-ctrls .filter-sel.rcal-msel{flex:1;min-width:90px}
+.rcal-ctrls .filter-sel.rcal-ysel{width:74px;flex:0 0 auto}
+.rcal-nav{width:32px;height:32px;border:1px solid var(--border);background:#fff;border-radius:9px;font-size:17px;cursor:pointer;color:var(--text-muted);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.rcal-nav:active{background:#f1f5f9}
+.rcal-today{border:1px solid var(--primary);background:var(--primary);color:#fff;border-radius:999px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;flex:0 0 auto}
+.rcal-dows{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.rcal-dows span{text-align:center;font-size:11px;color:#94a3b8;font-weight:700;padding:2px 0}
+.rcal-dows span.we{color:#fb7185}
+.rcal-grid{display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:46px;gap:5px;justify-items:center;align-items:center}
+.rcal-grid .pad{width:0;height:0}
+.rcal-day{position:relative;width:44px;height:44px;max-width:100%;border:none;background:transparent;border-radius:50%;font-family:inherit;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s}
+.rcal-day.empty{color:#cbd5e1;cursor:default}
+.rcal-day.today{outline:2px solid #f59e0b;outline-offset:-2px}
+.rcal-day.has{background:#dcfce7;color:#15803d;font-weight:800}
+.rcal-day.has:hover{background:#bbf7d0}
+.rcal-day.sel{background:var(--c-recycle);color:#fff;box-shadow:0 4px 11px rgba(34,197,94,.45)}
+.rcal-day .rcal-cnt{position:absolute;top:-1px;right:-1px;min-width:15px;height:15px;padding:0 3px;border-radius:999px;background:#0ea5e9;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;border:1.5px solid #fff}
+.rcal-day.sel .rcal-cnt{background:#fff;color:#15803d;border-color:var(--c-recycle)}
+.rcal-legend{display:flex;gap:6px 14px;flex-wrap:wrap;margin-top:14px;font-size:11px;color:var(--text-muted)}
+.rcal-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+/* แผงข้อมูลด้านข้าง */
+.rcal-side{min-width:0;border:1px solid var(--border);border-radius:14px;background:#f8fafc;padding:16px;min-height:300px}
+.rcal-side-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#94a3b8;gap:10px;padding:46px 12px;font-size:13px;line-height:1.6}
+.rcal-side-empty .ic{font-size:36px}
+.rcal-daytitle{font-weight:800;font-size:15px;color:var(--text);display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.rcal-daysub{font-size:12px;color:var(--text-muted);margin-bottom:14px;line-height:1.5}
+.rcal-blds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.rcal-bld{border:1.5px solid var(--border);background:#fff;border-radius:12px;padding:8px 13px;cursor:pointer;font-family:inherit;text-align:left;transition:.15s;line-height:1.35}
+.rcal-bld:hover{transform:translateY(-1px)}
+.rcal-bld.sel{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(15,118,110,.28)}
+.rcal-bld .rb-name{font-size:13px;font-weight:800;display:block}
+.rcal-bld .rb-meta{font-size:11px;opacity:.8}
+.rcal-det-head{font-size:13px;font-weight:800;color:var(--text);margin:2px 0 11px;display:flex;align-items:center;gap:7px}
+.rmat-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:13px;padding:11px 13px;margin-bottom:8px}
+.rmat-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.rmat-main{flex:1;min-width:0}
+.rmat-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.rmat-tags{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:5px}
+.rmat-cat{font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px}
+.rmat-co2{font-size:10px;font-weight:600;color:#16a34a;display:inline-flex;align-items:center;gap:3px}
+.rmat-kg{font-size:16px;font-weight:800;color:var(--text);white-space:nowrap}
+.rmat-kg small{font-size:11px;font-weight:600;color:var(--text-muted);margin-left:2px}
+.rcal-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:13px;padding:15px 10px}
+.rcal-foot div{text-align:center}
+.rcal-foot .fv{font-size:18px;font-weight:800;color:#15803d;line-height:1.1}
+.rcal-foot .fl{font-size:10px;color:#16a34a;font-weight:600;margin-top:4px}
 </style>
 <div class="overlay" id="modal-ecal">
   <div class="modal" style="max-width:360px">
@@ -2840,7 +2925,115 @@ function renderWastePage(type){
         datalabels:{anchor:'end',align:'end',color:'#334155',font:{size:10,weight:'600'},formatter:v=>v>0?v.toFixed(1):''}},
       scales:{y:{beginAtZero:true,grace:'12%'}}},
     plugins:[ChartDataLabels]});
+  if(type==='recycle')renderRecycleCalendar();
 }
+
+/* ============ ปฏิทินการบันทึก (รีไซเคิล) ============ */
+const RCAL_TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const RCAL_EN_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let rcalView=null,rcalSelDate=null,rcalSelBld=null;
+function rcalTodayP(){const t=new Date();return{y:t.getFullYear(),m:t.getMonth(),d:t.getDate()};}
+function rcalKey(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+/* ดัชนีบันทึกรีไซเคิลของเดือน → { 'YYYY-MM-DD': {blds:{bld:[recs]}} } */
+function rcalIndex(y,m){
+  const idx={};
+  data.forEach(r=>{
+    if(r.type!=='recycle')return;
+    const p=String(r.date).split('-');if(p.length<3)return;
+    if(+p[0]!==y||(+p[1]-1)!==m)return;
+    if(!idx[r.date])idx[r.date]={blds:{}};
+    (idx[r.date].blds[r.building]||(idx[r.date].blds[r.building]=[])).push(r);
+  });
+  return idx;
+}
+function renderRecycleCalendar(){
+  const grid=document.getElementById('rcal-grid');if(!grid)return;
+  if(!rcalView){
+    const ds=data.filter(r=>r.type==='recycle').map(r=>r.date).sort();
+    if(ds.length){const p=ds[ds.length-1].split('-');rcalView={y:+p[0],m:+p[1]-1};}
+    else{const t=rcalTodayP();rcalView={y:t.y,m:t.m};}
+  }
+  const y=rcalView.y,m=rcalView.m,t=rcalTodayP();
+  const ttl=document.getElementById('rcal-title');if(ttl)ttl.textContent=RCAL_TH_MONTHS[m]+' '+(y+543);
+  const msel=document.getElementById('rcal-month');
+  if(msel)msel.innerHTML=RCAL_TH_MONTHS.map((nm,i)=>`<option value="${i}" ${i===m?'selected':''}>${nm} (${RCAL_EN_MONTHS[i]})</option>`).join('');
+  const ysel=document.getElementById('rcal-year');
+  if(ysel){
+    const yrs=[...new Set(data.filter(r=>r.type==='recycle').map(r=>+String(r.date).slice(0,4)))];
+    yrs.push(t.y,y);
+    const uniq=[...new Set(yrs)].filter(v=>v).sort((a,b)=>b-a);
+    ysel.innerHTML=uniq.map(yy=>`<option value="${yy}" ${yy===y?'selected':''}>${yy+543}</option>`).join('');
+  }
+  const idx=rcalIndex(y,m);
+  const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
+  let cells='';
+  for(let i=0;i<first;i++)cells+='<div class="pad"></div>';
+  for(let d=1;d<=days;d++){
+    const key=rcalKey(y,m,d),has=!!idx[key];
+    const nbld=has?Object.keys(idx[key].blds).length:0;
+    const isToday=(t.y===y&&t.m===m&&t.d===d),isSel=(rcalSelDate===key);
+    let cls='rcal-day'+(has?' has':' empty')+(isToday?' today':'')+(isSel?' sel':'');
+    cells+=`<button type="button" class="${cls}" ${has?`onclick="recCalPickDay('${key}')"`:''}>${d}${has?`<span class="rcal-cnt">${nbld}</span>`:''}</button>`;
+  }
+  grid.innerHTML=cells;
+  const ctx=document.getElementById('rcal-ctx');
+  if(ctx){const nd=Object.keys(idx).length;ctx.textContent=nd?(nd+' วันมีบันทึก'):'ไม่มีบันทึกเดือนนี้';}
+  renderRcalSide();
+}
+function renderRcalSide(){
+  const side=document.getElementById('rcal-side');if(!side)return;
+  if(!rcalSelDate){
+    side.innerHTML=`<div class="rcal-side-empty"><span class="ic">🗓️</span><div>แตะวันที่มี <b style="color:#22c55e">จุดสีเขียว</b> บนปฏิทิน<br>เพื่อดูข้อมูลการบันทึกแยกตามอาคาร</div></div>`;
+    return;
+  }
+  const recs=data.filter(r=>r.type==='recycle'&&r.date===rcalSelDate);
+  if(!recs.length){side.innerHTML=`<div class="rcal-side-empty"><span class="ic">📭</span><div>ไม่มีข้อมูลในวันที่เลือก</div></div>`;return;}
+  const blds={};recs.forEach(r=>{(blds[r.building]||(blds[r.building]=[])).push(r);});
+  const bldKeys=Object.keys(blds);
+  if(!rcalSelBld||!blds[rcalSelBld])rcalSelBld=bldKeys[0];
+  const p=rcalSelDate.split('-');
+  const thDate=(+p[2])+' '+RCAL_TH_MONTHS[+p[1]-1]+' '+(+p[0]+543);
+  let html=`<div class="rcal-daytitle">📍 ${thDate}</div>
+    <div class="rcal-daysub">มีการบันทึก <b style="color:#0f766e">${bldKeys.length} อาคาร</b> · รวม ${recs.length} รายการ · แตะอาคารเพื่อดูรายละเอียด</div>
+    <div class="rcal-blds">`;
+  bldKeys.forEach(b=>{
+    const rs=blds[b],kg=rs.reduce((a,r)=>a+r.weight,0),c=bColor(b),sel=b===rcalSelBld;
+    html+=`<button class="rcal-bld${sel?' sel':''}" style="${sel?'':'border-color:'+c+'66'}" onclick="recCalPickBld('${b}')">
+      <span class="rb-name">${bName(b)}</span><span class="rb-meta">${rs.length} รายการ · ${kg.toFixed(1)} กก.</span></button>`;
+  });
+  html+=`</div>`;
+  const rs=blds[rcalSelBld];
+  html+=`<div class="rcal-det-head">♻️ รายการวัสดุ · ${bName(rcalSelBld)}</div>`;
+  let totKg=0,totCo2=0;
+  rs.slice().sort((a,b)=>b.weight-a.weight).forEach(r=>{
+    const cat=getCategory(r.material||''),C=RECYCLE_CATEGORIES[cat];
+    const col=C?C.color:'#64748b',ic=C?C.icon:'📦',c2=co2(r);
+    totKg+=r.weight;totCo2+=c2;
+    html+=`<div class="rmat-card">
+      <div class="rmat-ic" style="background:${col}22;color:${col}">${ic}</div>
+      <div class="rmat-main">
+        <div class="rmat-name">${r.material||'-'}</div>
+        <div class="rmat-tags">
+          <span class="rmat-cat" style="background:${col}22;color:${col}">${cat}</span>
+          <span class="rmat-co2">♻️ ${c2.toFixed(2)} kgCO₂e</span>
+        </div>
+      </div>
+      <div class="rmat-kg">${r.weight.toFixed(1)}<small>กก.</small></div>
+    </div>`;
+  });
+  const big=totCo2>=1000;
+  html+=`<div class="rcal-foot">
+    <div><div class="fv">${rs.length}</div><div class="fl">รายการ</div></div>
+    <div><div class="fv">${totKg.toFixed(1)}</div><div class="fl">กก. รวม</div></div>
+    <div><div class="fv">${big?(totCo2/1000).toFixed(2):totCo2.toFixed(2)}</div><div class="fl">${big?'tCO₂e':'kgCO₂e'}</div></div>
+  </div>`;
+  side.innerHTML=html;
+}
+function recCalNav(s){let y=rcalView.y,m=rcalView.m+s;if(m<0){m=11;y--;}if(m>11){m=0;y++;}rcalView={y,m};renderRecycleCalendar();}
+function recCalSet(){const m=+document.getElementById('rcal-month').value,y=+document.getElementById('rcal-year').value;rcalView={y,m};renderRecycleCalendar();}
+function recCalPickDay(key){rcalSelDate=(rcalSelDate===key)?null:key;rcalSelBld=null;renderRecycleCalendar();}
+function recCalPickBld(b){rcalSelBld=b;renderRcalSide();}
+function recCalToday(){const t=rcalTodayP();rcalView={y:t.y,m:t.m};const key=rcalKey(t.y,t.m,t.d);rcalSelDate=data.some(r=>r.type==='recycle'&&r.date===key)?key:null;rcalSelBld=null;renderRecycleCalendar();}
 
 let materialChart=null;
 function setRmatView(v){ window._rmatView=v; renderMaterialSummary(curFilter['recycle']||'all'); }
