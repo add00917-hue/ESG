@@ -1372,9 +1372,11 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="connectGS(document.getElementById('gs-url').value)"><span>🔗</span>เชื่อมต่อ / ดึงข้อมูล</button>
+      <button class="btn btn-accent" onclick="gsTestConnection()"><span>🩺</span>ทดสอบการเชื่อมต่อ</button>
       <button class="btn btn-ghost" onclick="disconnectGS()"><span>✖️</span>ตัดการเชื่อมต่อ</button>
       <span class="page-sub" id="gs-status" style="font-size:13px;align-self:center"></span>
     </div>
+    <div id="gs-test-out" style="margin-top:12px;font-size:13px;line-height:1.6;min-height:1px"></div>
     <p class="page-sub" style="margin-top:12px;font-size:12px">ℹ️ ต้องนำสคริปต์ <b>Code.gs</b> ไปวางใน Apps Script ของ Google Sheet ก่อน (ดูไฟล์คู่มือที่แนบมา) ระบบจะสร้างชีตที่จำเป็นให้อัตโนมัติ: Records, Buildings, EmissionFactors, Settings, Users, Logs</p>
   </div>
 
@@ -2067,9 +2069,51 @@ let GS_URL=(_gsSaved===null)?DEFAULT_GS_URL:_gsSaved;
 const DEFAULT_KIOSK_URL='https://add00917-hue.github.io/Waste-and-Recyclable-Waste/';
 let KIOSK_BASE=localStorage.getItem('wms_kiosk_url')||DEFAULT_KIOSK_URL;
 function gsConfigured(){return !!GS_URL;}
+/* ดึง JSON พร้อม timeout + อ่านสถานะ HTTP เพื่อวินิจฉัย */
+async function gsFetchJSON(url,timeoutMs){
+  const ctrl=new AbortController();
+  const to=setTimeout(()=>ctrl.abort(),timeoutMs||20000);
+  try{
+    const res=await fetch(url,{signal:ctrl.signal,redirect:'follow'});
+    clearTimeout(to);
+    let text='';try{text=await res.text();}catch(e){}
+    let obj=null;try{obj=JSON.parse(text);}catch(e){}
+    return {ok:res.ok,status:res.status,json:obj,raw:text};
+  }catch(e){clearTimeout(to);return {ok:false,status:0,error:(e&&e.name==='AbortError')?'timeout':((e&&e.message)||'network error')};}
+}
+/* แปลงผลลัพธ์ที่ผิดพลาดเป็นข้อความแนะนำที่อ่านเข้าใจง่าย */
+function gsClassifyError(status,errMsg,raw){
+  if(status===403)return '403 — Web App ปฏิเสธสิทธิ์เข้าถึง\n→ Apps Script → Deploy → Manage deployments → ตั้ง "Who has access" = Anyone แล้ว Deploy ใหม่ (อนุมัติสิทธิ์ให้ครบ รวม Drive)';
+  if(status===401)return '401 — ต้องล็อกอิน Google ก่อน\n→ Web App ยังไม่ได้เปิดเป็น Anyone';
+  if(status===404)return '404 — ไม่พบ URL นี้\n→ URL /exec อาจผิด หรือ deployment ถูกลบ คัดลอก URL ใหม่จาก Manage deployments';
+  if(status>=500)return status+' — สคริปต์ฝั่ง Google ขัดข้อง\n→ เปิด Apps Script ดู Execution log ว่ามี error อะไร';
+  if(status===200&&raw&&!/^\s*[{[]/.test(raw))return 'ตอบกลับเป็นหน้าเว็บ (ไม่ใช่ JSON) — มักเป็นหน้า login ของ Google\n→ แปลว่ายังไม่เปิด "Anyone" หรือ URL ไม่ใช่ลิงก์ /exec ของ Web App';
+  if(/Failed to fetch|NetworkError|Load failed|network error/i.test(errMsg||''))return 'เชื่อมต่อเครือข่ายไม่ได้ / ถูก CORS บล็อก\n→ ตรวจสัญญาณเน็ต · URL ต้องลงท้าย /exec · Web App ต้องเป็น Anyone\n→ ลองเปิด URL ต่อท้าย "?action=ping" ในเบราว์เซอร์ตรง ๆ';
+  if(/timeout/i.test(errMsg||''))return 'หมดเวลา (timeout) — เซิร์ฟเวอร์ไม่ตอบใน 20 วินาที\n→ ลองใหม่ หรือตรวจว่า deployment ยังทำงานอยู่';
+  return errMsg||'ไม่ทราบสาเหตุ';
+}
 async function gsGetAll(){
-  const res=await fetch(GS_URL+(GS_URL.includes('?')?'&':'?')+'action=getAll&t='+Date.now());
-  return await res.json();
+  const r=await gsFetchJSON(GS_URL+(GS_URL.includes('?')?'&':'?')+'action=getAll&t='+Date.now(),20000);
+  if(r.json)return r.json;
+  const e=new Error(gsClassifyError(r.status,r.error,r.raw));e.status=r.status;throw e;
+}
+/* ทดสอบการเชื่อมต่อ (ping) แล้วแสดงผลละเอียดในหน้า Admin */
+async function gsTestConnection(){
+  const inp=document.getElementById('gs-url');
+  const url=((inp&&inp.value)||GS_URL||'').trim();
+  const out=document.getElementById('gs-test-out');
+  if(!url){if(out)out.innerHTML='<span style="color:#dc2626;font-weight:700">⚠️ ยังไม่ได้ใส่ Web App URL</span>';return;}
+  if(out)out.innerHTML='<span style="color:#0ea5e9">⏳ กำลังทดสอบการเชื่อมต่อ…</span>';
+  const r=await gsFetchJSON(url+(url.includes('?')?'&':'?')+'action=ping&t='+Date.now(),15000);
+  if(!out)return;
+  if(r.json&&r.json.ok){
+    out.innerHTML='<span style="color:#16a34a;font-weight:700">✅ เชื่อมต่อได้! Web App ตอบกลับปกติ</span>'+
+      '<br><span style="font-size:11px;color:#64748b">เวลาเซิร์ฟเวอร์: '+((r.json.time||'-')+'').replace(/</g,'')+' · กดปุ่ม "เชื่อมต่อ / ดึงข้อมูล" เพื่อซิงค์ข้อมูล</span>';
+  }else{
+    const reason=gsClassifyError(r.status,r.error,r.raw);
+    out.innerHTML='<span style="color:#dc2626;font-weight:700">❌ เชื่อมต่อไม่ได้'+(r.status?(' (HTTP '+r.status+')'):'')+'</span>'+
+      '<br><span style="font-size:12px;white-space:pre-wrap;color:#475569">'+reason.replace(/</g,'&lt;')+'</span>';
+  }
 }
 async function gsPush(table,op,payload){
   if(!gsConfigured())return;
@@ -2104,8 +2148,8 @@ async function connectGS(url,silent){
   try{
     const all=await gsGetAll();
     if(all&&all.ok){applyRemote(all);setConnStatus('online','เชื่อมต่อ Google Sheets แล้ว');rerenderAll();if(!silent)toast('เชื่อมต่อ Google Sheets สำเร็จ');}
-    else{setConnStatus('error');if(!silent)alert('เชื่อมต่อไม่สำเร็จ: '+((all&&all.error)||'รูปแบบข้อมูลไม่ถูกต้อง'));}
-  }catch(e){setConnStatus('error');if(!silent)alert('เชื่อมต่อไม่สำเร็จ: '+e.message+'\n\nตรวจสอบว่า URL ถูกต้อง และตั้งค่า Web App เป็น "Anyone" แล้ว');}
+    else{const d='ข้อมูลตอบกลับไม่ถูกต้อง'+((all&&all.error)?(': '+all.error):'');setConnStatus('error',d);if(!silent)alert('เชื่อมต่อไม่สำเร็จ\n\n'+d);}
+  }catch(e){setConnStatus('error',e.message);if(!silent)alert('เชื่อมต่อไม่สำเร็จ\n\n'+e.message);}
 }
 function disconnectGS(){GS_URL='';localStorage.setItem('wms_gs_url','');setConnStatus('local');toast('ตัดการเชื่อมต่อ Google Sheets แล้ว (กลับเป็นโหมด Local)');}
 async function gsLogin(user,pass){
@@ -4393,7 +4437,7 @@ function renderAdmin(){
   document.getElementById('ef-reference').value=EF_META.reference||'';
   document.getElementById('ef-updated').textContent=EF_META.updated?('อัปเดตล่าสุด: '+EF_META.updated):'ยังไม่เคยแก้ไข (ใช้ค่าเริ่มต้น)';
   const gsu=document.getElementById('gs-url');if(gsu)gsu.value=GS_URL;
-  const gss=document.getElementById('gs-status');if(gss)gss.textContent=gsConfigured()?('สถานะ: '+(CONN.state==='online'?'🟢 เชื่อมต่อแล้ว':CONN.state==='error'?'🔴 ผิดพลาด':'🟡 รอเชื่อมต่อ')):'สถานะ: 🟡 โหมด Local (ยังไม่เชื่อมต่อ)';
+  const gss=document.getElementById('gs-status');if(gss)gss.textContent=gsConfigured()?('สถานะ: '+(CONN.state==='online'?'🟢 เชื่อมต่อแล้ว':CONN.state==='error'?('🔴 ผิดพลาด'+(CONN.detail?(' — '+String(CONN.detail).split('\n')[0]):'')):'🟡 รอเชื่อมต่อ')):'สถานะ: 🟡 โหมด Local (ยังไม่เชื่อมต่อ)';
   renderKioskQR();
 }
 function kioskMainUrl(){
@@ -4503,7 +4547,7 @@ function toggleConnInfo(){
     local:'🟡 บันทึกในเครื่อง (Local Storage)\n\nข้อมูลถูกเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ยังไม่ได้เชื่อมต่อฐานข้อมูลกลาง\n\nขั้นถัดไป: เชื่อมต่อ Google Sheets ผ่าน Google Apps Script เพื่อให้ทุกเครื่องเห็นข้อมูลร่วมกันและกันข้อมูลหาย',
     online:'🟢 เชื่อมต่อแล้ว\n\nข้อมูลซิงค์กับ Google Sheets เรียบร้อย',
     syncing:'🔵 กำลังซิงค์ข้อมูลกับ Google Sheets…',
-    error:'🔴 เชื่อมต่อผิดพลาด\n\nไม่สามารถเชื่อมต่อ Google Sheets ได้ ข้อมูลถูกบันทึกในเครื่องชั่วคราว'
+    error:'🔴 เชื่อมต่อผิดพลาด\n\n'+(CONN.detail||'ไม่สามารถเชื่อมต่อ Google Sheets ได้')+'\n\nไปที่หน้า Admin แล้วกดปุ่ม "🩺 ทดสอบการเชื่อมต่อ" เพื่อดูสาเหตุและวิธีแก้'
   };
   alert(map[CONN.state]||CONN.detail);
 }
