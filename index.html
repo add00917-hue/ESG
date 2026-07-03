@@ -2048,13 +2048,30 @@ function normDate(d){
   if(y>2400) y-=543;                                           // พ.ศ. → ค.ศ.
   return y+'-'+('0'+m).slice(-2)+'-'+('0'+dd).slice(-2);
 }
-function normRecs(arr){return Array.isArray(arr)?arr.map(function(r){if(r&&r.date!=null)r.date=normDate(r.date);return r;}):arr;}
+/* แปลงชนิดขยะที่สะกดต่าง (จากชีต/ระบบเก่า) ให้ตรง key มาตรฐาน กันหน้า Dashboard พังเพราะ type แปลกปลอม
+   หมายเหตุ: ต้องเป็น function declaration (hoist) เพราะ load()/normRecs ถูกเรียกก่อนถึงบรรทัดนี้ */
+function typeAlias(t){
+  var m={hazardous:'hazard','e-waste':'ewaste','ewaste+':'ewastep','ewast+':'ewastep',recyclable:'recycle',recyclables:'recycle'};
+  return m[t]||t;
+}
+function normRecs(arr){return Array.isArray(arr)?arr.map(function(r){
+  if(!r)return r;
+  if(r.date!=null)r.date=normDate(r.date);
+  if(r.type!=null)r.type=typeAlias(String(r.type).trim().toLowerCase());
+  if(r.weight!=null&&typeof r.weight!=='number'){var w=parseFloat(r.weight);r.weight=isNaN(w)?0:w;}
+  return r;}):arr;}
+/* ป้ายชนิดขยะแบบกันพัง: คืน fallback ถ้า type ไม่รู้จัก */
+function T_(t){return TYPES[t]||{name:t||'ไม่ระบุ',icon:'❓',color:'#64748b',bg:'#e2e8f0',cls:'',recorder:''};}
 
 function load(){
+  var d=null;
   try{
     if(localStorage.getItem('wms_ver')!=='5'){localStorage.removeItem('wms_data');localStorage.setItem('wms_ver','5');}
-    const d=JSON.parse(localStorage.getItem('wms_data'));if(d&&d.length)return normRecs(d);
+    d=JSON.parse(localStorage.getItem('wms_data'));
   }catch(e){}
+  if(d&&d.length){
+    try{return normRecs(d);}catch(e){console.error('normRecs failed, using raw data:',e);return d;}
+  }
   var _su=null;try{_su=localStorage.getItem('wms_gs_url');}catch(e){}
   return (_su!=='')?[]:seed();   // _su==='' = ตัดการเชื่อมต่อ ⇒ ใช้ demo; อื่นๆ (null/มี URL) = โหมดเชื่อมต่อ ⇒ รอข้อมูลจริง
 }
@@ -2115,19 +2132,56 @@ async function gsTestConnection(){
       '<br><span style="font-size:12px;white-space:pre-wrap;color:#475569">'+reason.replace(/</g,'&lt;')+'</span>';
   }
 }
+/* ===== OUTBOX QUEUE: กันข้อมูลหายเมื่อส่งขึ้นชีตไม่สำเร็จ =====
+   ทุกการบันทึกเข้า "คิว" ใน localStorage ก่อนเสมอ ส่งสำเร็จจึงลบออก
+   ถ้าเน็ตหลุด/เซิร์ฟเวอร์ล่ม รายการยังอยู่ในคิวและจะถูกส่งซ้ำอัตโนมัติเมื่อเชื่อมต่อได้ */
+const GS_QUEUE_KEY='wms_outbox';
+function qLoad(){try{return JSON.parse(localStorage.getItem(GS_QUEUE_KEY))||[];}catch(e){return [];}}
+function qSave(q){try{localStorage.setItem(GS_QUEUE_KEY,JSON.stringify(q));}catch(e){}}
+let _qFlushing=false;
+async function gsFlushQueue(){
+  if(!gsConfigured()||_qFlushing)return;
+  let q=qLoad();if(!q.length)return;
+  _qFlushing=true;setConnStatus('syncing');
+  try{
+    while(q.length){
+      const item=q[0];
+      const r=await gsFetchJSON2Post(item);
+      if(!r.ok){setConnStatus('error','ส่งข้อมูลค้าง '+q.length+' รายการไม่สำเร็จ — จะลองใหม่อัตโนมัติ');_qFlushing=false;return;}
+      q.shift();qSave(q);
+    }
+    setConnStatus('online');
+  }finally{_qFlushing=false;}
+}
+async function gsFetchJSON2Post(item){
+  try{
+    const ctrl=new AbortController();const to=setTimeout(()=>ctrl.abort(),20000);
+    const res=await fetch(GS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'save',table:item.table,op:item.op,payload:item.payload}),signal:ctrl.signal});
+    clearTimeout(to);
+    return {ok:res.ok};
+  }catch(e){return {ok:false};}
+}
 async function gsPush(table,op,payload){
   if(!gsConfigured())return;
-  try{
-    setConnStatus('syncing');
-    await fetch(GS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({action:'save',table,op,payload})});
-    setConnStatus('online');
-  }catch(e){setConnStatus('error');}
+  const q=qLoad();q.push({table,op,payload,ts:Date.now()});qSave(q);
+  gsFlushQueue();
+}
+/* replay คิวที่ค้างลงบนข้อมูลจากเซิร์ฟเวอร์ เพื่อไม่ให้รายการที่บันทึกตอนออฟไลน์หายไปหลัง getAll */
+function qReplayOn(records,tableName){
+  const q=qLoad();
+  q.forEach(item=>{
+    if(item.table!==tableName)return;
+    if(item.op==='add'){if(item.payload&&item.payload.id&&!records.some(r=>r.id===item.payload.id))records.push(item.payload);}
+    else if(item.op==='update'){const i=records.findIndex(r=>r.id===(item.payload&&item.payload.id));if(i>=0)records[i]=item.payload;}
+    else if(item.op==='delete'){const id=item.payload&&item.payload.id;const i=records.findIndex(r=>r.id===id);if(i>=0)records.splice(i,1);}
+  });
+  return records;
 }
 function applyRemote(all){
   if(!all)return;
-  if(Array.isArray(all.records)){data=normRecs(all.records);localStorage.setItem('wms_data',JSON.stringify(data));}
-  if(Array.isArray(all.utilities)){udata=normRecs(all.utilities);localStorage.setItem('wms_udata',JSON.stringify(udata));}
+  if(Array.isArray(all.records)){data=qReplayOn(normRecs(all.records),'records');localStorage.setItem('wms_data',JSON.stringify(data));}
+  if(Array.isArray(all.utilities)){udata=qReplayOn(normRecs(all.utilities),'utilities');localStorage.setItem('wms_udata',JSON.stringify(udata));}
   if(all.buildings&&Object.keys(all.buildings).length){BUILDINGS=all.buildings;localStorage.setItem('wms_buildings',JSON.stringify(BUILDINGS));}
   if(all.ef){if(all.ef.factors)EMISSION_FACTORS=Object.assign({},DEFAULT_EF,all.ef.factors);
     if(all.ef.cat)CAT_FACTORS=Object.assign({},DEFAULT_CAT,all.ef.cat);
@@ -2144,6 +2198,7 @@ async function connectGS(url,silent){
   url=(url||'').trim();
   if(!url){alert('กรุณาวาง URL ของ Google Apps Script Web App');return;}
   GS_URL=url;localStorage.setItem('wms_gs_url',url);
+  await gsFlushQueue();  // ส่งรายการค้างขึ้นชีตก่อน แล้วค่อยดึงกลับ กันข้อมูลออฟไลน์หาย
   setConnStatus('syncing');
   try{
     const all=await gsGetAll();
@@ -2317,7 +2372,7 @@ function renderDashboard(){
   const recent=[...d].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id)).slice(0,8);
   document.getElementById('recent-body').innerHTML=recent.map(r=>`<tr>
     <td>${fmt(r.date)}</td>
-    <td><span class="badge ${TYPES[r.type].cls}">${TYPES[r.type].icon} ${TYPES[r.type].name}</span></td>
+    <td><span class="badge ${T_(r.type).cls}">${T_(r.type).icon} ${T_(r.type).name}</span></td>
     <td>${bBadge(r.building)}</td>
     <td>ชั้น ${r.floor}</td><td class="t-weight">${r.weight.toFixed(2)}</td><td>${r.recorder}</td></tr>`).join('')
     ||`<tr><td colspan="6"><div class="empty"><span class="ic">📭</span>ยังไม่มีข้อมูล</div></td></tr>`;
@@ -3220,7 +3275,7 @@ function editRecord(id){
   const r=data.find(x=>x.id===id);if(!r)return;
   openForm(r.type);
   editingId=id;
-  document.getElementById('form-title').textContent='แก้ไข '+TYPES[r.type].name;
+  document.getElementById('form-title').textContent='แก้ไข '+T_(r.type).name;
   document.getElementById('f-building').value=r.building;
   renderFormFloors();
   setTimeout(()=>{
@@ -4714,7 +4769,7 @@ function exportXLSX(rows,filename,sheetName){
 function exportCSV(){
   const rows=[['วันที่','ประเภท','อาคาร','ชั้น','น้ำหนัก_kg','ผู้บันทึก','หมวดหมู่รีไซเคิล','ประเภทวัสดุ','หมายเหตุ']];
   data.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(r=>
-    rows.push([r.date,TYPES[r.type].name,bName(r.building),r.floor,+r.weight.toFixed(2),r.recorder,r.material?getCategory(r.material):'',r.material||'',r.vendor||r.note||'']));
+    rows.push([r.date,T_(r.type).name,bName(r.building),r.floor,+r.weight.toFixed(2),r.recorder,r.material?getCategory(r.material):'',r.material||'',r.vendor||r.note||'']));
   exportXLSX(rows,'waste-data.xlsx','ข้อมูลขยะ');toast('Export Excel สำเร็จ');
 }
 
@@ -4753,6 +4808,7 @@ function toast(msg,action){
   initYearOptions();
   renderDashboard();
   if(gsConfigured())connectGS(GS_URL,true);
+  setInterval(function(){try{gsFlushQueue();}catch(e){}},45000);  // ส่งรายการค้างซ้ำอัตโนมัติ
   const params=new URLSearchParams(location.search);
   const kioskBldParam=params.get('kiosk');
   if(kioskBldParam){setTimeout(()=>openKiosk(BUILDINGS[kioskBldParam]?kioskBldParam:Object.keys(BUILDINGS)[0]),300);}
