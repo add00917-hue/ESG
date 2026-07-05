@@ -396,6 +396,32 @@ tbody tr:last-child td{border-bottom:none}
 .typebd-bar>i{display:block;height:100%;border-radius:5px;transition:width .4s}
 .typebd-total{display:flex;justify-content:space-between;border-top:1.5px solid var(--border);padding-top:12px;margin-top:3px;font-size:15px}
 .dash-plabel{display:inline-block;font-size:13px;font-weight:700;color:var(--primary);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 15px;margin-bottom:16px}
+/* ===== DASHBOARD SECTIONS (โครงใหม่ 6 โซน) ===== */
+.dsec{margin-bottom:36px;scroll-margin-top:80px}
+.dsec:last-child{margin-bottom:8px}
+.dsec-head{display:flex;align-items:center;gap:12px;margin-bottom:15px;padding-bottom:11px;border-bottom:2px solid var(--border);position:relative}
+.dsec-head::after{content:'';position:absolute;left:0;bottom:-2px;width:72px;height:2.5px;background:var(--sec,var(--primary));border-radius:3px}
+.dsec-ic{width:40px;height:40px;border-radius:12px;background:var(--surface);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid var(--border)}
+.dsec-title{font-size:16.5px;font-weight:800;letter-spacing:.2px;line-height:1.2}
+.dsec-sub{font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.35}
+.dsec-nav{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;margin-bottom:18px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.dsec-nav::-webkit-scrollbar{display:none}
+.dsec-nav button{flex-shrink:0;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-family:inherit;transition:.2s;box-shadow:0 1px 2px rgba(15,23,42,.05);min-height:36px}
+.dsec-nav button:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+/* Section 1: health strip ให้กะทัดรัดกว่า statbox ปกติ */
+#dsec-1 .statbox-grid{gap:12px;margin-bottom:0;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+#dsec-1 .statbox{padding:13px 15px 15px}
+#dsec-1 .statbox-value{font-size:22px}
+#dsec-1 .statbox-ic{width:32px;height:32px;font-size:17px;border-radius:9px}
+/* Section 2: เน้นค่าแรกให้เด่นสุด */
+.esg-hero-main .esg-hero-value{font-size:48px}
+@media(max-width:560px){.esg-hero-main .esg-hero-value{font-size:38px}}
+/* การ์ดพับได้ (เปรียบเทียบช่วงเวลา) */
+.fold-head{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text);padding:0;min-height:44px;text-align:left}
+.fold-arrow{transition:transform .25s;font-size:15px;color:var(--text-muted);flex-shrink:0}
+.fold-head:hover .fold-arrow{color:var(--primary)}
+.dsec-fold.open .fold-arrow{transform:rotate(180deg)}
+
 @media(max-width:768px){
   /* หัว Dashboard: ปุ่มโหมด+Export อยู่แถวเดียว กระชับ ไม่เปลือง 3 บรรทัด */
   .dash-filters{width:100%;justify-content:space-between;gap:8px}
@@ -800,93 +826,147 @@ footer{text-align:center;color:var(--text-muted);font-size:13px;padding:24px}
 
   <div id="dash-period-label" class="dash-plabel"></div>
 
-  <div id="alert-banner"></div>
-
-  <div class="kpi-grid" id="kpi-grid"></div>
-  <div class="kpi-grid" id="dash-util-kpi"></div>
-
-  <div class="card" id="compare-card">
-    <div class="card-head">
-      <div class="card-title"><span class="ic">⚖️</span>เปรียบเทียบช่วงเวลา</div>
-      <div class="filters" id="cmp-ctrl"></div>
-    </div>
-    <div id="cmp-overall"></div>
-    <div class="grid-2" style="margin-top:16px">
-      <div class="table-wrap" id="compare-body"></div>
-      <div><div class="chart-box" style="height:200px"><canvas id="chart-compare"></canvas></div></div>
-    </div>
+  <!-- แถบนำทาง section -->
+  <div class="dsec-nav" id="dsec-nav">
+    <button onclick="dsecGo('dsec-1')">📌 สถานะ</button>
+    <button onclick="dsecGo('dsec-2')">🌍 คาร์บอน</button>
+    <button onclick="dsecGo('dsec-3')">🗑️ ขยะ</button>
+    <button onclick="dsecGo('dsec-4')">⚡ พลังงาน</button>
+    <button onclick="dsecGo('dsec-5')">📈 แนวโน้ม</button>
+    <button onclick="dsecGo('dsec-6')">🕐 ล่าสุด</button>
   </div>
 
-  <div class="esg-hero" id="dash-esg" style="cursor:pointer" onclick="document.querySelector('.nav-tab[data-page=esg]').click()">
-    <div class="esg-hero-grid">
-      <div class="esg-hero-item">
-        <div class="esg-hero-label">🧮 Setcarbon รวมทุกประเภท</div>
-        <div class="esg-hero-value" id="dash-esg-scope">–</div>
-        <div class="esg-hero-sub">ขยะ + น้ำมัน + ไฟฟ้า + ประปา · คลิกดูรายงาน ESG →</div>
-      </div>
-      <div class="esg-hero-item">
-        <div class="esg-hero-label">🌍 คาร์บอนจากขยะ</div>
-        <div class="esg-hero-value" id="dash-esg-total">–</div>
-        <div class="esg-hero-sub" id="dash-esg-total-sub">เฉพาะข้อมูลขยะทุกประเภท</div>
-      </div>
-      <div class="esg-hero-item">
-        <div class="esg-hero-label">♻️ คาร์บอนที่หลีกเลี่ยงได้</div>
-        <div class="esg-hero-value" id="dash-esg-avoided">–</div>
-        <div class="esg-hero-sub">จากการรีไซเคิล</div>
-      </div>
-      <div class="esg-hero-item">
-        <div class="esg-hero-label">⚡ Carbon Intensity</div>
-        <div class="esg-hero-value" id="dash-esg-intensity">–</div>
-        <div class="esg-hero-sub">kgCO₂e ต่อขยะ 1 kg</div>
-      </div>
+  <!-- ═══ SECTION 1 : สถานะปัจจุบัน ═══ -->
+  <section class="dsec" id="dsec-1" style="--sec:#0ea5e9">
+    <div class="dsec-head">
+      <div class="dsec-ic">📌</div>
+      <div><div class="dsec-title">สถานะปัจจุบัน</div><div class="dsec-sub">Health Check — เป้าหมายรีไซเคิล · ความครบของข้อมูล · น้ำหนักรวม</div></div>
     </div>
-  </div>
+    <div id="alert-banner"></div>
+  </section>
 
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><span class="ic">📈</span>แนวโน้มปริมาณขยะ (รายสัปดาห์)</div>
-        <div class="filters" id="trend-ctrl"></div>
-      </div>
-      <div class="chart-box" style="height:150px"><canvas id="chart-trend"></canvas></div>
+  <!-- ═══ SECTION 2 : Carbon Snapshot ═══ -->
+  <section class="dsec" id="dsec-2" style="--sec:#059669">
+    <div class="dsec-head">
+      <div class="dsec-ic">🌍</div>
+      <div><div class="dsec-title">Carbon Snapshot</div><div class="dsec-sub">คาร์บอนรวมทุกแหล่ง (ขยะ + น้ำมัน + ไฟฟ้า + ประปา) — คลิกเพื่อดูรายงาน ESG ฉบับเต็ม</div></div>
     </div>
-    <div class="card">
+    <div class="esg-hero" id="dash-esg" style="cursor:pointer;margin-bottom:0" onclick="document.querySelector('.nav-tab[data-page=esg]').click()">
+      <div class="esg-hero-grid">
+        <div class="esg-hero-item esg-hero-main">
+          <div class="esg-hero-label">🧮 Setcarbon รวมทุกประเภท</div>
+          <div class="esg-hero-value" id="dash-esg-scope">–</div>
+          <div class="esg-hero-sub">ขยะ + น้ำมัน + ไฟฟ้า + ประปา · คลิกดูรายงาน ESG →</div>
+        </div>
+        <div class="esg-hero-item">
+          <div class="esg-hero-label">🌍 คาร์บอนจากขยะ</div>
+          <div class="esg-hero-value" id="dash-esg-total">–</div>
+          <div class="esg-hero-sub" id="dash-esg-total-sub">เฉพาะข้อมูลขยะทุกประเภท</div>
+        </div>
+        <div class="esg-hero-item">
+          <div class="esg-hero-label">♻️ คาร์บอนที่หลีกเลี่ยงได้</div>
+          <div class="esg-hero-value" id="dash-esg-avoided">–</div>
+          <div class="esg-hero-sub">จากการรีไซเคิล</div>
+        </div>
+        <div class="esg-hero-item">
+          <div class="esg-hero-label">⚡ Carbon Intensity</div>
+          <div class="esg-hero-value" id="dash-esg-intensity">–</div>
+          <div class="esg-hero-sub">kgCO₂e ต่อขยะ 1 kg</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 3 : ขยะตามประเภท ═══ -->
+  <section class="dsec" id="dsec-3" style="--sec:#3b82f6">
+    <div class="dsec-head">
+      <div class="dsec-ic">🗑️</div>
+      <div><div class="dsec-title">ขยะตามประเภท</div><div class="dsec-sub">ปริมาณ 6 ประเภทในช่วงที่เลือก — คลิกการ์ดเพื่อดูรายละเอียด</div></div>
+    </div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <div class="card" style="margin-bottom:0">
       <div class="card-head"><div class="card-title"><span class="ic">📊</span>สัดส่วนตามประเภท<span class="ctx-badge ctx-dash"></span></div></div>
       <div id="type-breakdown" class="typebd"></div>
     </div>
-  </div>
+  </section>
 
-  <div class="grid-2">
+  <!-- ═══ SECTION 4 : พลังงาน & น้ำ ═══ -->
+  <section class="dsec" id="dsec-4" style="--sec:#f59e0b">
+    <div class="dsec-head">
+      <div class="dsec-ic">⚡</div>
+      <div><div class="dsec-title">พลังงาน &amp; น้ำ</div><div class="dsec-sub">น้ำมันเชื้อเพลิง · ไฟฟ้า · ประปา พร้อมคาร์บอนโดยประมาณ — คลิกเพื่อบันทึกข้อมูล</div></div>
+    </div>
+    <div class="kpi-grid" id="dash-util-kpi" style="margin-bottom:0"></div>
+  </section>
+
+  <!-- ═══ SECTION 5 : แนวโน้ม & เปรียบเทียบ ═══ -->
+  <section class="dsec" id="dsec-5" style="--sec:#0f766e">
+    <div class="dsec-head">
+      <div class="dsec-ic">📈</div>
+      <div><div class="dsec-title">แนวโน้ม &amp; เปรียบเทียบ</div><div class="dsec-sub">กราฟรายสัปดาห์ · รายเดือน · แยกตามอาคาร · เทียบช่วงเวลา</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title"><span class="ic">📈</span>แนวโน้มปริมาณขยะ (รายสัปดาห์)</div>
+          <div class="filters" id="trend-ctrl"></div>
+        </div>
+        <div class="chart-box" style="height:150px"><canvas id="chart-trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title"><span class="ic">📉</span>แนวโน้มรายเดือน<span class="ctx-badge ctx-dash"></span></div>
+          <div class="filters" id="heat-ctrl"></div>
+        </div>
+        <div class="chart-box" style="height:150px"><canvas id="chart-heat-line"></canvas></div>
+        <div class="page-sub" style="margin-top:10px" id="heat-note"></div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-head"><div class="card-title"><span class="ic">🏢</span>ปริมาณขยะตามอาคาร (แยกทุกประเภท)<span class="ctx-badge ctx-dash"></span></div></div>
       <div class="chart-box" style="height:150px"><canvas id="chart-building"></canvas></div>
       <div class="table-wrap" id="building-table" style="margin-top:14px"></div>
     </div>
-    <div class="card rcard">
-      <div id="recycle-summary"></div>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title"><span class="ic">📉</span>แนวโน้มปริมาณขยะรายเดือน<span class="ctx-badge ctx-dash"></span></div>
-      <div class="filters" id="heat-ctrl"></div>
+    <div class="card dsec-fold" id="compare-card" style="margin-bottom:0">
+      <button type="button" class="fold-head" onclick="toggleCompare()">
+        <span class="card-title" style="margin:0"><span class="ic">⚖️</span>เปรียบเทียบช่วงเวลา (เดือนต่อเดือน / ปีต่อปี)</span>
+        <span class="fold-arrow" id="cmp-arrow">▾</span>
+      </button>
+      <div class="fold-body" id="cmp-fold" style="display:none">
+        <div class="filters" id="cmp-ctrl" style="margin:14px 0 12px"></div>
+        <div id="cmp-overall"></div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="table-wrap" id="compare-body"></div>
+          <div><div class="chart-box" style="height:200px"><canvas id="chart-compare"></canvas></div></div>
+        </div>
+      </div>
     </div>
-    <div class="chart-box" style="height:110px"><canvas id="chart-heat-line"></canvas></div>
-    <div class="page-sub" style="margin-top:10px" id="heat-note"></div>
-  </div>
+  </section>
 
-  <div class="card">
-    <div class="card-head">
-      <div class="card-title"><span class="ic">🕐</span>รายการบันทึกล่าสุด<span class="ctx-badge ctx-dash"></span></div>
+  <!-- ═══ SECTION 6 : กิจกรรมล่าสุด ═══ -->
+  <section class="dsec" id="dsec-6" style="--sec:#64748b">
+    <div class="dsec-head">
+      <div class="dsec-ic">🕐</div>
+      <div><div class="dsec-title">กิจกรรมล่าสุด</div><div class="dsec-sub">รายการบันทึกล่าสุด · สรุปรีไซเคิลของช่วงที่เลือก</div></div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>วันที่</th><th>ประเภท</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>ผู้บันทึก</th></tr></thead>
-        <tbody id="recent-body"></tbody>
-      </table>
+    <div class="grid-2" style="margin-bottom:0">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-head"><div class="card-title"><span class="ic">🕐</span>รายการบันทึกล่าสุด<span class="ctx-badge ctx-dash"></span></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>วันที่</th><th>ประเภท</th><th>อาคาร</th><th>ชั้น</th><th>น้ำหนัก (kg)</th><th>ผู้บันทึก</th></tr></thead>
+            <tbody id="recent-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card rcard" style="margin-bottom:0">
+        <div id="recycle-summary"></div>
+      </div>
     </div>
-  </div>
+  </section>
 </div>
 
 <!-- ============ WASTE PAGES (generated style, but static markup) ============ -->
@@ -2688,6 +2768,16 @@ function renderHeatLine(){
 /* ===== ปุ่มเลือกช่วงเวลา Dashboard ===== */
 function dashYears(){ const ys=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse(); return ys.length?ys:[String(new Date().getFullYear())]; }
 function dashSetMode(k){ dashMode=k; renderDashboard(); }
+/* ===== Section nav + การ์ดเปรียบเทียบแบบพับได้ ===== */
+function dsecGo(id){ const el=document.getElementById(id); if(el)el.scrollIntoView({behavior:'smooth',block:'start'}); }
+function toggleCompare(){
+  const b=document.getElementById('cmp-fold'),c=document.getElementById('compare-card');
+  if(!b)return;
+  const open=b.style.display==='none';
+  b.style.display=open?'':'none';
+  if(c)c.classList.toggle('open',open);
+  if(open)renderCompare(); // วาดกราฟใหม่หลังกางออก (กัน canvas ขนาด 0)
+}
 /* ป้ายบริบทบนหัวการ์ด: อัปเดตตามตัวกรองที่เลือก */
 function setCtx(sel,txt){document.querySelectorAll(sel).forEach(e=>e.textContent=txt);}
 function dashSet(k,v){ if(k==='year')dashYear=v; else dashMonth=+v; renderDashboard(); }
